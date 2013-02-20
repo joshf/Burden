@@ -140,21 +140,28 @@ while($row = mysql_fetch_assoc($getcategories)) {
     }
 }
 
-echo "</select><span class=\"help-block\"><a id=\"addcategory\">Add new...</a></span></div></div><div class=\"control-group\"><div class=\"controls\"><label class=\"checkbox\">";
+echo "</select><span class=\"help-block\"><a id=\"addcategory\">Add new...</a></span></div></div><div class=\"control-group\"><label class=\"control-label\" for=\"priority\">Priority</label><div class=\"controls\">";
     
-//Check if task is important
-$checkifimportant = mysql_query("SELECT important FROM Data WHERE id = \"$idtoedit\"");
-$checkifimportantresult = mysql_fetch_assoc($checkifimportant); 
-if ($checkifimportantresult["important"] == "1") { 
-    echo "<input type=\"checkbox\" id=\"importantstate\" name=\"importantstate\" checked=\"checked\"> Important?";
-} else {
-    echo "<input type=\"checkbox\" id=\"importantstate\" name=\"importantstate\"> Important?";
+//Get task priority
+$checkpriority = mysql_query("SELECT priority FROM Data WHERE id = \"$idtoedit\"");
+$checkpriorityresult  = mysql_fetch_assoc($checkpriority); 
+$priority = $checkpriorityresult["priority"];
+
+$priorities = array("1", "2", "3", "4", "5");
+
+echo "<select id=\"priority\" name=\"priority\">";
+foreach ($priorities as $value) {
+    if ($value == $priority) {
+        echo "<option value=\"$value\" selected=\"selected\">$value</option>";
+    } else {
+        echo "<option value=\"$value\">$value</option>";
+    }
 }
+echo "</select>";
 
 mysql_close($con);
 
 ?>
-</label>
 </div>
 </div>
 <div class="form-actions">

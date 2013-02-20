@@ -27,8 +27,9 @@ mysql_select_db(DB_NAME, $con);
 
 //Set variables
 $task = mysql_real_escape_string($_POST["task"]);
-$due = mysql_real_escape_string($_POST["due"]);
 $category = mysql_real_escape_string($_POST["category"]);
+$priority = mysql_real_escape_string($_POST["priority"]);
+$due = mysql_real_escape_string($_POST["due"]);
 
 //Failsafe
 if (empty($task)) {
@@ -49,19 +50,13 @@ if ($resultcheckid != 0) {
     exit;
 }
 
-if (isset($_POST["importantstate"])) {
-    $important = "1";
-} else {
-    $important = "0";
-}
-
 //Allow a blank date
 if (empty($due)) {
     $due = "None";
 }
 
-mysql_query("INSERT INTO Data (id, category, important, task, due, completed)
-VALUES (\"$id\",\"$category\",\"$important\",\"$task\",\"$due\",\"0\")");
+mysql_query("INSERT INTO Data (id, category, priority, task, due, completed)
+VALUES (\"$id\",\"$category\",\"$priority\",\"$task\",\"$due\",\"0\")");
 
 mysql_close($con);
 

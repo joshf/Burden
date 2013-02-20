@@ -33,8 +33,9 @@ $idtoedit = mysql_real_escape_string($_POST["idtoedit"]);
 
 //Set variables
 $newtask = mysql_real_escape_string($_POST["task"]);
-$newdue = mysql_real_escape_string($_POST["due"]);
 $newcategory = mysql_real_escape_string($_POST["category"]);
+$newpriority = mysql_real_escape_string($_POST["priority"]);
+$newdue = mysql_real_escape_string($_POST["due"]);
 
 //Failsafes
 if (empty($newtask)) {
@@ -42,18 +43,12 @@ if (empty($newtask)) {
     exit;
 }
 
-if (isset($_POST["importantstate"])) {
-    $newimportantstate = "1";
-} else {
-    $newimportantstate = "0";
-}
-
 //Allow a blank date
 if (empty($newdue)) {
     $newdue = "None";
 }
 
-mysql_query("UPDATE Data SET category = \"$newcategory\", task = \"$newtask\", due = \"$newdue\", important = \"$newimportantstate\" WHERE id = \"$idtoedit\"");
+mysql_query("UPDATE Data SET category = \"$newcategory\", priority = \"$newpriority\", task = \"$newtask\", due = \"$newdue\" WHERE id = \"$idtoedit\"");
 
 mysql_close($con);
 

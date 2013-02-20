@@ -2,8 +2,8 @@
 
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
-$version = "1.2";
-$codename = "DangerousDuck";
+$version = "2.0beta";
+$codename = "ElectricElephant";
 $rev = "120";
 
 if (!file_exists("../config.php")) {
@@ -125,8 +125,9 @@ if (preg_match("/^[0-9.-]{1,}$/", $remoteversion)) {
 echo "<table id=\"tasks\" class=\"table table-striped table-bordered table-condensed\">
 <thead>
 <tr>
-<th>ID</th>
+<th></th>
 <th>Category</th>
+<th>Priority</th>
 <th>Task</th>
 <th>Due</th>
 </tr></thead><tbody>";
@@ -137,20 +138,20 @@ while($row = mysql_fetch_assoc($gettasks)) {
     $today = date("Y-m-d");
     $todaystring = strtotime($today);
     $duestring = strtotime($due);    
-    if ($row["important"] != "1" && $row["completed"] != "1" && $todaystring < $duestring) {
+    if ($row["priority"] != "5" && $row["completed"] != "1" && $todaystring < $duestring) {
         $case = "normal";
     }
-    if ($row["important"] == "1") {
+    if ($row["priority"] == "5") {
         if ($todaystring > $duestring) {
             $case = "overdue";
         } else {
-            $case = "important";
+            $case = "highpriority";
         }
     } 
     if ($todaystring > $duestring) {
         if ($due == "None") {
-            if ($row["important"] == "1") {
-                $case = "important";
+            if ($row["priority"] == "5") {
+                $case = "highpriority";
             } else {
                 $case = "normal";
             }
@@ -162,7 +163,7 @@ while($row = mysql_fetch_assoc($gettasks)) {
         $case = "completed";
     }
     switch ($case) {
-        case "important":
+        case "highpriority":
             echo "<tr class=\"warning\">";
             break;
         case "overdue":
@@ -177,6 +178,7 @@ while($row = mysql_fetch_assoc($gettasks)) {
     } 
     echo "<td><input name=\"id\" type=\"radio\" value=\"" . $row["id"] . "\"></td>";
     echo "<td>" . ucfirst($row["category"]) . "</td>";
+    echo "<td>" . $row["priority"] . "</td>";
     echo "<td>" . $row["task"] . "</td>";
     echo "<td>" . $row["due"] . "</td>";
     echo "</tr>";
@@ -200,7 +202,7 @@ if (!isset($_GET["showcompleted"])) {
 <br>
 <br>
 <div class="alert alert-info">   
-<strong>Info:</strong> Important tasks are highlighted yellow, completed tasks green and overdue tasks red.  
+<strong>Info:</strong> High priority tasks are highlighted yellow, completed tasks green and overdue tasks red.  
 </div>
 <div class="well">
 <?php
@@ -242,6 +244,7 @@ $(document).ready(function() {
         "aoColumns": [{
             "bSortable": false
         },
+        null,
         null,
         null,
         null,

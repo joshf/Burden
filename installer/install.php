@@ -86,7 +86,7 @@ if (!$does_db_exist) {
 $createtable = "CREATE TABLE Data (
 id SMALLINT(10) NOT NULL,
 category VARCHAR(20) NOT NULL,
-important TINYINT(1) NOT NULL default \"0\",
+priority TINYINT(1) NOT NULL,
 task VARCHAR(300) NOT NULL,
 due VARCHAR(10) NOT NULL,
 completed TINYINT(1) NOT NULL default \"0\",

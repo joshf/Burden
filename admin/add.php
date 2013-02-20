@@ -139,10 +139,15 @@ while($row = mysql_fetch_assoc($getcategories)) {
 </div>
 </div>
 <div class="control-group">
+<label class="control-label" for="priority">Priority</label>
 <div class="controls">
-<label class="checkbox">
-<input type="checkbox" id="importantstate" name="importantstate"> Important?
-</label>
+<select id="priority" name="priority">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
 </div>
 </div>
 <div class="form-actions">
