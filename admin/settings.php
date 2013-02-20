@@ -1,6 +1,6 @@
 <?php
 
-//SHTask, Copyright Josh Fradley (http://github.com/joshf/SHTask)
+//Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
 if (!file_exists("../config.php")) {
     header("Location: ../installer");
@@ -46,7 +46,7 @@ if (isset($_POST["save"])) {
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>SHTask &middot; Settings</title>
+<title>Burden &middot; Settings</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php
 
@@ -78,7 +78,7 @@ body {
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 </a>
-<a class="brand" href="#">SHTask</a>
+<a class="brand" href="#">Burden</a>
 <div class="nav-collapse collapse">
 <ul class="nav">
 <li><a href="index.php">Home</a></li>
@@ -123,7 +123,7 @@ if (isset($_GET["updated"])) {
 </div>
 </div>
 <h4>Theme</h4>
-<p>Themes are provided by BootSwatch, for previews of each theme see <a href="http://bootswatch.com" target="_blank">here</a>. The "Default" theme is included with the SHTask, the others are hosted on a CDN.</p>
+<p>Themes are provided by BootSwatch, for previews of each theme see <a href="http://bootswatch.com" target="_blank">here</a>. The "Default" theme is included with Burden, the others are hosted on a CDN.</p>
 <div class="control-group">
 <label class="control-label" for="theme">Select a theme</label>
 <div class="controls">
