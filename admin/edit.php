@@ -144,7 +144,7 @@ echo "</select><span class=\"help-block\"><a id=\"addcategory\">Add new...</a></
     
 //Get task priority
 $checkpriority = mysql_query("SELECT priority FROM Data WHERE id = \"$idtoedit\"");
-$checkpriorityresult  = mysql_fetch_assoc($checkpriority); 
+$checkpriorityresult = mysql_fetch_assoc($checkpriority); 
 $priority = $checkpriorityresult["priority"];
 
 $priorities = array("1", "2", "3", "4", "5");

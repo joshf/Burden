@@ -2,6 +2,10 @@
 
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
+if (!file_exists("../../config.php")) {
+    header("Location: ../../installer");
+}
+
 require_once("../../config.php");
 
 $uniquekey = UNIQUE_KEY;
