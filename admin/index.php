@@ -129,8 +129,11 @@ echo "<table id=\"tasks\" class=\"table table-striped table-bordered table-conde
 <th>Category</th>
 <th>Priority</th>
 <th>Task</th>
-<th>Due</th>
-</tr></thead><tbody>";
+<th>Due</th>";
+if (isset($_GET["showcompleted"])) {
+    echo "<th>Date Completed</th>";
+}
+echo "</tr></thead><tbody>";
 
 while($row = mysql_fetch_assoc($gettasks)) {
     //Logic for due date
@@ -181,6 +184,9 @@ while($row = mysql_fetch_assoc($gettasks)) {
     echo "<td>" . $row["priority"] . "</td>";
     echo "<td>" . $row["task"] . "</td>";
     echo "<td>" . $row["due"] . "</td>";
+    if (isset($_GET["showcompleted"])) {
+        echo "<td>" . $row["datecompleted"] . "</td>";
+    }
     echo "</tr>";
 }
 echo "</tbody></table>";

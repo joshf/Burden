@@ -33,9 +33,10 @@ $id = mysql_real_escape_string($_POST["id"]);
 $action = $_POST["action"];
 
 if ($action == "complete") {
-    mysql_query("UPDATE Data SET completed = \"1\" WHERE id = \"$id\"");
+    $todaysdate = date("d-m-Y");
+    mysql_query("UPDATE Data SET completed = \"1\", datecompleted = \"$todaysdate\" WHERE id = \"$id\"");
 } elseif ($action == "restore") {
-    mysql_query("UPDATE Data SET completed = \"0\" WHERE id = \"$id\"");
+    mysql_query("UPDATE Data SET completed = \"0\", datecompleted = \"\" WHERE id = \"$id\"");
 } elseif ($action == "delete") {
     mysql_query("DELETE FROM Data WHERE id = \"$id\"");
 }
