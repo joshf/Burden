@@ -126,9 +126,11 @@ echo "<table id=\"tasks\" class=\"table table-striped table-bordered table-conde
 <thead>
 <tr>
 <th></th>
-<th>Category</th>
-<th>Priority</th>
-<th>Task</th>";
+<th>Category</th>";
+if (!isset($_GET["showcompleted"])) {
+    echo "<th>Priority</th>";
+}
+echo "<th>Task</th>";
 if (!isset($_GET["showcompleted"])) {
     echo "<th>Due</th>";
 } else {
@@ -182,7 +184,9 @@ while($row = mysql_fetch_assoc($gettasks)) {
     } 
     echo "<td><input name=\"id\" type=\"radio\" value=\"" . $row["id"] . "\"></td>";
     echo "<td>" . ucfirst($row["category"]) . "</td>";
-    echo "<td>" . $row["priority"] . "</td>";
+    if (!isset($_GET["showcompleted"])) {
+        echo "<td>" . $row["priority"] . "</td>";
+    }
     echo "<td>" . $row["task"] . "</td>";
     if (!isset($_GET["showcompleted"])) {
         echo "<td>" . $row["due"] . "</td>";
