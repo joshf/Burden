@@ -128,10 +128,11 @@ echo "<table id=\"tasks\" class=\"table table-striped table-bordered table-conde
 <th></th>
 <th>Category</th>
 <th>Priority</th>
-<th>Task</th>
-<th>Due</th>";
-if (isset($_GET["showcompleted"])) {
-    echo "<th>Date Completed</th>";
+<th>Task</th>";
+if (!isset($_GET["showcompleted"])) {
+    echo "<th>Due</th>";
+} else {
+    echo "<th>Date Completed</th>"; 
 }
 echo "</tr></thead><tbody>";
 
@@ -183,8 +184,9 @@ while($row = mysql_fetch_assoc($gettasks)) {
     echo "<td>" . ucfirst($row["category"]) . "</td>";
     echo "<td>" . $row["priority"] . "</td>";
     echo "<td>" . $row["task"] . "</td>";
-    echo "<td>" . $row["due"] . "</td>";
-    if (isset($_GET["showcompleted"])) {
+    if (!isset($_GET["showcompleted"])) {
+        echo "<td>" . $row["due"] . "</td>";
+    } else {
         echo "<td>" . $row["datecompleted"] . "</td>";
     }
     echo "</tr>";
