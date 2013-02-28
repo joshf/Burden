@@ -221,7 +221,7 @@ if (!isset($_GET["showcompleted"])) {
 
 $getnumberoftasks = mysql_query("SELECT COUNT(id) FROM Data WHERE completed != \"1\"");
 $resultnumberoftasks = mysql_fetch_assoc($getnumberoftasks);
-echo "<i class=\"icon-list-alt\"></i> <b>" . $resultnumberoftasks["COUNT(id)"] . "</b> current items, ";
+echo "<i class=\"icon-list-alt\"></i> <b>" . $resultnumberoftasks["COUNT(id)"] . "</b> current tasks, ";
 
 $getnumberofcompletedtasks = mysql_query("SELECT COUNT(id) FROM Data WHERE completed = \"1\"");
 $resultnumberofcompletedtasks = mysql_fetch_assoc($getnumberofcompletedtasks);
