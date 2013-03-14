@@ -65,7 +65,7 @@ body {
 .form-signin input[type="text"], .form-signin input[type="password"] {
     font-size: 16px;
     height: auto;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     padding: 7px 9px;
 }
 </style>
@@ -105,7 +105,7 @@ if (isset($_GET["login_error"])) {
 </label>
 </div>
 </div>
-<button type="submit" class="btn btn-large btn-primary">Sign In</button>
+<button type="submit" class="btn pull-right">Login</button>
 </fieldset>
 </form>
 </div>
