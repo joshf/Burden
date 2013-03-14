@@ -40,6 +40,12 @@ if (THEME == "default") {
 body {
     padding-top: 60px;
 }
+<?
+//Fix broken superhero theme
+if (THEME == "superhero") {
+    echo "td {\n    color: #5A6A7D;\n}\n";
+}
+?>
 </style>
 <link href="../resources/bootstrap/css/bootstrap-responsive.css" type="text/css" rel="stylesheet">
 <link href="../resources/datatables/dataTables.bootstrap.css" type="text/css" rel="stylesheet">
