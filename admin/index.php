@@ -4,7 +4,7 @@
 
 $version = "2.0beta";
 $codename = "ElectricElephant";
-$rev = "120";
+$rev = "130";
 
 if (!file_exists("../config.php")) {
     header("Location: ../installer");
@@ -19,6 +19,9 @@ if (!isset($_SESSION["is_logged_in_" . $uniquekey . ""])) {
     header("Location: login.php");
     exit; 
 }
+
+//Set cookie so we dont constantly check for updates
+setcookie("burdenhascheckedforupdates", "checkedsuccessfully", time()+604800);
 
 ?>
 <!DOCTYPE html>
@@ -121,12 +124,14 @@ if (!isset($_GET["showcompleted"])) {
 }
 
 //Update checking
-$remoteversion = file_get_contents("https://raw.github.com/joshf/Burden/master/version.txt");
-if (preg_match("/^[0-9.-]{1,}$/", $remoteversion)) {
-    if ($version < $remoteversion) {
-        echo "<div class=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Update</h4><p>An update to Burden is available! Version $remoteversion has been released (you have $version). To see what changes are included see the <a href=\"https://github.com/joshf/Burden/compare/$version...$remoteversion\" target=\"_blank\">changelog</a>. Click <a href=\"https://github.com/joshf/Burden/wiki/Updating-Burden\" target=\"_blank\">here</a> for information on how to update.</p></div>";
+if (!isset($_COOKIE["burdenhascheckedforupdates"])) {
+    $remoteversion = file_get_contents("https://raw.github.com/joshf/Burden/master/version.txt");
+    if (preg_match("/^[0-9.-]{1,}$/", $remoteversion)) {
+        if ($version < $remoteversion) {
+            echo "<div class=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Update</h4><p>An update to Burden is available! Version $remoteversion has been released (you have $version). To see what changes are included see the <a href=\"https://github.com/joshf/Burden/compare/$version...$remoteversion\" target=\"_blank\">changelog</a>. Click <a href=\"https://github.com/joshf/Burden/wiki/Updating-Burden\" target=\"_blank\">here</a> for information on how to update.</p></div>";
+        }
     }
-}
+} 
 
 echo "<table id=\"tasks\" class=\"table table-striped table-bordered table-condensed\">
 <thead>
