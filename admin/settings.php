@@ -107,7 +107,7 @@ if (isset($_GET["updated"])) {
 }
 
 ?>
-<form method="post">
+<form method="post" autocomplete="off">
 <fieldset>
 <h4>Admin Details</h4>
 <div class="control-group">
