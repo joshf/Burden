@@ -50,11 +50,6 @@ if ($resultcheckid != 0) {
     exit;
 }
 
-//Allow a blank date
-if (empty($due)) {
-    $due = "None";
-}
-
 mysql_query("INSERT INTO Data (id, category, priority, task, due, completed)
 VALUES (\"$id\",\"$category\",\"$priority\",\"$task\",\"$due\",\"0\")");
 

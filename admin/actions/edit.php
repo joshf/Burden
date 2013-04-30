@@ -43,11 +43,6 @@ if (empty($newtask)) {
     exit;
 }
 
-//Allow a blank date
-if (empty($newdue)) {
-    $newdue = "None";
-}
-
 mysql_query("UPDATE Data SET category = \"$newcategory\", priority = \"$newpriority\", task = \"$newtask\", due = \"$newdue\" WHERE id = \"$idtoedit\"");
 
 mysql_close($con);
