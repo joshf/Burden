@@ -53,7 +53,7 @@ if (isset($_POST["save"])) {
 if (THEME == "default") {
     echo "<link href=\"../resources/bootstrap/css/bootstrap.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
 } else {
-    echo "<link href=\"//netdna.bootstrapcdn.com/bootswatch/2.3.0/" . THEME . "/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";
+    echo "<link href=\"//netdna.bootstrapcdn.com/bootswatch/2.3.1/" . THEME . "/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";
 }
 
 ?>
@@ -123,7 +123,6 @@ if (isset($_GET["updated"])) {
 </div>
 </div>
 <h4>Theme</h4>
-<p>Themes are provided by BootSwatch, for previews of each theme see <a href="http://bootswatch.com" target="_blank">here</a>. The "Default" theme is included with Burden, the others are hosted on a CDN.</p>
 <div class="control-group">
 <label class="control-label" for="theme">Select a theme</label>
 <div class="controls">
