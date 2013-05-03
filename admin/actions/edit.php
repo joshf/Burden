@@ -18,18 +18,18 @@ if (!isset($_SESSION["is_logged_in_" . $uniquekey . ""])) {
 
 if (!isset($_POST["idtoedit"])) {
     header("Location: ../../admin");
-}
-	
+}	
+
+$idtoedit = mysql_real_escape_string($_POST["idtoedit"]);
+
 //Connect to database
 @$con = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
 if (!$con) {
-    header("Location: " . $_SERVER["HTTP_REFERER"] . "&error=dberror");
+    header("Location: ../edit.php?id=$idtoedit&error=dberror");
     exit;
 }
 
 mysql_select_db(DB_NAME, $con);
-
-$idtoedit = mysql_real_escape_string($_POST["idtoedit"]);
 
 //Set variables
 $newtask = mysql_real_escape_string($_POST["task"]);
@@ -39,7 +39,7 @@ $newdue = mysql_real_escape_string($_POST["due"]);
 
 //Failsafes
 if (empty($newtask)) {
-    header("Location: " . $_SERVER["HTTP_REFERER"] . "&error=taskempty");
+    header("Location: ../edit.php?id=$idtoedit&error=taskempty");
     exit;
 }
 
