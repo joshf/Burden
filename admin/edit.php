@@ -16,10 +16,6 @@ if (!isset($_SESSION["is_logged_in_" . $uniquekey . ""])) {
     exit; 
 }
 
-if (!isset($_GET["id"])) {
-    header("Location: ../admin");
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,7 +60,7 @@ body {
 <li><a href="index.php">Home</a></li>
 <li class="divider-vertical"></li>
 <li><a href="add.php">Add</a></li>
-<li class="active"><a href="#">Edit</a></li>
+<li class="active"><a href="edit.php">Edit</a></li>
 </ul>
 <ul class="nav pull-right">
 <li><a href="settings.php">Settings</a></li>
@@ -89,6 +85,16 @@ if (!$con) {
 }
 
 mysql_select_db(DB_NAME, $con);
+
+if (!isset($_GET["id"])) {
+	echo "<form action=\"edit.php\" method=\"get\"><fieldset><div class=\"control-group\"><label class=\"control-label\" for=\"id\">ID to edit</label><div class=\"controls\"><select id=\"id\" name=\"id\">";
+	$getids = mysql_query("SELECT id FROM Data");
+	while($row = mysql_fetch_assoc($getids)) {    
+    	echo "<option value=\"" . $row["id"] . "\">" . ucfirst($row["id"]) . "</option>";
+	}
+	echo "</select></div></div><div class=\"form-actions\"><button type=\"submit\" class=\"btn btn-primary\">Edit</button></div></fieldset></form></div></body></html>";
+	exit;
+}
 
 $idtoedit = mysql_real_escape_string($_GET["id"]);
 
