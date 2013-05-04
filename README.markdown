@@ -12,8 +12,8 @@ N.B: Burden was called SHTask whilst in beta, I decided to start from fresh so c
 Features:
 ---------
 
-* Tasks can be added via CURL
-* Tasks can be marked as important to emphasise critical tasks
+* Tasks can be added via cURL
+* Tasks can be marked as important to highlight critical tasks
 * Tasks can have a blank due date
 * Overdue tasks are highlighted clearly
 * Tasks can be sorted into categories
@@ -40,7 +40,7 @@ Installation:
 4. Open up http://yoursite.com/Burden/installer in your browser and enter your database/user details
 5. Delete the "installer" folder from your server
 6. Login to the admin panel using the username and password you set during the install process
-7. Add your downloads
+7. Add your tasks
 8. Burden should now be set up
 
 Usage:
