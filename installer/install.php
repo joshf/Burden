@@ -50,7 +50,7 @@ if (empty($_POST["adminpassword"])) {
 } else {
     $adminpassword = sha1($_POST["adminpassword"]);
 }
-$uniquekey = str_shuffle("abcdefghijklmnopqrstuvwxyz123456789");
+$uniquekey = md5(microtime().rand());
 
 $installstring = "<?php
 
