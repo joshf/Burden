@@ -86,8 +86,9 @@ if (!$con) {
 
 mysql_select_db(DB_NAME, $con);
 
+//Quick edit selector
 if (!isset($_GET["id"])) {
-	echo "<form action=\"edit.php\" method=\"get\"><fieldset><div class=\"control-group\"><label class=\"control-label\" for=\"id\">ID to edit</label><div class=\"controls\"><select id=\"id\" name=\"id\">";
+	echo "<form action=\"edit.php\" method=\"get\"><fieldset><div class=\"control-group\"><label class=\"control-label\" for=\"id\">Select an ID to edit</label><div class=\"controls\"><select id=\"id\" name=\"id\">";
 	$getids = mysql_query("SELECT id FROM Data");
 	while($row = mysql_fetch_assoc($getids)) {    
     	echo "<option value=\"" . $row["id"] . "\">" . ucfirst($row["id"]) . "</option>";
@@ -109,7 +110,7 @@ if ($doesidexistresult == 0) {
 if (isset($_GET["error"])) {
     $error = $_GET["error"];
     if ($error == "dberror") {
-        echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>Your task could not be added. Check your database settings or website configuration.</p></div>";
+        echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>Your task could not be added. Check your database settings or website configuration is correct.</p></div>";
     } elseif ($error == "taskempty") {
         echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>Task was empty.</p></div>";
     }

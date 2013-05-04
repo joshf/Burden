@@ -90,7 +90,7 @@ mysql_select_db(DB_NAME, $con);
 if (isset($_GET["error"])) {
     $error = $_GET["error"];
     if ($error == "dberror") {
-        echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>Your task could not be added. Check your database settings or website configuration.</p></div>";
+        echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>Your task could not be added. Check your database settings or website configuration is correct.</p></div>";
     } elseif ($error == "taskempty") {
         echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>Task was empty.</p></div>";
     } elseif ($error == "idexists") {
@@ -171,7 +171,7 @@ $(document).ready(function() {
     $("#addcategory").click(function () {
         newcategory=prompt("Add a new category","");
         if (newcategory != null) {
-            $("#category").append("<option value='" + newcategory + "' selected=\"selected\">" + newcategory + "</option>");
+            $("#category").append("<option value=" + newcategory + " selected=\"selected\">" + newcategory + "</option>");
         }
     });
 });

@@ -23,6 +23,7 @@ if (!isset($_POST["idtoedit"])) {
 //Connect to database
 @$con = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
 if (!$con) {
+	//TODO: Find a better way of doing this
     header("Location: ../edit.php?id=" . $_POST["idtoedit"] . "&error=dberror");
     exit;
 }
