@@ -4,7 +4,6 @@
 
 $version = "2.0beta";
 $codename = "ElectricElephant";
-$rev = "130";
 
 if (!file_exists("../config.php")) {
     header("Location: ../installer");
@@ -239,7 +238,7 @@ mysql_close($con);
 ?>
 </div>
 <hr>
-<p class="muted pull-right">Burden <? echo $version; ?> (<? echo $rev; ?>) "<? echo $codename; ?>"  &copy; <a href="http://github.com/joshf" target="_blank">Josh Fradley</a> <? echo date("Y"); ?>. Themed by <a href="http://twitter.github.com/bootstrap/" target="_blank">Bootstrap</a>.</p>
+<p class="muted pull-right">Burden <? echo $version; ?> "<? echo $codename; ?>"  &copy; <a href="http://github.com/joshf" target="_blank">Josh Fradley</a> <? echo date("Y"); ?>. Themed by <a href="http://twitter.github.com/bootstrap/" target="_blank">Bootstrap</a>.</p>
 </div>
 <!-- Content end -->
 <!-- Javascript start -->	
