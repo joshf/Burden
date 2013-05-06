@@ -18,7 +18,7 @@ Features:
 * Overdue tasks are highlighted clearly
 * Tasks can be sorted into categories
 * Themed by Twitter Bootstrap, extra themes available through BootSwatch
-* Sort and search downloads using DataTables
+* Sort and search tasks using DataTables
 * Works well on mobile devices due to a responsive layout
 
 Screenshots:
