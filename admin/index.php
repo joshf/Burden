@@ -118,7 +118,7 @@ if (!$does_db_exist) {
 if (isset($_GET["showcompleted"])) {
     $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"1\"");
 } elseif (isset($_GET["showhighpriority"])) {
-    $gettasks = mysql_query("SELECT * FROM Data WHERE priority >= \"4\"");
+    $gettasks = mysql_query("SELECT * FROM Data WHERE priority >= \"4\" AND completed = \"0\"");
 } else {
     $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"0\"");
 }
