@@ -93,10 +93,10 @@ if (THEME == "superhero") {
 <div class="page-header">
 <?php
 
-if (!isset($_GET["showcompleted"])) {
-    echo "<h1>Current Tasks</h1>";
-} else {
+if (isset($_GET["showcompleted"])) {
     echo "<h1>Completed Tasks</h1>";
+} else {
+    echo "<h1>Current Tasks</h1>";
 }
 echo "</div>";		
 
@@ -112,10 +112,10 @@ if (!$does_db_exist) {
     die("<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Error</h4><p>Database does not exist (" . mysql_error() . "). Check your database settings are correct.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
 }
 
-if (!isset($_GET["showcompleted"])) {
-    $gettasks = mysql_query("SELECT * FROM Data WHERE completed != \"1\"");
-} else {
+if (isset($_GET["showcompleted"])) {
     $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"1\"");
+} else {
+    $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"0\"");
 }
 
 //Update checking
@@ -132,15 +132,13 @@ echo "<table id=\"tasks\" class=\"table table-striped table-bordered table-conde
 <thead>
 <tr>
 <th></th>
-<th>Category</th>";
-if (!isset($_GET["showcompleted"])) {
-    echo "<th>Priority</th>";
-}
-echo "<th>Task</th>";
-if (!isset($_GET["showcompleted"])) {
-    echo "<th>Due</th>";
-} else {
+<th>Category</th>
+<th>Priority</th>
+<th>Task</th>";
+if (isset($_GET["showcompleted"])) {
     echo "<th>Date Completed</th>"; 
+} else {
+    echo "<th>Due</th>"; 
 }
 echo "</tr></thead><tbody>";
 
@@ -190,14 +188,12 @@ while($row = mysql_fetch_assoc($gettasks)) {
     } 
     echo "<td><input name=\"id\" type=\"radio\" value=\"" . $row["id"] . "\"></td>";
     echo "<td>" . ucfirst($row["category"]) . "</td>";
-    if (!isset($_GET["showcompleted"])) {
-        echo "<td>" . $row["priority"] . "</td>";
-    }
+    echo "<td>" . $row["priority"] . "</td>";
     echo "<td>" . $row["task"] . "</td>";
-    if (!isset($_GET["showcompleted"])) {
-        echo "<td>" . $row["due"] . "</td>";
-    } else {
+    if (isset($_GET["showcompleted"])) {
         echo "<td>" . $row["datecompleted"] . "</td>";
+    } else {
+        echo "<td>" . $row["due"] . "</td>";
     }
     echo "</tr>";
 }
@@ -208,13 +204,11 @@ echo "</tbody></table>";
 <button id="edit" class="btn">Edit</button>
 <button id="delete" class="btn">Delete</button>
 <?php
-
-if (!isset($_GET["showcompleted"])) {
-    echo "<button id=\"complete\" class=\"btn\">Complete</button>";
-} else {
+if (isset($_GET["showcompleted"])) {
     echo "<button id=\"restore\" class=\"btn\">Restore</button>";
+} else {
+    echo "<button id=\"complete\" class=\"btn\">Complete</button>";
 }
-
 ?>
 </div>
 <br>
