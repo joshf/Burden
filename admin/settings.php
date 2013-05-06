@@ -101,11 +101,9 @@ body {
 <h1>Settings</h1>
 </div>
 <?php
-
 if (isset($_GET["updated"])) {
     echo "<div class=\"alert alert-info\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><b>Info:</b> Settings updated.</div>";
 }
-
 ?>
 <form method="post" autocomplete="off">
 <fieldset>
