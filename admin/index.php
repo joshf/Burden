@@ -76,6 +76,7 @@ if (THEME == "superhero") {
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">View Options<b class="caret"></b></a>
 <ul class="dropdown-menu">
+<li><a href="index.php?showhighpriority">Show High Priority</a></li>
 <li><a href="index.php?showcompleted">Show Completed</a></li>
 <li><a href="index.php">Show Current</a></li>
 </ul>
@@ -95,6 +96,8 @@ if (THEME == "superhero") {
 
 if (isset($_GET["showcompleted"])) {
     echo "<h1>Completed Tasks</h1>";
+} elseif (isset($_GET["showhighpriority"])) {
+    echo "<h1>High Priority Tasks</h1>";
 } else {
     echo "<h1>Current Tasks</h1>";
 }
@@ -114,6 +117,8 @@ if (!$does_db_exist) {
 
 if (isset($_GET["showcompleted"])) {
     $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"1\"");
+} elseif (isset($_GET["showhighpriority"])) {
+    $gettasks = mysql_query("SELECT * FROM Data WHERE priority >= \"4\"");
 } else {
     $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"0\"");
 }
