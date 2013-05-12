@@ -29,7 +29,7 @@ Screenshots of Burden can be found [here](http://imgur.com/a/mmqhA).
 Downloads:
 ------------
 
-[v1.2](https://github.com/joshf/Burden/zipball/1.2) (released 16/02/2013)
+[v1.2](http://sidhosting.co.uk/downloads/get.php?ref=github&id=burden&tag=1.2) (released 16/02/2013)
 
 Installation:
 -------------
