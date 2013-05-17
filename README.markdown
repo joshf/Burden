@@ -29,9 +29,9 @@ Screenshots of Burden can be found [here](http://imgur.com/a/mmqhA).
 Downloads:
 ------------
 
-[v1.3](http://sidhosting.co.uk/downloads/get.php?ref=github&id=burden&tag=1.3) (released 17/05/2013)
+[v1.3](http://sidhosting.co.uk/downloads/get.php?id=burden) (released 17/05/2013)
 
-[v1.2](http://sidhosting.co.uk/downloads/get.php?ref=github&id=burden&tag=1.2) (released 16/02/2013)
+[v1.2](http://sidhosting.co.uk/downloads/get.php?id=burden&tag=1.2) (released 16/02/2013)
 
 Installation:
 -------------
