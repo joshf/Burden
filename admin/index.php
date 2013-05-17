@@ -2,8 +2,8 @@
 
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
-$version = "2.0beta";
-$codename = "ElectricElephant";
+$version = "1.3";
+$codename = "Geronimo";
 
 if (!file_exists("../config.php")) {
     header("Location: ../installer");

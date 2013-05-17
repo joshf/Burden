@@ -3,11 +3,11 @@ Burden Readme
 
 Why is lots of work always a burden?
 
-Burden is a full featured task management app written in PHP. The script comes with an admin panel which provides an easy way to add, edit or delete tasks. Tasks are highlighted in different colours depending on their importance or whether they are overdue. Each task can also be marked as completed or incomplete. Full sorting and task search is also included.
+Burden is a full featured task management app written in PHP. The script comes with an admin panel which provides an easy way to add, edit or delete tasks. Tasks are highlighted in different colours depending on their importance and whether or not they are overdue. Each task can also be marked as completed or incomplete. Full sorting and task search is also included.
 
 N.B: Burden was called SHTask whilst in beta, I decided to start from fresh so created a new repo for Burden.
 
-#### Current Version: 1.2 "DangerousDuck"
+#### Current Version: 1.3 "Geronimo"
 
 Features:
 ---------
@@ -28,6 +28,8 @@ Screenshots of Burden can be found [here](http://imgur.com/a/mmqhA).
 
 Downloads:
 ------------
+
+[v1.3](http://sidhosting.co.uk/downloads/get.php?ref=github&id=burden&tag=1.3) (released 17/05/2013)
 
 [v1.2](http://sidhosting.co.uk/downloads/get.php?ref=github&id=burden&tag=1.2) (released 16/02/2013)
 
