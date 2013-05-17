@@ -1,5 +1,13 @@
+<?php
+
+//Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
+
+if (!isset($_POST["doinstall"])) {
+    header("Location: index.php");
+}
+
+?>
 <!DOCTYPE html>
-<!-- Burden, Copyright Josh Fradley (http://github.com/joshf/Burden) -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -34,10 +42,6 @@ body {
 <h1>Installer</h1>
 </div>		
 <?php
-
-if (!isset($_POST["doinstall"])) {
-    die("<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Installer Error</h4><p>Error: Installer called directly.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
-}
 
 //Get new settings from POST
 $dbhost = $_POST["dbhost"];
