@@ -168,7 +168,7 @@ $(document).ready(function() {
     $("input").not("[type=submit]").jqBootstrapValidation();
     $("#addcategory").click(function () {
         newcategory=prompt("Add a new category","");
-        if (newcategory != null) {
+        if (newcategory != null && newcategory != "") {
             $("#category").append("<option value=" + newcategory + " selected=\"selected\">" + newcategory + "</option>");
         }
     });
