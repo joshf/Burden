@@ -7,7 +7,7 @@ Burden is a full featured task management app written in PHP. The script comes w
 
 N.B: Burden was called SHTask whilst in beta, I decided to start from fresh so created a new repo for Burden.
 
-#### Current Version: 1.3 "Geronimo"
+#### Current Version: 1.3
 
 Features:
 ---------
