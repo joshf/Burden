@@ -89,10 +89,10 @@ if (!$does_db_exist) {
 
 //Quick edit selector
 if (!isset($_GET["id"])) {
-	echo "<form action=\"edit.php\" method=\"get\"><fieldset><div class=\"control-group\"><label class=\"control-label\" for=\"id\">Select an ID to edit</label><div class=\"controls\"><select id=\"id\" name=\"id\">";
-	$getids = mysql_query("SELECT id FROM Data");
+	echo "<form action=\"edit.php\" method=\"get\"><fieldset><div class=\"control-group\"><label class=\"control-label\" for=\"id\">Select a task to edit</label><div class=\"controls\"><select id=\"id\" name=\"id\">";
+	$getids = mysql_query("SELECT id, task FROM Data");
 	while($row = mysql_fetch_assoc($getids)) {    
-    	echo "<option value=\"" . $row["id"] . "\">" . ucfirst($row["id"]) . "</option>";
+    	echo "<option value=\"" . $row["id"] . "\">" . ucfirst($row["task"]) . "</option>";
 	}
 	echo "</select></div></div><div class=\"form-actions\"><button type=\"submit\" class=\"btn btn-primary\">Edit</button></div></fieldset></form></div></body></html>";
 	exit;
