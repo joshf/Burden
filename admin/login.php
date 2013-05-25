@@ -113,6 +113,11 @@ if (isset($_GET["login_error"])) {
 <!-- Javascript start -->
 <script src="../resources/jquery.js"></script>
 <script src="../resources/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#user").focus();
+});
+</script>
 <!-- Javascript end -->
 </body>
 </html>
