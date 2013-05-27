@@ -123,7 +123,7 @@ if (isset($_GET["updated"])) {
 <label class="control-label" for="theme">Select a theme</label>
 <div class="controls">
 <?php
-$themes = array("default", "amelia", "cerulean", "cosmo", "cyborg", "journal", "readable", "simplex", "slate", "spacelab", "spruce", "superhero", "united");
+$themes = array("default", "amelia", "cerulean", "cosmo", "cyborg", "flatly", "journal", "readable", "simplex", "slate", "spacelab", "spruce", "superhero", "united");
 
 echo "<select id=\"theme\" name=\"theme\">";
 foreach ($themes as $value) {
