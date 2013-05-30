@@ -112,8 +112,8 @@ mysql_close($con);
 <div class="alert alert-success"><h4 class="alert-heading">Install Complete</h4><p>Burden has been successfully installed. Please delete the "installer" folder from your server, as it poses a potential security risk!</p>
 <p>Your login details are shown below, please make a note of them.</p>
 <ul>
-<li>User: <? echo $adminuser; ?></li>
-<li>Password: <? echo $_POST["adminpassword"]; ?></li>
+<li>User: <?php echo $adminuser; ?></li>
+<li>Password: <?php echo $_POST["adminpassword"]; ?></li>
 </ul>
 <p><a href="../admin/login.php" class="btn btn-success">Go To Login</a></p>
 </div>

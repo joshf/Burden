@@ -109,13 +109,13 @@ if (isset($_GET["updated"])) {
 <div class="control-group">
 <label class="control-label" for="adminuser">Admin User</label>
 <div class="controls">
-<input type="text" id="adminuser" name="adminuser" value="<? echo $currentadminuser; ?>" placeholder="Enter a username..." required>
+<input type="text" id="adminuser" name="adminuser" value="<?php echo $currentadminuser; ?>" placeholder="Enter a username..." required>
 </div>
 </div>
 <div class="control-group">
 <label class="control-label" for="adminpassword">Admin Password</label>
 <div class="controls">
-<input type="password" id="adminpassword" name="adminpassword" value="<? echo $currentadminpassword; ?>" placeholder="Enter a password..." required>
+<input type="password" id="adminpassword" name="adminpassword" value="<?php echo $currentadminpassword; ?>" placeholder="Enter a password..." required>
 </div>
 </div>
 <h4>Theme</h4>
