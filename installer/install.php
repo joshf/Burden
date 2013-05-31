@@ -59,18 +59,18 @@ $uniquekey = md5(microtime().rand());
 $installstring = "<?php
 
 //Database Settings
-define(\"DB_HOST\", " . var_export($dbhost, true) . ");
-define(\"DB_USER\", " . var_export($dbuser, true) . ");
-define(\"DB_PASSWORD\", " . var_export($dbpassword, true) . ");
-define(\"DB_NAME\", " . var_export($dbname, true) . ");
+define('DB_HOST', " . var_export($dbhost, true) . ");
+define('DB_USER', " . var_export($dbuser, true) . ");
+define('DB_PASSWORD', " . var_export($dbpassword, true) . ");
+define('DB_NAME', " . var_export($dbname, true) . ");
 
 //Admin Details
-define(\"ADMIN_USER\", " . var_export($adminuser, true) . ");
-define(\"ADMIN_PASSWORD\", " . var_export($adminpassword, true) . ");
+define('ADMIN_USER', " . var_export($adminuser, true) . ");
+define('ADMIN_PASSWORD', " . var_export($adminpassword, true) . ");
 
 //Other Settings
-define(\"UNIQUE_KEY\", " . var_export($uniquekey, true) . ");
-define(\"THEME\", \"default\");
+define('UNIQUE_KEY', " . var_export($uniquekey, true) . ");
+define('THEME', 'default');
 
 ?>";
 
@@ -93,7 +93,7 @@ category VARCHAR(20) NOT NULL,
 priority TINYINT(1) NOT NULL,
 task VARCHAR(300) NOT NULL,
 due VARCHAR(10) NOT NULL,
-completed TINYINT(1) NOT NULL default \"0\",
+completed TINYINT(1) NOT NULL default \"0',
 datecompleted VARCHAR(12) NOT NULL,
 PRIMARY KEY (id)
 ) ENGINE = MYISAM;";

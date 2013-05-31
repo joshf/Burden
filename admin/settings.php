@@ -30,7 +30,7 @@ if (isset($_POST["save"])) {
     }
     $theme = $_POST["theme"];
 
-    $settingsstring = "<?php\n\n//Database Settings\ndefine(\"DB_HOST\", '" . DB_HOST . "');\ndefine(\"DB_USER\", '" . DB_USER . "');\ndefine(\"DB_PASSWORD\", '" . DB_PASSWORD . "');\ndefine(\"DB_NAME\", '" . DB_NAME . "');\n\n//Admin Details\ndefine(\"ADMIN_USER\", " . var_export($adminuser, true) . ");\ndefine(\"ADMIN_PASSWORD\", " . var_export($adminpassword, true) . ");\n\n//Other Settings\ndefine(\"UNIQUE_KEY\", " . var_export($uniquekey, true) . ");\ndefine(\"THEME\", " . var_export($theme, true) . ");\n\n?>";
+    $settingsstring = "<?php\n\n//Database Settings\ndefine('DB_HOST', '" . DB_HOST . "');\ndefine('DB_USER', '" . DB_USER . "');\ndefine('DB_PASSWORD', '" . DB_PASSWORD . "');\ndefine('DB_NAME', '" . DB_NAME . "');\n\n//Admin Details\ndefine('ADMIN_USER', " . var_export($adminuser, true) . ");\ndefine('ADMIN_PASSWORD', " . var_export($adminpassword, true) . ");\n\n//Other Settings\ndefine('UNIQUE_KEY', " . var_export($uniquekey, true) . ");\ndefine('THEME', " . var_export($theme, true) . ");\n\n?>";
 
     //Write config
     $configfile = fopen("../config.php", "w");
