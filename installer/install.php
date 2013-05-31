@@ -59,17 +59,17 @@ $uniquekey = md5(microtime().rand());
 $installstring = "<?php
 
 //Database Settings
-define(\"DB_HOST\", \"$dbhost\");
-define(\"DB_USER\", \"$dbuser\");
-define(\"DB_PASSWORD\", \"$dbpassword\");
-define(\"DB_NAME\", \"$dbname\");
+define(\"DB_HOST\", " . var_export($dbhost, true) . ");
+define(\"DB_USER\", " . var_export($dbuser, true) . ");
+define(\"DB_PASSWORD\", " . var_export($dbpassword, true) . ");
+define(\"DB_NAME\", " . var_export($dbname, true) . ");
 
 //Admin Details
-define(\"ADMIN_USER\", \"$adminuser\");
-define(\"ADMIN_PASSWORD\", \"$adminpassword\");
+define(\"ADMIN_USER\", " . var_export($adminuser, true) . ");
+define(\"ADMIN_PASSWORD\", " . var_export($adminpassword, true) . ");
 
 //Other Settings
-define(\"UNIQUE_KEY\", \"$uniquekey\");
+define(\"UNIQUE_KEY\", " . var_export($uniquekey, true) . ");
 define(\"THEME\", \"default\");
 
 ?>";
