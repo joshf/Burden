@@ -164,7 +164,8 @@ while($row = mysql_fetch_assoc($getcategories)) {
 $(document).ready(function() {
     $("#due").datepicker({
         format: "dd-mm-yyyy",
-        autoclose: "true"
+        autoclose: "true",
+        clearBtn: "true"
     });
     $("input").not("[type=submit]").jqBootstrapValidation();
     $("#addcategory").click(function () {

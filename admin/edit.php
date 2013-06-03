@@ -189,7 +189,8 @@ mysql_close($con);
 $(document).ready(function() {
     $("#due").datepicker({
         format: "dd-mm-yyyy",
-        autoclose: "true"
+        autoclose: "true",
+        clearBtn: "true"
     });
     $("input").not("[type=submit]").jqBootstrapValidation();
     $("#addcategory").click(function () {
