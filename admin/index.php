@@ -237,6 +237,18 @@ if (isset($_GET["showcompleted"])) {
 <button id="deleteconfirm" class="btn btn-primary">Delete</button>
 </div>
 </div>
+<div id="noidselecteddialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="nisdheader" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h3 id="nisdheader">Error</h3>
+</div>
+<div class="modal-body">
+<p>No ID selected.</p>
+</div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+</div>
+</div>
 <div class="alert alert-info">   
 <strong>Info:</strong> High priority tasks are highlighted yellow, completed tasks green and overdue tasks red.  
 </div>
@@ -267,10 +279,10 @@ mysql_close($con);
 <script type="text/javascript">
 $(document).ready(function() {
     /* Table selection */
-    is_selected = false;
+    id_selected = false;
     $("#tasks input[name=id]").click(function() {
         id = $("#tasks input[name=id]:checked").val();
-        is_selected = true;
+        id_selected = true;
     });
     /* End */
     /* Datatables */
@@ -289,15 +301,19 @@ $(document).ready(function() {
     /* End */
     /* Edit */
     $("#edit").click(function() {
-        if (is_selected) {
+        if (id_selected == true) {
             window.location = "edit.php?id="+ id +"";
+        } else {
+            $("#noidselecteddialog").modal("show");
         }
     });
     /* End */
     /* Show Delete Dialog */
     $("#delete").click(function() {
-        if (is_selected) {
+        if (id_selected == true) {
             $("#deleteconfirmdialog").modal("show");
+        } else {
+            $("#noidselecteddialog").modal("show");
         }
     });
     /* End */
@@ -319,7 +335,7 @@ $(document).ready(function() {
     /* End */
     /* Complete */
     $("#complete").click(function() {
-        if (is_selected) {
+        if (id_selected == true) {
             $.ajax({  
                 type: "POST",  
                 url: "actions/worker.php",  
@@ -331,12 +347,14 @@ $(document).ready(function() {
                     window.location.reload();      
                 }	
             });
-        } 
+        } else {
+            $("#noidselecteddialog").modal("show");
+        }
     });
     /* End */
     /* Restore */
     $("#restore").click(function() {
-        if (is_selected) {
+        if (id_selected == true) {
             $.ajax({  
                 type: "POST",  
                 url: "actions/worker.php",  
@@ -348,7 +366,9 @@ $(document).ready(function() {
                     window.location.reload();      
                 }	
             });
-        } 
+        } else {
+            $("#noidselecteddialog").modal("show");
+        }
     });
     /* End */
 });
