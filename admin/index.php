@@ -224,6 +224,19 @@ if (isset($_GET["showcompleted"])) {
 </div>
 <br>
 <br>
+<div id="deleteconfirmdialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="dcdheader" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h3 id="dcdheader">Confirm Delete</h3>
+</div>
+<div class="modal-body">
+<p>Are you sure you want to delete the selected task?</p>
+</div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+<button id="deleteconfirm" class="btn btn-primary">Delete</button>
+</div>
+</div>
 <div class="alert alert-info">   
 <strong>Info:</strong> High priority tasks are highlighted yellow, completed tasks green and overdue tasks red.  
 </div>
@@ -276,85 +289,65 @@ $(document).ready(function() {
     /* End */
     /* Edit */
     $("#edit").click(function() {
-        if (!is_selected) {
-            alert("No task selected!");
-        } else {
+        if (is_selected) {
             window.location = "edit.php?id="+ id +"";
         }
     });
     /* End */
-    /* Delete */
+    /* Show Delete Dialog */
     $("#delete").click(function() {
-        if (!is_selected) {
-            alert("No task selected!");
-        } else {
-            deleteconfirm=confirm("Delete this task?")
-            if (deleteconfirm==true) {
-                $.ajax({  
-                    type: "POST",  
-                    url: "actions/worker.php",  
-                    data: "action=delete&id="+ id +"",
-                    error: function() {  
-                        alert("Ajax query failed!");
-                    },
-                    success: function() {  
-                        alert("Task deleted!");
-                        window.location.reload();      
-                    }	
-                });
-            } else {
-                return false;
-            }
-        } 
+        if (is_selected) {
+            $("#deleteconfirmdialog").modal("show");
+        }
+    });
+    /* End */
+    /* Delete worker */
+    $("#deleteconfirm").click(function() {
+        $("#deleteconfirmdialog").modal("hide");
+        $.ajax({  
+            type: "POST",  
+            url: "actions/worker.php",  
+            data: "action=delete&id="+ id +"",
+            error: function() {  
+                alert("Ajax query failed!");
+            },
+            success: function() {  
+                window.location.reload();    
+            }	
+        });
     });
     /* End */
     /* Complete */
     $("#complete").click(function() {
-        if (!is_selected) {
-            alert("No task selected!");
-        } else {
-            comconfirm=confirm("Mark this task as completed?")
-            if (comconfirm==true) {
-                $.ajax({  
-                    type: "POST",  
-                    url: "actions/worker.php",  
-                    data: "action=complete&id="+ id +"",
-                    error: function() {  
-                        alert("Ajax query failed!");
-                    },
-                    success: function() {  
-                        alert("Task marked as completed!");
-                        window.location.reload();      
-                    }	
-                });
-            } else {
-                return false;
-            }
+        if (is_selected) {
+            $.ajax({  
+                type: "POST",  
+                url: "actions/worker.php",  
+                data: "action=complete&id="+ id +"",
+                error: function() {  
+                    alert("Ajax query failed!");
+                },
+                success: function() {  
+                    window.location.reload();      
+                }	
+            });
         } 
     });
     /* End */
     /* Restore */
     $("#restore").click(function() {
-        if (!is_selected) {
-            alert("No task selected!");
-        } else {
-            restoreconfirm=confirm("Restore task?")
-            if (restoreconfirm==true) {
-                $.ajax({  
-                    type: "POST",  
-                    url: "actions/worker.php",  
-                    data: "action=restore&id="+ id +"",
-                    error: function() {  
-                        alert("Ajax query failed!");
-                    },
-                    success: function() {  
-                        alert("Task restored!");
-                        window.location.reload();      
-                    }	
-                });
-            } else {
-                return false;
-            }
+        if (is_selected) {
+            $.ajax({  
+                type: "POST",  
+                url: "actions/worker.php",  
+                data: "action=restore&id="+ id +"",
+                error: function() {  
+                    alert("Ajax query failed!");
+                },
+                success: function() {  
+                    window.location.reload();      
+                }	
+            });
         } 
     });
     /* End */
