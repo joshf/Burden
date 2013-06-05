@@ -11,8 +11,8 @@ Burden Changelog
 * Sort task into current and high priority
 * Show days a task has left for completion
 * Sleeker login
-* Update bootswatch theme versions
-* Dont remember settings password
+* Update Bootswatch themes versions
+* Don’t remember settings password
 * Add missing redirects
 * Update bootstrap
 
