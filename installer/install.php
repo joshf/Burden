@@ -93,7 +93,7 @@ category VARCHAR(20) NOT NULL,
 priority TINYINT(1) NOT NULL,
 task VARCHAR(300) NOT NULL,
 due VARCHAR(10) NOT NULL,
-completed TINYINT(1) NOT NULL default \"0',
+completed TINYINT(1) NOT NULL default \"0\",
 datecompleted VARCHAR(12) NOT NULL,
 PRIMARY KEY (id)
 ) ENGINE = MYISAM;";
