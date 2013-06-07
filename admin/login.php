@@ -76,7 +76,7 @@ body {
 <div class="container">
 <form class="form-signin" method="post">
 <fieldset>
-<h2 class="form-signin-heading">Burden</h2>
+<h2 class="form-signin-heading text-center">Burden</h2>
 <?php 
 
 if (isset($_GET["login_error"])) {
