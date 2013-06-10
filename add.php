@@ -2,11 +2,11 @@
 
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
-if (!file_exists("../config.php")) {
-    header("Location: ../installer");
+if (!file_exists("config.php")) {
+    header("Location: installer");
 }
 
-require_once("../config.php");
+require_once("config.php");
 
 $uniquekey = UNIQUE_KEY;
 
@@ -25,7 +25,7 @@ if (!isset($_SESSION["is_logged_in_" . $uniquekey . ""])) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php
 if (THEME == "default") {
-    echo "<link href=\"../resources/bootstrap/css/bootstrap.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
+    echo "<link href=\"resources/bootstrap/css/bootstrap.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
 } else {
     echo "<link href=\"//netdna.bootstrapcdn.com/bootswatch/2.3.1/" . THEME . "/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";
 }
@@ -35,8 +35,8 @@ body {
     padding-top: 60px;
 }
 </style>
-<link href="../resources/bootstrap/css/bootstrap-responsive.css" type="text/css" rel="stylesheet">
-<link href="../resources/datepicker/css/datepicker.css" type="text/css" rel="stylesheet">
+<link href="resources/bootstrap/css/bootstrap-responsive.css" type="text/css" rel="stylesheet">
+<link href="resources/datepicker/css/datepicker.css" type="text/css" rel="stylesheet">
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -156,10 +156,10 @@ while($row = mysql_fetch_assoc($getcategories)) {
 </div>
 <!-- Content end -->
 <!-- Javascript start -->
-<script src="../resources/jquery.js"></script>
-<script src="../resources/bootstrap/js/bootstrap.js"></script>
-<script src="../resources/datepicker/js/bootstrap-datepicker.js"></script>
-<script src="../resources/validation/jqBootstrapValidation.js"></script>
+<script src="resources/jquery.js"></script>
+<script src="resources/bootstrap/js/bootstrap.js"></script>
+<script src="resources/datepicker/js/bootstrap-datepicker.js"></script>
+<script src="resources/validation/jqBootstrapValidation.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $("#due").datepicker({

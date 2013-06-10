@@ -2,11 +2,11 @@
 
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
-if (!file_exists("../../config.php")) {
-    header("Location: ../../installer");
+if (!file_exists("../config.php")) {
+    header("Location: ../installer");
 }
 
-require_once("../../config.php");
+require_once("../config.php");
 
 $uniquekey = UNIQUE_KEY;
 
@@ -17,7 +17,7 @@ if (!isset($_SESSION["is_logged_in_" . $uniquekey . ""])) {
 }
 
 if (!isset($_POST["idtoedit"])) {
-    header("Location: ../../admin");
+    header("Location: ../index.php");
 }	
 
 //Connect to database
@@ -47,6 +47,6 @@ mysql_query("UPDATE Data SET category = \"$newcategory\", priority = \"$newprior
 
 mysql_close($con);
 
-header("Location: ../../admin");
+header("Location: ../index.php");
 
 ?>

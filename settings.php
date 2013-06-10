@@ -2,11 +2,11 @@
 
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
-if (!file_exists("../config.php")) {
-    header("Location: ../installer");
+if (!file_exists("config.php")) {
+    header("Location: installer");
 }
 
-require_once("../config.php");
+require_once("config.php");
 
 $uniquekey = UNIQUE_KEY;
 
@@ -33,7 +33,7 @@ if (isset($_POST["save"])) {
     $settingsstring = "<?php\n\n//Database Settings\ndefine('DB_HOST', '" . DB_HOST . "');\ndefine('DB_USER', '" . DB_USER . "');\ndefine('DB_PASSWORD', '" . DB_PASSWORD . "');\ndefine('DB_NAME', '" . DB_NAME . "');\n\n//Admin Details\ndefine('ADMIN_USER', " . var_export($adminuser, true) . ");\ndefine('ADMIN_PASSWORD', " . var_export($adminpassword, true) . ");\n\n//Other Settings\ndefine('UNIQUE_KEY', " . var_export($uniquekey, true) . ");\ndefine('THEME', " . var_export($theme, true) . ");\n\n?>";
 
     //Write config
-    $configfile = fopen("../config.php", "w");
+    $configfile = fopen("config.php", "w");
     fwrite($configfile, $settingsstring);
     fclose($configfile);
 
@@ -50,7 +50,7 @@ if (isset($_POST["save"])) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php
 if (THEME == "default") {
-    echo "<link href=\"../resources/bootstrap/css/bootstrap.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
+    echo "<link href=\"resources/bootstrap/css/bootstrap.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
 } else {
     echo "<link href=\"//netdna.bootstrapcdn.com/bootswatch/2.3.1/" . THEME . "/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";
 }
@@ -60,7 +60,7 @@ body {
     padding-top: 60px;
 }
 </style>
-<link href="../resources/bootstrap/css/bootstrap-responsive.css" type="text/css" rel="stylesheet">
+<link href="resources/bootstrap/css/bootstrap-responsive.css" type="text/css" rel="stylesheet">
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -145,9 +145,9 @@ echo "</select>";
 </div>
 <!-- Content end -->
 <!-- Javascript start -->	
-<script src="../resources/jquery.js"></script>
-<script src="../resources/bootstrap/js/bootstrap.js"></script>
-<script src="../resources/validation/jqBootstrapValidation.js"></script>
+<script src="resources/jquery.js"></script>
+<script src="resources/bootstrap/js/bootstrap.js"></script>
+<script src="resources/validation/jqBootstrapValidation.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $("input").not("[type=submit]").jqBootstrapValidation();

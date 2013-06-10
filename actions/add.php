@@ -2,17 +2,17 @@
 
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
-if (!file_exists("../../config.php")) {
-    header("Location: ../../installer");
+if (!file_exists("../config.php")) {
+    header("Location: ../installer");
 }
 
-require_once("../../config.php");
+require_once("../config.php");
 
 $uniquekey = UNIQUE_KEY;
 
 session_start();
 if (!isset($_SESSION["is_logged_in_" . $uniquekey . ""])) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit; 
 }
 
@@ -55,6 +55,6 @@ VALUES (\"$id\",\"$category\",\"$priority\",\"$task\",\"$due\",\"0\")");
 
 mysql_close($con);
 
-header("Location: ../../admin");
+header("Location: ../index.php");
 
 ?>
