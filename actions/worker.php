@@ -4,6 +4,7 @@
 
 if (!file_exists("../config.php")) {
     header("Location: ../installer");
+    exit;
 }
 
 require_once("../config.php");
@@ -18,6 +19,7 @@ if (!isset($_SESSION["is_logged_in_" . $uniquekey . ""])) {
 
 if (!isset($_POST["id"])) {
     header("Location: ../index.php");
+    exit;
 }
 
 //Connect to database

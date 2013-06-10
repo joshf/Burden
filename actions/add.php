@@ -4,6 +4,7 @@
 
 if (!file_exists("../config.php")) {
     header("Location: ../installer");
+    exit;
 }
 
 require_once("../config.php");
@@ -56,5 +57,7 @@ VALUES (\"$id\",\"$category\",\"$priority\",\"$task\",\"$due\",\"0\")");
 mysql_close($con);
 
 header("Location: ../index.php");
+
+exit;
 
 ?>

@@ -4,6 +4,7 @@
 
 if (!isset($_POST["doinstall"])) {
     header("Location: index.php");
+    exit;
 }
 
 ?>
