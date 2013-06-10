@@ -4,7 +4,7 @@
 
 //Security check, check if config exists
 if (file_exists("../config.php")) {
-    header("Location: ../admin");
+    header("Location: ../index.php");
     exit;
 }
 
