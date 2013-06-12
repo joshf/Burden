@@ -76,8 +76,8 @@ if (THEME == "superhero") {
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">View Options<b class="caret"></b></a>
 <ul class="dropdown-menu">
-<li><a href="index.php?showhighpriority">Show High Priority</a></li>
-<li><a href="index.php?showcompleted">Show Completed</a></li>
+<li><a href="index.php?view=highpriority">Show High Priority</a></li>
+<li><a href="index.php?view=completed">Show Completed</a></li>
 <li><a href="index.php">Show Current</a></li>
 </ul>
 </li>
@@ -94,13 +94,20 @@ if (THEME == "superhero") {
 <div class="page-header">
 <?php
 
-if (isset($_GET["showcompleted"])) {
+if (isset($_GET["view"])) {
+    $view = $_GET["view"];
+} else {
+    $view = "normal";
+}
+
+if ($view == "completed") {
     echo "<h1>Completed Tasks</h1>";
-} elseif (isset($_GET["showhighpriority"])) {
+} elseif ($view == "highpriority") {
     echo "<h1>High Priority Tasks</h1>";
 } else {
     echo "<h1>Current Tasks</h1>";
 }
+
 echo "</div>";		
 
 echo "<noscript><div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>Please enable JavaScript to use Burden. For instructions on how to do this, see <a href=\"http://www.activatejavascript.org\" target=\"_blank\">here</a>.</p></div></noscript>";
@@ -115,9 +122,9 @@ if (!$does_db_exist) {
     die("<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Error</h4><p>Database does not exist (" . mysql_error() . "). Check your database settings are correct.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
 }
 
-if (isset($_GET["showcompleted"])) {
+if ($view == "completed") {
     $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"1\"");
-} elseif (isset($_GET["showhighpriority"])) {
+} elseif ($view == "highpriority") {
     $gettasks = mysql_query("SELECT * FROM Data WHERE priority >= \"4\" AND completed = \"0\"");
 } else {
     $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"0\"");
@@ -140,7 +147,7 @@ echo "<table id=\"tasks\" class=\"table table-striped table-bordered table-conde
 <th class=\"hidden-phone\">Category</th>
 <th class=\"hidden-phone\">Priority</th>
 <th>Task</th>";
-if (isset($_GET["showcompleted"])) {
+if ($view == "completed") {
     echo "<th>Date Completed</th>"; 
 } else {
     echo "<th>Due</th>"; 
@@ -193,7 +200,7 @@ while($row = mysql_fetch_assoc($gettasks)) {
     echo "<td class=\"hidden-phone\">" . ucfirst($row["category"]) . "</td>";
     echo "<td class=\"hidden-phone\">" . $row["priority"] . "</td>";
     echo "<td>" . $row["task"] . "</td>";
-    if (isset($_GET["showcompleted"])) {
+    if ($view == "completed") {
         echo "<td>" . $row["datecompleted"] . "</td>";
     } else {
         if ($row["due"] == "") {
@@ -216,9 +223,10 @@ echo "</tbody></table>";
 <button id="edit" class="btn">Edit</button>
 <button id="delete" class="btn">Delete</button>
 <?php
-if (isset($_GET["showcompleted"])) {
+if ($view == "completed") {
     echo "<button id=\"restore\" class=\"btn\">Restore</button>";
-} else {
+}
+if ($view == "normal" || $view == "highpriority") {
     echo "<button id=\"complete\" class=\"btn\">Complete</button>";
 }
 ?>
