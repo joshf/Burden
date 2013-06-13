@@ -298,14 +298,29 @@ $(document).ready(function() {
     $("#tasks").dataTable({
         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
         "sPaginationType": "bootstrap",
-        "aoColumnDefs": [{ 
-            "bSortable": false, 
-            "aTargets": [0] 
-        }] 
+        "aoColumns": [
+            {"bSortable": false}, 
+            null,
+            null,
+            null,
+            {"sType": "date-uk"}
+        ]
     });
     $.extend($.fn.dataTableExt.oStdClasses, {
         "sSortable": "header",
         "sWrapper": "dataTables_wrapper form-inline"
+    });
+    $.extend($.fn.dataTableExt.oSort, {
+        "date-uk-pre": function (a) {
+            var ukDatea = a.split("/");
+            return (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
+        },
+        "date-uk-asc": function (a, b) {
+            return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+        },
+        "date-uk-desc": function (a, b) {
+            return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+        }
     });
     /* End */
     /* Edit */

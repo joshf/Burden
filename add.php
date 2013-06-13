@@ -164,7 +164,7 @@ while($row = mysql_fetch_assoc($getcategories)) {
 <script type="text/javascript">
 $(document).ready(function() {
     $("#due").datepicker({
-        format: "dd-mm-yyyy",
+        format: "dd/mm/yyyy",
         autoclose: "true",
         clearBtn: "true"
     });
