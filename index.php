@@ -156,19 +156,22 @@ echo "</tr></thead><tbody>";
 
 while($row = mysql_fetch_assoc($gettasks)) {
     //Logic for due date
-    $today = time();
-    $duestring = strtotime($row["due"]);
-    if ($row["priority"] != "5" && $row["completed"] != "1" && $today < $duestring) {
+    list($day, $month, $year) = explode("/", $row["due"]);
+    $dueflipped = "$year-$month-$day";
+    $thedate = date("Y-m-d");
+    $today = strtotime($thedate); 
+    $due = strtotime($dueflipped);    
+    if ($row["priority"] != "5" && $row["completed"] != "1" && $today < $due) {
         $case = "normal";
     }
     if ($row["priority"] == "5") {
-        if ($today > $duestring) {
+        if ($today > $due) {
             $case = "overdue";
         } else {
             $case = "highpriority";
         }
     } 
-    if ($today > $duestring) {
+    if ($today > $due) {
         if ($row["due"] == "") {
             if ($row["priority"] == "5") {
                 $case = "highpriority";
@@ -203,16 +206,7 @@ while($row = mysql_fetch_assoc($gettasks)) {
     if ($view == "completed") {
         echo "<td>" . $row["datecompleted"] . "</td>";
     } else {
-        if ($row["due"] == "") {
-            echo "<td>-</td>";
-        } else {
-            if (SHOW_DAYS_REMAINING == "Enabled") {
-                $daysremaining = abs($today - $duestring);
-                echo "<td>" . $row["due"] . " (" . ceil($daysremaining/(60*60*24)) . " days)</td>";
-            } else {
-                echo "<td>" . $row["due"] . "</td>";
-            }
-        }
+        echo "<td>" . $row["due"] . "</td>";
     }
     echo "</tr>";
 }
