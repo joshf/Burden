@@ -153,13 +153,17 @@ if ($view == "completed") {
 }
 echo "</tr></thead><tbody>";
 
+$numberoftasksoverdue = "0"; 
 while($row = mysql_fetch_assoc($gettasks)) {
     //Logic for due date
     list($day, $month, $year) = explode("/", $row["due"]);
     $dueflipped = "$year-$month-$day";
     $thedate = date("Y-m-d");
     $today = strtotime($thedate); 
-    $due = strtotime($dueflipped);    
+    $due = strtotime($dueflipped);
+    if ($today > $due) { 
+        $numberoftasksoverdue++; 
+    }
     if ($row["priority"] != "5" && $row["completed"] != "1" && $today < $due) {
         $case = "normal";
     }
@@ -205,7 +209,13 @@ while($row = mysql_fetch_assoc($gettasks)) {
     if ($view == "completed") {
         echo "<td>" . $row["datecompleted"] . "</td>";
     } else {
-        echo "<td>" . $row["due"] . "</td>";
+        if ($today > $due) { 
+            $string = "Overdue by";
+        } else { 
+            $string = "Due in"; 
+        }
+        $daysremaining = abs($today - $due);            
+        echo "<td title=\"$string " . ceil($daysremaining/(60*60*24)) . " days\">" . $row["due"] . "</td>";
     }
     echo "</tr>";
 }
@@ -259,11 +269,9 @@ if ($view == "normal" || $view == "highpriority") {
 
 $getnumberoftasks = mysql_query("SELECT COUNT(id) FROM Data WHERE completed != \"1\"");
 $resultnumberoftasks = mysql_fetch_assoc($getnumberoftasks);
-echo "<i class=\"icon-list-alt\"></i> <b>" . $resultnumberoftasks["COUNT(id)"] . "</b> current tasks, ";
+echo "<i class=\"icon-tasks\"></i> <b>" . $resultnumberoftasks["COUNT(id)"] . "</b> tasks<br>";
 
-$getnumberofcompletedtasks = mysql_query("SELECT COUNT(id) FROM Data WHERE completed = \"1\"");
-$resultnumberofcompletedtasks = mysql_fetch_assoc($getnumberofcompletedtasks);
-echo "<b>" . $resultnumberofcompletedtasks["COUNT(id)"] . "</b> completed";
+echo "<i class=\"icon-exclamation-sign\"></i> <b>$numberoftasksoverdue</b> overdue<br>";
 
 mysql_close($con);
 
