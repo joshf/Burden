@@ -40,8 +40,8 @@ $newpriority = mysql_real_escape_string($_POST["priority"]);
 $newdue = mysql_real_escape_string($_POST["due"]);
 
 //Failsafes
-if (empty($newtask)) {
-    header("Location: ../edit.php?id=$idtoedit&error=taskempty");
+if (empty($newtask) || empty($newdue)) {
+    header("Location: ../edit.php?id=$idtoedit&error=emptyfields");
     exit;
 }
 

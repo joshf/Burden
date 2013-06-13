@@ -107,7 +107,6 @@ if ($view == "completed") {
 } else {
     echo "<h1>Current Tasks</h1>";
 }
-
 echo "</div>";		
 
 echo "<noscript><div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>Please enable JavaScript to use Burden. For instructions on how to do this, see <a href=\"http://www.activatejavascript.org\" target=\"_blank\">here</a>.</p></div></noscript>";

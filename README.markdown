@@ -12,7 +12,6 @@ Features:
 
 * Tasks can be added via cURL
 * Tasks can be marked as important to highlight critical tasks
-* Tasks can have a blank due date
 * Overdue tasks are highlighted clearly
 * Tasks can be sorted into categories
 * Themed by Twitter Bootstrap, extra themes available through Bootswatch

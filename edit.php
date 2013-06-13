@@ -113,8 +113,8 @@ if (isset($_GET["error"])) {
     $error = $_GET["error"];
     if ($error == "dberror") {
         echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>Your task could not be added. Check your database settings or website configuration is correct.</p></div>";
-    } elseif ($error == "taskempty") {
-        echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>Task was empty.</p></div>";
+    } elseif ($error == "emptyfields") {
+        echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>One or more fields were left empty.</p></div>";
     }
 }
 
@@ -126,7 +126,7 @@ if (isset($_GET["error"])) {
 $getidinfo = mysql_query("SELECT * FROM Data WHERE id = \"$idtoedit\"");
 while($row = mysql_fetch_assoc($getidinfo)) {
     echo "<div class=\"control-group\"><label class=\"control-label\" for=\"task\">Task</label><div class=\"controls\"><input type=\"text\" id=\"task\" name=\"task\" value=\"" . $row["task"] . "\" placeholder=\"Type a task...\" required></div></div>";
-    echo "<div class=\"control-group\"><label class=\"control-label\" for=\"due\">Due</label><div class=\"controls\"><input type=\"text\" id=\"due\" name=\"due\" value=\"" . $row["due"] . "\" placeholder=\"Type a due date...\" pattern=\"((((0?[1-9]|[12]\d|3[01])[\.\-\/](0?[13578]|1[02])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|[12]\d|30)[\.\-\/](0?[13456789]|1[012])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|1\d|2[0-8])[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|(29[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00)))|(((0[1-9]|[12]\d|3[01])(0[13578]|1[02])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|[12]\d|30)(0[13456789]|1[012])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|1\d|2[0-8])02((1[6-9]|[2-9]\d)?\d{2}))|(2902((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00))))\" data-validation-pattern-message=\"Please enter a valid date. Use DD-MM-YYYY.\"></div></div>";
+    echo "<div class=\"control-group\"><label class=\"control-label\" for=\"due\">Due</label><div class=\"controls\"><input type=\"text\" id=\"due\" name=\"due\" value=\"" . $row["due"] . "\" placeholder=\"Type a due date...\" pattern=\"((((0?[1-9]|[12]\d|3[01])[\.\-\/](0?[13578]|1[02])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|[12]\d|30)[\.\-\/](0?[13456789]|1[012])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|1\d|2[0-8])[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|(29[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00)))|(((0[1-9]|[12]\d|3[01])(0[13578]|1[02])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|[12]\d|30)(0[13456789]|1[012])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|1\d|2[0-8])02((1[6-9]|[2-9]\d)?\d{2}))|(2902((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00))))\" data-validation-pattern-message=\"Please enter a valid date. Use DD-MM-YYYY.\" required></div></div>";
     $category = $row["category"];
 }
 echo "<div class=\"control-group\"><label class=\"control-label\" for=\"category\">Category</label><div class=\"controls\"><select id=\"category\" name=\"category\">";

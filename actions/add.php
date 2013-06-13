@@ -32,9 +32,9 @@ $category = mysql_real_escape_string($_POST["category"]);
 $priority = mysql_real_escape_string($_POST["priority"]);
 $due = mysql_real_escape_string($_POST["due"]);
 
-//Failsafe
-if (empty($task)) {
-    header("Location: ../add.php?error=taskempty");
+//Failsafes
+if (empty($newtask) || empty($newdue)) {
+    header("Location: ../add.php?error=emptyfields");
     exit;
 }
 
