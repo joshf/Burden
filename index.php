@@ -334,7 +334,7 @@ $(document).ready(function() {
         placement: "right",
         delay: {
             show: "500",
-            hide: "500" 
+            hide: "300" 
         }
     });
     /* End */
