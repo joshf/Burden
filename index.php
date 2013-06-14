@@ -40,6 +40,11 @@ if (THEME == "default") {
 body {
     padding-top: 60px;
 }
+@media (max-width: 480px) {
+    .tooltip {
+        display: none !important;
+    }
+}
 <?
 //Fix broken superhero theme
 if (THEME == "superhero") {
@@ -215,7 +220,7 @@ while($row = mysql_fetch_assoc($gettasks)) {
             $string = "Due in"; 
         }
         $daysremaining = abs($today - $due);            
-        echo "<td title=\"$string " . ceil($daysremaining/(60*60*24)) . " days\">" . $row["due"] . "</td>";
+        echo "<td id=\"tooltip-" . $row["id"] . "\" data-toggle=\"tooltip\" title=\"$string " . ceil($daysremaining/(60*60*24)) . " days\">" . $row["due"] . "</td>";
     }
     echo "</tr>";
 }
@@ -296,7 +301,7 @@ $(document).ready(function() {
     });
     /* End */
     /* Datatables */
-    $("#tasks").dataTable({
+    var tasks = $("#tasks").dataTable({
         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
         "sPaginationType": "bootstrap",
         "aoColumns": [
@@ -321,6 +326,15 @@ $(document).ready(function() {
         },
         "date-uk-desc": function (a, b) {
             return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+        }
+    });
+    /* End */
+    /* Tooltip */    
+    tasks.$("[id^=tooltip-]").tooltip({
+        placement: "right",
+        delay: {
+            show: "500",
+            hide: "500" 
         }
     });
     /* End */
