@@ -33,7 +33,7 @@ $priority = mysql_real_escape_string($_POST["priority"]);
 $due = mysql_real_escape_string($_POST["due"]);
 
 //Failsafes
-if (empty($newtask) || empty($newdue)) {
+if (empty($task) || empty($due)) {
     header("Location: ../add.php?error=emptyfields");
     exit;
 }
