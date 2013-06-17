@@ -158,17 +158,24 @@ if ($view == "completed") {
 }
 echo "</tr></thead><tbody>";
 
+//Set counters to zero
 $numberoftasksoverdue = "0"; 
+$numberoftasksduetoday = "0";
+
 while($row = mysql_fetch_assoc($gettasks)) {
     //Logic for due date
     list($day, $month, $year) = explode("/", $row["due"]);
     $dueflipped = "$year-$month-$day";
-    $thedate = date("Y-m-d");
-    $today = strtotime($thedate); 
+    $today = strtotime(date("Y-m-d")); 
     $due = strtotime($dueflipped);
+    //Counters
     if ($today > $due) { 
         $numberoftasksoverdue++; 
     }
+    if ($today == $due) { 
+        $numberoftasksduetoday++; 
+    }
+    //Set cases
     if ($row["priority"] != "5" && $row["completed"] != "1" && $today < $due) {
         $case = "normal";
     }
@@ -276,7 +283,9 @@ $getnumberoftasks = mysql_query("SELECT COUNT(id) FROM Data WHERE completed != \
 $resultnumberoftasks = mysql_fetch_assoc($getnumberoftasks);
 echo "<i class=\"icon-tasks\"></i> <b>" . $resultnumberoftasks["COUNT(id)"] . "</b> tasks<br>";
 
-echo "<i class=\"icon-exclamation-sign\"></i> <b>$numberoftasksoverdue</b> overdue<br>";
+echo "<i class=\"icon-warning-sign\"></i> <b>$numberoftasksduetoday</b> due today<br>";
+
+echo "<i class=\"icon-exclamation-sign\"></i> <b>$numberoftasksoverdue</b> overdue";
 
 mysql_close($con);
 
