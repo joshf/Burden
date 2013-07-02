@@ -21,7 +21,7 @@ Screenshots:
 
 Screenshots of Burden can be found [here](http://imgur.com/a/mmqhA).
 
-Downloads:
+Releases:
 ------------
 
 Releases of Burden can be found on the the [releases page](https://github.com/joshf/Burden/releases).
