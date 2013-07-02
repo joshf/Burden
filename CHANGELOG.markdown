@@ -1,7 +1,8 @@
 Burden Changelog
 ====================
 
-#### v1.3 (released 17/05/2013)
+#### v1.3 
+##### Released 17/05/2013
 
 * Remember date task was completed
 * Bug fixes

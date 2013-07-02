@@ -139,7 +139,7 @@ if (!isset($_COOKIE["burdenhascheckedforupdates"])) {
     $remoteversion = file_get_contents("https://raw.github.com/joshf/Burden/master/version.txt");
     if (preg_match("/^[0-9.-]{1,}$/", $remoteversion)) {
         if ($version < $remoteversion) {
-            echo "<div class=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Update</h4><p><a href=\"https://github.com/joshf/Burden/compare/$version...$remoteversion\" target=\"_blank\">Burden $remoteversion</a> is available. <a href=\"https://github.com/joshf/Burden/wiki/Updating-Burden\" target=\"_blank\">Click here to update</a>.</p></div>";
+            echo "<div class=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Update</h4><p>Burden <a href=\"https://github.com/joshf/Burden/blob/master/CHANGELOG.markdown#v" . str_replace(".", "", $remoteversion) . "\" target=\"_blank\">$remoteversion</a> is available. <a href=\"https://github.com/joshf/Burden/wiki/Updating-Burden\" target=\"_blank\">Click here to update</a>.</p></div>";
         }
     }
 } 
