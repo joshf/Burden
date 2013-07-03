@@ -2,7 +2,7 @@
 
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
-$version = "1.4";
+$version = "1.5dev";
 
 if (!file_exists("config.php")) {
     header("Location: installer");
