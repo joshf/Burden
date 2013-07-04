@@ -49,25 +49,25 @@ body {
 <div class="control-group">
 <label class="control-label" for="dbhost">Database Host</label>
 <div class="controls">
-<input type="text" id="dbhost" name="dbhost" value="localhost" placeholder="Type a database host..." required>
+<input type="text" id="dbhost" name="dbhost" value="localhost" placeholder="Type your database host..." required>
 </div>
 </div>
 <div class="control-group">
 <label class="control-label" for="dbuser">Database User</label>
 <div class="controls">
-<input type="text" id="dbuser" name="dbuser" placeholder="Type a database user..." required>
+<input type="text" id="dbuser" name="dbuser" placeholder="Type your database user..." required>
 </div>
 </div>
 <div class="control-group">
 <label class="control-label" for="dbpassword">Database Password</label>
 <div class="controls">
-<input type="password" id="dbpassword" name="dbpassword" placeholder="Type a database password..." required>
+<input type="password" id="dbpassword" name="dbpassword" placeholder="Type your database password..." required>
 </div>
 </div>
 <div class="control-group">
 <label class="control-label" for="dbname">Database Name</label>
 <div class="controls">
-<input type="text" id="dbname" name="dbname" placeholder="Type a database name..." required>
+<input type="text" id="dbname" name="dbname" placeholder="Type your database name..." required>
 </div>
 </div>
 <h4>Admin Details</h4>
