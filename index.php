@@ -40,11 +40,6 @@ if (THEME == "default") {
 body {
     padding-top: 60px;
 }
-@media (max-width: 480px) {
-    .tooltip {
-        display: none !important;
-    }
-}
 <?
 //Fix broken superhero theme
 if (THEME == "superhero") {
