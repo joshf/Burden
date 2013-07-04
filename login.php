@@ -9,7 +9,7 @@ if (!file_exists("config.php")) {
 
 require_once("config.php");
 
-$user = ADMIN_USER;
+$username = ADMIN_USER;
 $password = ADMIN_PASSWORD;
 $uniquekey = UNIQUE_KEY;
 
@@ -20,8 +20,8 @@ if (isset($_COOKIE["burdenrememberme_" . $uniquekey . ""])) {
     $_SESSION["is_logged_in_" . $uniquekey . ""] = true;
 }
 
-if (isset($_POST["password"]) && isset($_POST["user"])) {
-    if (sha1($_POST["password"]) == $password && $_POST["user"] == $user) {
+if (isset($_POST["password"]) && isset($_POST["username"])) {
+    if (sha1($_POST["password"]) == $password && $_POST["username"] == $username) {
         $_SESSION["is_logged_in_" . $uniquekey . ""] = true;
             if (isset($_POST["rememberme"])) {
                 setcookie("burdenrememberme_" . $uniquekey . "", ADMIN_USER, time()+1209600);
@@ -55,10 +55,10 @@ body {
     border: 1px solid #e5e5e5;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
-         border-radius: 5px;
+    border-radius: 5px;
     -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-         box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
 }
 .form-signin .form-signin-heading, .form-signin .checkbox {
     margin-bottom: 10px;
@@ -88,9 +88,9 @@ if (isset($_GET["login_error"])) {
 
 ?>
 <div class="control-group">
-<label class="control-label" for="user">User</label>
+<label class="control-label" for="username">Username</label>
 <div class="controls">
-<input type="text" id="user" name="user" class="input-block-level" placeholder="Username...">
+<input type="text" id="username" name="username" class="input-block-level" placeholder="Username...">
 </div>
 </div>
 <div class="control-group">
@@ -116,7 +116,7 @@ if (isset($_GET["login_error"])) {
 <script src="resources/bootstrap/js/bootstrap.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    $("#user").focus();
+    $("#username").focus();
 });
 </script>
 <!-- Javascript end -->
