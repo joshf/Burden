@@ -18,7 +18,7 @@
  * limitations under the License.
  * ========================================================= */
 
-!function( $ ) {
+(function( $ ) {
 
 	function UTCDate(){
 		return new Date(Date.UTC.apply(Date, arguments));
@@ -36,7 +36,6 @@
 		this._process_options(options);
 
 		this.element = $(element);
-		this.format = DPGlobal.parseFormat(this.o.format);
 		this.isInline = false;
 		this.isInput = this.element.is('input');
 		this.component = this.element.is('.date') ? this.element.find('.add-on, .btn') : false;
@@ -247,10 +246,8 @@
 				type: event,
 				date: local_date,
 				format: $.proxy(function(altformat){
-					var format = this.format;
-					if (altformat)
-						format = DPGlobal.parseFormat(altformat);
-					return DPGlobal.formatDate(date, format, this.language);
+					var format = altformat || this.o.format;
+					return DPGlobal.formatDate(date, format, this.o.language);
 				}, this)
 			});
 		},
@@ -329,7 +326,7 @@
 
 		getFormattedDate: function(format) {
 			if (format === undefined)
-				format = this.format;
+				format = this.o.format;
 			return DPGlobal.formatDate(this.date, format, this.o.language);
 		},
 
@@ -378,7 +375,7 @@
 				delete this.element.data().date;
 			}
 
-			this.date = DPGlobal.parseDate(date, this.format, this.o.language);
+			this.date = DPGlobal.parseDate(date, this.o.format, this.o.language);
 
 			if(fromArgs) this.setValue();
 
@@ -636,10 +633,14 @@
 								this._setDate(date, which);
 								break;
 							case 'clear':
+								var element;
 								if (this.isInput)
-									this.element.val("");
-								else
-									this.element.find('input').val("");
+									element = this.element;
+								else if (this.component)
+									element = this.element.find('input');
+								if (element)
+									element.val("").change();
+								this._trigger('changeDate');
 								this.update();
 								if (this.o.autoclose)
 									this.hide();
@@ -1069,6 +1070,8 @@
 		},
 		parseDate: function(date, format, language) {
 			if (date instanceof Date) return date;
+			if (typeof format === 'string')
+				format = DPGlobal.parseFormat(format);
 			if (/^[\-+]\d+[dmwy]([\s,]+[\-+]\d+[dmwy])*$/.test(date)) {
 				var part_re = /([\-+]\d+)([dmwy])/,
 					parts = date.match(/([\-+]\d+)([dmwy])/g),
@@ -1159,6 +1162,8 @@
 			return date;
 		},
 		formatDate: function(date, format, language){
+			if (typeof format === 'string')
+				format = DPGlobal.parseFormat(format);
 			var val = {
 				d: date.getUTCDate(),
 				D: dates[language].daysShort[date.getUTCDay()],
@@ -1244,4 +1249,4 @@
 		$('[data-provide="datepicker-inline"]').datepicker();
 	});
 
-}( window.jQuery );
+}( window.jQuery ));
