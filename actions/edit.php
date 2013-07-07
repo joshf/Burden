@@ -45,7 +45,13 @@ if (empty($newtask) || empty($newdue)) {
     exit;
 }
 
-mysql_query("UPDATE Data SET category = \"$newcategory\", priority = \"$newpriority\", task = \"$newtask\", due = \"$newdue\" WHERE id = \"$idtoedit\"");
+if (isset($_POST["highpriority"])) {
+    $newhighpriority = "1";
+} else {
+    $newhighpriority = "0";
+}
+
+mysql_query("UPDATE Data SET category = \"$newcategory\", highpriority = \"$newhighpriority\", task = \"$newtask\", due = \"$newdue\" WHERE id = \"$idtoedit\"");
 
 mysql_close($con);
 

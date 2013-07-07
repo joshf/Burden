@@ -51,8 +51,14 @@ if ($resultcheckid != 0) {
     exit;
 }
 
-mysql_query("INSERT INTO Data (id, category, priority, task, due, completed)
-VALUES (\"$id\",\"$category\",\"$priority\",\"$task\",\"$due\",\"0\")");
+if (isset($_POST["highpriority"])) {
+    $highpriority = "1";
+} else {
+    $highpriority = "0";
+}
+
+mysql_query("INSERT INTO Data (id, category, highpriority, task, due, completed)
+VALUES (\"$id\",\"$category\",\"$highpriority\",\"$task\",\"$due\",\"0\")");
 
 mysql_close($con);
 

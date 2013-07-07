@@ -124,7 +124,7 @@ if (!$does_db_exist) {
 if ($view == "completed") {
     $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"1\"");
 } elseif ($view == "highpriority") {
-    $gettasks = mysql_query("SELECT * FROM Data WHERE priority >= \"4\" AND completed = \"0\"");
+    $gettasks = mysql_query("SELECT * FROM Data WHERE highpriority = \"1\" AND completed = \"0\"");
 } else {
     $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"0\"");
 }
@@ -144,7 +144,6 @@ echo "<table id=\"tasks\" class=\"table table-striped table-bordered table-conde
 <tr>
 <th></th>
 <th class=\"hidden-phone\">Category</th>
-<th class=\"hidden-phone\">Priority</th>
 <th>Task</th>";
 if ($view == "completed") {
     echo "<th>Date Completed</th>"; 
@@ -171,10 +170,10 @@ while($row = mysql_fetch_assoc($gettasks)) {
         $numberoftasksduetoday++; 
     }
     //Set cases
-    if ($row["priority"] != "5" && $row["completed"] != "1" && $today < $due) {
+    if ($row["highpriority"] == "0" && $row["completed"] != "1" && $today < $due) {
         $case = "normal";
     }
-    if ($row["priority"] == "5") {
+    if ($row["highpriority"] == "1") {
         if ($today > $due) {
             $case = "overdue";
         } else {
@@ -183,7 +182,7 @@ while($row = mysql_fetch_assoc($gettasks)) {
     } 
     if ($today > $due) {
         if ($row["due"] == "") {
-            if ($row["priority"] == "5") {
+            if ($row["highpriority"] == "1") {
                 $case = "highpriority";
             } else {
                 $case = "normal";
@@ -211,7 +210,6 @@ while($row = mysql_fetch_assoc($gettasks)) {
     } 
     echo "<td><input name=\"id\" type=\"radio\" value=\"" . $row["id"] . "\"></td>";
     echo "<td class=\"hidden-phone\">" . ucfirst($row["category"]) . "</td>";
-    echo "<td class=\"hidden-phone\">" . $row["priority"] . "</td>";
     echo "<td>" . $row["task"] . "</td>";
     if ($view == "completed") {
         echo "<td>" . $row["datecompleted"] . "</td>";
@@ -304,7 +302,6 @@ $(document).ready(function() {
         "sPaginationType": "bootstrap",
         "aoColumns": [
             {"bSortable": false}, 
-            null,
             null,
             null,
             {"sType": "date-uk"}
