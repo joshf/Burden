@@ -314,8 +314,9 @@ $(document).ready(function() {
         }
     });
     /* End */
-    /* Pnotify defaults */
-    $.pnotify.defaults.width = "200px";  
+    /* pnotify defaults */
+    $.pnotify.defaults.width = "200px"; 
+    $.pnotify.defaults.history = false; 
     /* End */  
     /* Edit */
     $("#edit").click(function() {
