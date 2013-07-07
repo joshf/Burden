@@ -151,6 +151,7 @@ echo "</select>";
 $(document).ready(function() {
     $.pnotify.defaults.width = "200px";
     $.pnotify.defaults.history = false;
+    $.pnotify.defaults.delay = "1500";
     if (window.location.hash == "#updated") {
         $.pnotify({
             title: "Info",
