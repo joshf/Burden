@@ -76,9 +76,9 @@ if (THEME == "superhero") {
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">View Options<b class="caret"></b></a>
 <ul class="dropdown-menu">
-<li><a href="index.php?view=highpriority">Show High Priority</a></li>
-<li><a href="index.php?view=completed">Show Completed</a></li>
-<li><a href="index.php">Show Current</a></li>
+<li><a href="index.php?view=highpriority">Show High Priority Tasks</a></li>
+<li><a href="index.php?view=completed">Show Completed Tasks</a></li>
+<li><a href="index.php">Show Current Tasks</a></li>
 </ul>
 </li>
 <li><a href="settings.php">Settings</a></li>
