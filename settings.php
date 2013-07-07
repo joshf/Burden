@@ -149,10 +149,8 @@ echo "</select>";
 <script src="resources/pnotify/jquery.pnotify.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    /* pnotify defaults */
     $.pnotify.defaults.width = "200px";
     $.pnotify.defaults.history = false;
-    /* End */
     if (window.location.hash == "#updated") {
         $.pnotify({
             title: "Info",

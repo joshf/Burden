@@ -79,7 +79,7 @@ if (THEME == "superhero") {
 <ul class="dropdown-menu">
 <li><a href="index.php?view=highpriority">Show High Priority Tasks</a></li>
 <li><a href="index.php?view=completed">Show Completed Tasks</a></li>
-<li><a href="index.php">Show Current Tasks</a></li>
+<li><a href="index.php">Clear Filters</a></li>
 </ul>
 </li>
 <li><a href="settings.php">Settings</a></li>
@@ -314,9 +314,10 @@ $(document).ready(function() {
         }
     });
     /* End */
-    /* pnotify defaults */
+    /* pnotify */
     $.pnotify.defaults.width = "200px";
-    $.pnotify.defaults.history = false; 
+    $.pnotify.defaults.history = false;
+    $.pnotify.defaults.delay = "1500"; 
     /* End */  
     /* Edit */
     $("#edit").click(function() {
@@ -347,11 +348,11 @@ $(document).ready(function() {
     /* Delete worker */
     $("#deleteconfirm").click(function() {
         $("#deleteconfirmdialog").modal("hide");
-        $.ajax({  
+        $.ajax({
             type: "POST",  
             url: "actions/worker.php",  
             data: "action=delete&id="+ id +"",
-            error: function() {  
+            error: function() {
                 $.pnotify({
                     title: "Error",
                     text: "AJAX call failed",
@@ -374,7 +375,7 @@ $(document).ready(function() {
     /* Complete */
     $("#complete").click(function() {
         if (id_selected == true) {
-            $.ajax({  
+            $.ajax({
                 type: "POST",  
                 url: "actions/worker.php",  
                 data: "action=complete&id="+ id +"",
@@ -385,10 +386,10 @@ $(document).ready(function() {
                         type: "error"
                     });                
                 },
-                success: function() {  
+                success: function() { 
                     $.pnotify({
                         title: "Info",
-                        text: "Task completed",
+                        text: "Task marked as completed",
                         type: "info",
                         after_close: function(pnotify) {
                             window.location.reload();
@@ -408,18 +409,18 @@ $(document).ready(function() {
     /* Restore */
     $("#restore").click(function() {
         if (id_selected == true) {
-            $.ajax({  
+            $.ajax({
                 type: "POST",  
-                url: "actions/worker.php",  
+                url: "actions/worker.php",
                 data: "action=restore&id="+ id +"",
-                error: function() {  
+                error: function() {
                     $.pnotify({
                         title: "Error",
                         text: "AJAX call failed",
                         type: "error"
                     });                
                 },
-                success: function() { 
+                success: function() {
                     $.pnotify({
                         title: "Info",
                         text: "Task restored",
