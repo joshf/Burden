@@ -39,7 +39,7 @@ if (isset($_POST["save"])) {
     fclose($configfile);
 
     //Show updated values
-    header("Location: settings.php?updated=true");
+    header("Location: settings.php#updated");
     exit;
 }
 
@@ -63,6 +63,7 @@ body {
 }
 </style>
 <link href="resources/bootstrap/css/bootstrap-responsive.css" type="text/css" rel="stylesheet">
+<link href="resources/pnotify/jquery.pnotify.default.css" type="text/css" rel="stylesheet">
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -100,11 +101,6 @@ body {
 <div class="page-header">
 <h1>Settings</h1>
 </div>
-<?php
-if (isset($_GET["updated"])) {
-    echo "<div class=\"alert alert-info\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><b>Info:</b> Settings updated.</div>";
-}
-?>
 <form method="post" autocomplete="off">
 <fieldset>
 <h4>Admin Details</h4>
@@ -150,8 +146,20 @@ echo "</select>";
 <script src="resources/jquery.js"></script>
 <script src="resources/bootstrap/js/bootstrap.js"></script>
 <script src="resources/validation/jqBootstrapValidation.js"></script>
+<script src="resources/pnotify/jquery.pnotify.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+    /* pnotify defaults */
+    $.pnotify.defaults.width = "200px";
+    $.pnotify.defaults.history = false;
+    /* End */
+    if (window.location.hash == "#updated") {
+        $.pnotify({
+            title: "Info",
+            text: "Settings updated",
+            type: "info"
+        });
+    }
     $("input").not("[type=submit]").jqBootstrapValidation();
 });
 </script>
