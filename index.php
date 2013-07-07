@@ -49,6 +49,7 @@ if (THEME == "superhero") {
 </style>
 <link href="resources/bootstrap/css/bootstrap-responsive.css" type="text/css" rel="stylesheet">
 <link href="resources/datatables/dataTables.bootstrap.css" type="text/css" rel="stylesheet">
+<link href="resources/pnotify/jquery.pnotify.default.css" type="text/css" rel="stylesheet">
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -248,18 +249,6 @@ if ($view == "normal" || $view == "highpriority") {
 <button id="deleteconfirm" class="btn btn-primary">Delete</button>
 </div>
 </div>
-<div id="noidselecteddialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="nisdheader" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-<h3 id="nisdheader">Error</h3>
-</div>
-<div class="modal-body">
-<p>No ID selected.</p>
-</div>
-<div class="modal-footer">
-<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-</div>
-</div>
 <div class="alert alert-info">   
 <strong>Info:</strong> High priority tasks are highlighted yellow, completed tasks green and overdue tasks red.  
 </div>
@@ -287,6 +276,7 @@ mysql_close($con);
 <script src="resources/bootstrap/js/bootstrap.js"></script>
 <script src="resources/datatables/jquery.dataTables.js"></script>
 <script src="resources/datatables/dataTables.bootstrap.js"></script>
+<script src="resources/pnotify/jquery.pnotify.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     /* Table selection */
@@ -324,12 +314,19 @@ $(document).ready(function() {
         }
     });
     /* End */
+    /* Pnotify defaults */
+    $.pnotify.defaults.width = "200px";  
+    /* End */  
     /* Edit */
     $("#edit").click(function() {
         if (id_selected == true) {
             window.location = "edit.php?id="+ id +"";
         } else {
-            $("#noidselecteddialog").modal("show");
+            $.pnotify({
+                title: "Info",
+                text: "No ID selected",
+                type: "info"
+            }); 
         }
     });
     /* End */
@@ -338,7 +335,11 @@ $(document).ready(function() {
         if (id_selected == true) {
             $("#deleteconfirmdialog").modal("show");
         } else {
-            $("#noidselecteddialog").modal("show");
+            $.pnotify({
+                title: "Info",
+                text: "No ID selected",
+                type: "info"
+            }); 
         }
     });
     /* End */
@@ -350,10 +351,21 @@ $(document).ready(function() {
             url: "actions/worker.php",  
             data: "action=delete&id="+ id +"",
             error: function() {  
-                alert("Ajax query failed!");
+                $.pnotify({
+                    title: "Error",
+                    text: "AJAX call failed",
+                    type: "error"
+                });                
             },
-            success: function() {  
-                window.location.reload();    
+            success: function() { 
+                $.pnotify({
+                    title: "Info",
+                    text: "Task deleted",
+                    type: "info",
+                    after_close: function(pnotify) {
+                        window.location.reload();
+                    }
+                }); 
             }	
         });
     });
@@ -366,14 +378,29 @@ $(document).ready(function() {
                 url: "actions/worker.php",  
                 data: "action=complete&id="+ id +"",
                 error: function() {  
-                    alert("Ajax query failed!");
+                    $.pnotify({
+                        title: "Error",
+                        text: "AJAX call failed",
+                        type: "error"
+                    });                
                 },
                 success: function() {  
-                    window.location.reload();      
+                    $.pnotify({
+                        title: "Info",
+                        text: "Task completed",
+                        type: "info",
+                        after_close: function(pnotify) {
+                            window.location.reload();
+                        }
+                    });
                 }	
             });
         } else {
-            $("#noidselecteddialog").modal("show");
+            $.pnotify({
+                title: "Info",
+                text: "No ID selected",
+                type: "info"
+            }); 
         }
     });
     /* End */
@@ -385,14 +412,29 @@ $(document).ready(function() {
                 url: "actions/worker.php",  
                 data: "action=restore&id="+ id +"",
                 error: function() {  
-                    alert("Ajax query failed!");
+                    $.pnotify({
+                        title: "Error",
+                        text: "AJAX call failed",
+                        type: "error"
+                    });                
                 },
-                success: function() {  
-                    window.location.reload();      
+                success: function() { 
+                    $.pnotify({
+                        title: "Info",
+                        text: "Task restored",
+                        type: "info",
+                        after_close: function(pnotify) {
+                            window.location.reload();
+                        }
+                    }); 
                 }	
             });
         } else {
-            $("#noidselecteddialog").modal("show");
+            $.pnotify({
+                title: "Info",
+                text: "No ID selected",
+                type: "info"
+            }); 
         }
     });
     /* End */
