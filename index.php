@@ -315,7 +315,7 @@ $(document).ready(function() {
     });
     /* End */
     /* pnotify defaults */
-    $.pnotify.defaults.width = "200px"; 
+    $.pnotify.defaults.width = "200px";
     $.pnotify.defaults.history = false; 
     /* End */  
     /* Edit */
@@ -401,7 +401,7 @@ $(document).ready(function() {
                 title: "Info",
                 text: "No ID selected",
                 type: "info"
-            }); 
+            });
         }
     });
     /* End */
