@@ -36,7 +36,6 @@ if (THEME == "default") {
     echo "<link href=\"//netdna.bootstrapcdn.com/bootswatch/2.3.2/" . THEME . "/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";
 }
 ?>
-<link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
 <link href="resources/datatables/dataTables.bootstrap.css" type="text/css" rel="stylesheet">
 <link href="resources/pnotify/jquery.pnotify.default.css" type="text/css" rel="stylesheet">
 <style type="text/css">
@@ -50,6 +49,7 @@ if (THEME == "superhero") {
 }
 ?>
 </style>
+<link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
