@@ -41,6 +41,7 @@ if (!isset($_SESSION["is_logged_in_" . $uniquekey . ""])) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <link href="resources/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+<link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
 <style type="text/css">
 body {
     padding-top: 40px;
@@ -70,7 +71,6 @@ body {
     padding: 7px 9px;
 }
 </style>
-<link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
 </head>
 <body>
 <!-- Content start -->
