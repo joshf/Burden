@@ -31,23 +31,16 @@ setcookie("burdenhascheckedforupdates", "checkedsuccessfully", time()+604800);
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php
 if (THEME == "default") {
-    echo "<link href=\"resources/bootstrap/css/bootstrap.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
+    echo "<link href=\"resources/bootstrap/css/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
 } else {
     echo "<link href=\"//netdna.bootstrapcdn.com/bootswatch/2.3.2/" . THEME . "/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";
 }
-?>
-<style type="text/css">
-body {
-    padding-top: 60px;
-}
-<?
 //Fix broken superhero theme
 if (THEME == "superhero") {
-    echo "td {\n    color: #5A6A7D;\n}\n";
+    echo "<style type=\"text/css\">\ntd {\n    color: #5A6A7D;\n}\n</style>\n";
 }
 ?>
-</style>
-<link href="resources/bootstrap/css/bootstrap-responsive.css" type="text/css" rel="stylesheet">
+<link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
 <link href="resources/datatables/dataTables.bootstrap.css" type="text/css" rel="stylesheet">
 <link href="resources/pnotify/jquery.pnotify.default.css" type="text/css" rel="stylesheet">
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -272,8 +265,8 @@ mysql_close($con);
 </div>
 <!-- Content end -->
 <!-- Javascript start -->	
-<script src="resources/jquery.js"></script>
-<script src="resources/bootstrap/js/bootstrap.js"></script>
+<script src="resources/jquery.min.js"></script>
+<script src="resources/bootstrap/js/bootstrap.min.js"></script>
 <script src="resources/datatables/jquery.dataTables.js"></script>
 <script src="resources/datatables/dataTables.bootstrap.js"></script>
 <script src="resources/pnotify/jquery.pnotify.js"></script>

@@ -40,7 +40,7 @@ if (!isset($_SESSION["is_logged_in_" . $uniquekey . ""])) {
 <title>Burden &middot; Login</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<link href="resources/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet">
+<link href="resources/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
 <style type="text/css">
 body {
     padding-top: 40px;
@@ -70,7 +70,7 @@ body {
     padding: 7px 9px;
 }
 </style>
-<link href="resources/bootstrap/css/bootstrap-responsive.css" type="text/css" rel="stylesheet">
+<link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
 </head>
 <body>
 <!-- Content start -->
@@ -112,8 +112,8 @@ if (isset($_GET["login_error"])) {
 </div>
 <!-- Content end -->
 <!-- Javascript start -->
-<script src="resources/jquery.js"></script>
-<script src="resources/bootstrap/js/bootstrap.js"></script>
+<script src="resources/jquery.min.js"></script>
+<script src="resources/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $("#username").focus();
