@@ -16,12 +16,12 @@ if (!isset($_POST["doinstall"])) {
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="../resources/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
-<link href="../resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
 <style type="text/css">
 body {
     padding-top: 60px;
 }
 </style>
+<link href="../resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -121,7 +121,7 @@ mysql_close($con);
 <li>User: <?php echo $adminuser; ?></li>
 <li>Password: <?php echo $_POST["adminpassword"]; ?></li>
 </ul>
-<p><a href="../admin/login.php" class="btn btn-success">Go To Login</a></p>
+<p><a href="../login.php" class="btn btn-success">Go To Login</a></p>
 </div>
 </div>
 <!-- Content end -->
