@@ -53,7 +53,11 @@ $adminuser = $_POST["adminuser"];
 if (empty($_POST["adminpassword"])) {
     die("<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Install Failed</h4><p>Error: No admin password set.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
 } else {
-    $adminpassword = sha1($_POST["adminpassword"]);
+    //Salt and hash passwords
+    $randsalt = md5(uniqid(rand(), true));
+    $salt = substr($randsalt, 0, 3);
+    $hashedpassword = hash("sha256", $_POST["adminpassword"]);
+    $adminpassword = hash("sha256", $salt . $hashedpassword);
 }
 $uniquekey = md5(microtime().rand());
 
@@ -68,6 +72,7 @@ define('DB_NAME', " . var_export($dbname, true) . ");
 //Admin Details
 define('ADMIN_USER', " . var_export($adminuser, true) . ");
 define('ADMIN_PASSWORD', " . var_export($adminpassword, true) . ");
+define('SALT', " . var_export($salt, true) . ");
 
 //Other Settings
 define('UNIQUE_KEY', " . var_export($uniquekey, true) . ");

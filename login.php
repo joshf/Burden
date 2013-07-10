@@ -21,7 +21,8 @@ if (isset($_COOKIE["burdenrememberme_" . $uniquekey . ""])) {
 }
 
 if (isset($_POST["password"]) && isset($_POST["username"])) {
-    if (sha1($_POST["password"]) == $password && $_POST["username"] == $username) {
+    $hashedpassword = hash("sha256", SALT . hash("sha256", $_POST["password"]) );
+    if ($hashedpassword == $password && $_POST["username"] == $username) {
         $_SESSION["is_logged_in_" . $uniquekey . ""] = true;
             if (isset($_POST["rememberme"])) {
                 setcookie("burdenrememberme_" . $uniquekey . "", ADMIN_USER, time()+1209600);
