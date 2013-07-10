@@ -45,6 +45,20 @@ Login to the script and add your tasks. For each task you can set a due date, it
 
 Rather than save all of your categories, Burden will only keep categories for non-deleted tasks. This helps to stop the build up of unnecessary categories.
 
+Updating:
+---------
+
+1. Before performing an update please make sure you backup your database
+2. Download your config.php file (in the Burden folder) via FTP or your hosts control panel
+3. Delete the Burden folder off your server
+4. Download the latest version of Burden from [here](https://github.com/joshf/Burden/releases)
+5. Unzip the file
+6. Upload the unzipped Burden folder to your server via FTP or your hosts control panel
+7. Upload your config.php file into the Buren folder
+8. You should now have the latest version of Burden
+
+N.B: Some versions of Burden will require the installer to be run to update the database or config files. A update/upgrade script is in the works.
+
 Removal:
 --------
 
