@@ -43,7 +43,7 @@ if (THEME == "default") {
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container">
-<a class="btw btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
@@ -90,29 +90,27 @@ if (!isset($_GET["id"])) {
 	while($row = mysql_fetch_assoc($getids)) {    
     	echo "<option value=\"" . $row["id"] . "\">" . ucfirst($row["task"]) . "</option>";
 	}
-	echo "</select></div></div><div class=\"form-actions\"><button type=\"submit\" class=\"btn btn-primary\">Edit</button></div></fieldset></form></div></body></html>";
-	exit;
-}
+	echo "</select></div></div><div class=\"form-actions\"><button type=\"submit\" class=\"btn btn-primary\">Edit</button></div></fieldset></form>";
+} else {
 
-$idtoedit = mysql_real_escape_string($_GET["id"]);
+    $idtoedit = mysql_real_escape_string($_GET["id"]);
 
-//Check if ID exists
-$doesidexist = mysql_query("SELECT id FROM Data WHERE id = \"$idtoedit\"");
-$doesidexistresult = mysql_fetch_assoc($doesidexist); 
-if ($doesidexistresult == 0) {
-    die("<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Error</h4><p>ID does not exist.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
-}
-
-//Error display
-if (isset($_GET["error"])) {
-    $error = $_GET["error"];
-    if ($error == "dberror") {
-        echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>Your task could not be added. Check your database settings or website configuration is correct.</p></div>";
-    } elseif ($error == "emptyfields") {
-        echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>One or more fields were left empty.</p></div>";
+    //Check if ID exists
+    $doesidexist = mysql_query("SELECT id FROM Data WHERE id = \"$idtoedit\"");
+    $doesidexistresult = mysql_fetch_assoc($doesidexist); 
+    if ($doesidexistresult == 0) {
+        die("<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Error</h4><p>ID does not exist.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
     }
-}
 
+    //Error display
+    if (isset($_GET["error"])) {
+        $error = $_GET["error"];
+        if ($error == "dberror") {
+            echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>Your task could not be added. Check your database settings or website configuration is correct.</p></div>";
+        } elseif ($error == "emptyfields") {
+            echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>One or more fields were left empty.</p></div>";
+        }
+    }
 ?>
 <form action="actions/edit.php" method="post">
 <fieldset>
@@ -169,6 +167,9 @@ mysql_close($con);
 </div>
 </fieldset>
 </form>
+<?php
+}
+?>
 </div>
 <!-- Content end -->
 <!-- Javascript start -->	
