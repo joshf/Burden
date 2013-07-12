@@ -3,7 +3,7 @@
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
 if (!file_exists("config.php")) {
-    header("Location: installer");
+    die("Error: Config file not found! Please reinstall Burden.");
 }
 
 require_once("config.php");

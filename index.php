@@ -5,8 +5,7 @@
 $version = "1.5dev";
 
 if (!file_exists("config.php")) {
-    header("Location: installer");
-    exit;
+    die("Error: Config file not found! Please reinstall Burden.");
 }
 
 require_once("config.php");
