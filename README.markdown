@@ -56,9 +56,8 @@ Updating:
 5. Unzip the file
 6. Upload the unzipped Burden folder to your server via FTP or your hosts control panel
 7. Upload your config.php file into the Buren folder
-8. You should now have the latest version of Burden
-
-N.B: Some versions of Burden will require the installer to be run to update the database or config files. A update/upgrade script is in the works.
+8. Open up the installer folder in your browser and click run update
+9. You should now have the latest version of Burden
 
 Removal:
 --------
