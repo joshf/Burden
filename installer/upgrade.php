@@ -13,7 +13,7 @@ require_once("../config.php");
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Burden &middot; Installer</title>
+<title>Burden &middot; Upgrade</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="../resources/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
@@ -30,12 +30,6 @@ body {
 <![endif]-->
 <script src="../resources/jquery.min.js"></script>
 <script src="../resources/bootstrap/js/bootstrap.min.js"></script>
-<script src="../resources/validation/jqBootstrapValidation.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    $("input").not("[type=submit]").jqBootstrapValidation();
-});
-</script>
 <!-- Javascript end -->
 </head>
 <body>
@@ -57,7 +51,7 @@ $(document).ready(function() {
 
 $version = "1.5";
 
-if ($version == BURDEN_VERSION) {
+if ($version == VERSION) {
     die("<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Upgrade Notice</h4><p>Burden does not require an upgrade<p><a href=\"../login.php\" class=\"btn btn-info\">Go To Login</a></p></div></div></body></html>");
     
 }
@@ -96,7 +90,7 @@ define('SALT', " . var_export($salt, true) . ");
 //Other Settings
 define('UNIQUE_KEY', " . var_export($uniquekey, true) . ");
 define('THEME', 'default');
-define('BURDEN_VERSION', " . var_export($version, true) . ");
+define('VERSION', " . var_export($version, true) . ");
 
 ?>";
 
@@ -139,7 +133,7 @@ mysql_close($con);
 ?>
 <div class="alert alert-success">
 <h4 class="alert-heading">Update Complete</h4>
-<p>Burden has been successfully updated. Because Burden 1.5 uses salt password hashing, your password is now <b><?php echo $temppassword; ?>.</b> Please change it to something more memorable as soon as possible.<p><a href="../login.php" class="btn btn-success">Go To Login</a></p>
+<p>Burden has been successfully updated. Because Burden 1.5 uses salt password hashing, your password is now <b><?php echo $temppassword; ?></b>. Please change it to something more memorable as soon as possible.<p><a href="../login.php" class="btn btn-success">Go To Login</a></p>
 </div>
 </div>
 <!-- Content end -->
