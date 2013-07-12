@@ -40,7 +40,7 @@ if (isset($_POST["save"])) {
     fclose($configfile);
 
     //Show updated values
-    header("Location: settings.php#updated");
+    header("Location: settings.php");
     exit;
 }
 
@@ -148,18 +148,23 @@ echo "</select>";
 <script src="resources/bootstrap/js/bootstrap.min.js"></script>
 <script src="resources/validation/jqBootstrapValidation.js"></script>
 <script src="resources/pnotify/jquery.pnotify.js"></script>
+<script src="resources/jquery.cookie.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $.pnotify.defaults.width = "200px";
     $.pnotify.defaults.history = false;
     $.pnotify.defaults.delay = "1500";
-    if (window.location.hash == "#updated") {
+    if ($.cookie("settings_updated")) {
         $.pnotify({
             title: "Info",
             text: "Settings updated",
             type: "info"
         });
+        $.removeCookie("settings_updated");
     }
+    $("form").submit(function() {
+        $.cookie("settings_updated", "true");
+    });
     $("input").not("[type=submit]").jqBootstrapValidation();
 });
 </script>
