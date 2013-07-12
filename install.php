@@ -58,12 +58,11 @@ if (!isset($_GET["doupdate"])) {
 
 //Check if we are installed
 if (file_exists(".installdone")) {
-    die("<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>Burden has already been installed! To reinstall the app please delete your .installdone file.</p><p><a class=\"btn btn-info\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
+    die("<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>Burden has already been installed! To reinstall the app please delete your .installdone file and run this installer again.</p><p><a class=\"btn btn-info\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
 }
 
-if (isset($_POST["doinstall"])) {
-    //Install
-    //Get new settings from POST
+if (isset($_GET["doinstall"])) {
+
     $dbhost = $_POST["dbhost"];
     $dbuser = $_POST["dbuser"];
     $dbpassword = $_POST["dbpassword"];
@@ -124,7 +123,7 @@ if (isset($_POST["doinstall"])) {
     die("<div class=\"alert alert-success\"><h4 class=\"alert-heading\">Install Complete</h4><p>Burden has been successfully installed. Please delete the \"installer\" folder from your server, as it poses a potential security risk!</p><p>Your login details are shown below, please make a note of them.</p><ul><li>User: $adminuser</li><li>Password: <i>Password you set during install</i></li></ul><p><a href=\"../login.php\" class=\"btn btn-success\">Go To Login</a></p></div></div></body></html>");
 
 } elseif (isset($_GET["doupdate"])) {
-    //Update
+    
     require_once("config.php");
 
     $dbhost = DB_HOST;
@@ -132,30 +131,21 @@ if (isset($_POST["doinstall"])) {
     $dbpassword = DB_PASSWORD;
     $dbname = DB_NAME;
     $adminuser = ADMIN_USER;
-    $adminpassword = ADMIN_PASSWORD;
-    $salt = SALT;
+    //$adminpassword = ADMIN_PASSWORD;
+    //$salt = SALT;
     $uniquekey = UNIQUE_KEY;
     $theme = THEME;
 
-    $updatestring = "<?php
-
-    //Database Settings
-    define('DB_HOST', " . var_export($dbhost, true) . ");
-    define('DB_USER', " . var_export($dbuser, true) . ");
-    define('DB_PASSWORD', " . var_export($dbpassword, true) . ");
-    define('DB_NAME', " . var_export($dbname, true) . ");
-
-    //Admin Details
-    define('ADMIN_USER', " . var_export($adminuser, true) . ");
-    define('ADMIN_PASSWORD', " . var_export($adminpassword, true) . ");
-    define('SALT', " . var_export($salt, true) . ");
-
-    //Other Settings
-    define('UNIQUE_KEY', " . var_export($uniquekey, true) . ");
-    define('THEME', 'default');
-
-    ?>";
-
+    //Salt and hash passwords
+    //From 1.4 --> 1.5
+    $temppassword = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz123456789"), 0, 6);
+    $randsalt = md5(uniqid(rand(), true));
+    $salt = substr($randsalt, 0, 3);
+    $hashedpassword = hash("sha256", $temppassword);
+    $adminpassword = hash("sha256", $salt . $hashedpassword);
+    
+    $updatestring = "<?php\n\n//Database Settings\ndefine('DB_HOST', " . var_export($dbhost, true) . ");\ndefine('DB_USER', " . var_export($dbuser, true) . ");\ndefine('DB_PASSWORD', " . var_export($dbpassword, true) . ");\ndefine('DB_NAME', " . var_export($dbname, true) . ");\n\n//Admin Details\ndefine('ADMIN_USER', " . var_export($adminuser, true) . ");\ndefine('ADMIN_PASSWORD', " . var_export($adminpassword, true) . ");\ndefine('SALT', " . var_export($salt, true) . ");\n\n//Other Settings\ndefine('UNIQUE_KEY', " . var_export($uniquekey, true) . ");\ndefine('THEME', 'default');\n\n?>";
+    
     //Check if we can connect
     $con = mysql_connect($dbhost, $dbuser, $dbpassword);
     if (!$con) {
@@ -194,11 +184,11 @@ if (isset($_POST["doinstall"])) {
     
     mysql_close($con);
     
-    die("<div class=\"alert alert-success\"><h4 class=\"alert-heading\">Update Complete</h4><p>Burden has been successfully updated.<p><a href=\"login.php\" class=\"btn btn-success\">Go To Login</a></p></div></div></body></html>");
+    die("<div class=\"alert alert-success\"><h4 class=\"alert-heading\">Update Complete</h4><p>Burden has been successfully updated. Because Burden 1.5 uses salt password hashing, your password is now <b>$temppassword.</b> Please change it to something more memorable as soon as possible.<p><a href=\"login.php\" class=\"btn btn-success\">Go To Login</a></p></div></div></body></html>");
 }
 
 ?>	
-<form method="post">
+<form action="?doinstall" method="post">
 <fieldset>
 <h4>Database Settings</h4>
 <div class="control-group">
