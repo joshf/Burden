@@ -56,8 +56,10 @@ Updating:
 5. Unzip the file
 6. Upload the unzipped Burden folder to your server via FTP or your hosts control panel
 7. Upload your config.php file into the Buren folder
-8. Open up the installer folder in your browser and click run update
+4. Open up http://yoursite.com/Burden/installer/upgrade.php in your browser and the upgrade process will start
 9. You should now have the latest version of Burden
+
+N.B: The upgrade will only upgrade from the previous version of Burden (e.g 1.4 to 1.5), it cannot be used to upgrade from a past version.
 
 Removal:
 --------
