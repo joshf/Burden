@@ -71,6 +71,19 @@ body {
     padding: 7px 9px;
 }
 </style>
+<!-- Javascript start -->
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<script src="resources/jquery.min.js"></script>
+<script src="resources/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#username").focus();
+});
+</script>
+<!-- Javascript end -->
 </head>
 <body>
 <!-- Content start -->
@@ -111,15 +124,6 @@ if (isset($_GET["login_error"])) {
 </form>
 </div>
 <!-- Content end -->
-<!-- Javascript start -->
-<script src="resources/jquery.min.js"></script>
-<script src="resources/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#username").focus();
-});
-</script>
-<!-- Javascript end -->
 </body>
 </html>
 <?php

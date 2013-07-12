@@ -37,10 +37,32 @@ body {
 }
 </style>
 <link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
+<!-- Javascript start -->
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
+<script src="resources/jquery.min.js"></script>
+<script src="resources/bootstrap/js/bootstrap.min.js"></script>
+<script src="resources/datepicker/js/bootstrap-datepicker.js"></script>
+<script src="resources/validation/jqBootstrapValidation.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#due").datepicker({
+        format: "dd/mm/yyyy",
+        autoclose: "true",
+        clearBtn: "true"
+    });
+    $("input").not("[type=submit]").jqBootstrapValidation();
+    $("#addcategory").click(function () {
+        newcategory=prompt("Add a new category","");
+        if (newcategory != null && newcategory != "") {
+            $("#category").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
+        }
+    });
+});
+</script>
+<!-- Javascript end -->
 </head>
 <body>
 <!-- Nav start -->
@@ -148,27 +170,5 @@ while($row = mysql_fetch_assoc($getcategories)) {
 </form>
 </div>
 <!-- Content end -->
-<!-- Javascript start -->
-<script src="resources/jquery.min.js"></script>
-<script src="resources/bootstrap/js/bootstrap.min.js"></script>
-<script src="resources/datepicker/js/bootstrap-datepicker.js"></script>
-<script src="resources/validation/jqBootstrapValidation.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#due").datepicker({
-        format: "dd/mm/yyyy",
-        autoclose: "true",
-        clearBtn: "true"
-    });
-    $("input").not("[type=submit]").jqBootstrapValidation();
-    $("#addcategory").click(function () {
-        newcategory=prompt("Add a new category","");
-        if (newcategory != null && newcategory != "") {
-            $("#category").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
-        }
-    });
-});
-</script>
-<!-- Javascript end -->
 </body>
 </html>
