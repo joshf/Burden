@@ -52,7 +52,7 @@ body {
 $version = "1.5";
 
 if ($version == VERSION) {
-    die("<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Upgrade Notice</h4><p>Burden does not require an upgrade<p><a href=\"../login.php\" class=\"btn btn-info\">Go To Login</a></p></div></div></body></html>");
+    die("<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Upgrade Notice</h4><p>Burden does not require an upgrade.<p><a href=\"../login.php\" class=\"btn btn-info\">Go To Login</a></p></div></div></body></html>");
     
 }
 
@@ -132,8 +132,8 @@ mysql_close($con);
 
 ?>
 <div class="alert alert-success">
-<h4 class="alert-heading">Update Complete</h4>
-<p>Burden has been successfully updated. Because Burden 1.5 uses salt password hashing, your password is now <b><?php echo $temppassword; ?></b>. Please change it to something more memorable as soon as possible.<p><a href="../login.php" class="btn btn-success">Go To Login</a></p>
+<h4 class="alert-heading">Upgrade Complete</h4>
+<p>Burden has been successfully upgraded. Because Burden 1.5 uses salt password hashing, your password is now <b><?php echo $temppassword; ?></b>. Please change it to something more memorable as soon as possible using the settings page.<p><a href="../login.php" class="btn btn-success">Go To Login</a></p>
 </div>
 </div>
 <!-- Content end -->
