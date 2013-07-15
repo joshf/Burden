@@ -153,7 +153,7 @@ while($row = mysql_fetch_assoc($getcategories)) {
 
 ?>
 </select>
-<span class="help-block"><a id="addcategory">Add new...</a></span>
+<span class="help-block"><a id="addcategory">&#43; Add new category</a></span>
 </div>
 </div>
 <div class="control-group">

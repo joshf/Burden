@@ -166,7 +166,7 @@ while($row = mysql_fetch_assoc($getcategories)) {
     }
 }
 
-echo "</select><span class=\"help-block\"><a id=\"addcategory\">Add new...</a></span></div></div>";
+echo "</select><span class=\"help-block\"><a id=\"addcategory\">&#43 Add new category</a></span></div></div>";
 
 echo "<div class=\"control-group\"><div class=\"controls\"><label class=\"checkbox\">";
     
