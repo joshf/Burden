@@ -49,6 +49,9 @@ body {
 </div>
 <?php
 
+//Version
+$version = "1.5";
+
 if ($version == VERSION) {
     die("<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Upgrade Notice</h4><p>Burden does not require an upgrade.<p><a href=\"../login.php\" class=\"btn btn-info\">Go To Login</a></p></div></div></body></html>");
     
@@ -72,9 +75,6 @@ $hashedpassword = hash("sha256", $temppassword);
 $adminpassword = hash("sha256", $salt . $hashedpassword);
 $uniquekey = UNIQUE_KEY;
 $theme = THEME;
-
-//Version
-$version = "1.5";
 
 $updatestring = "<?php
 
