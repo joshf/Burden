@@ -36,7 +36,6 @@ if (THEME == "default") {
 }
 ?>
 <link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
-<link href="resources/datepicker/css/bootstrap-datepicker.min.css" type="text/css" rel="stylesheet">
 <link href="resources/datatables/jquery.dataTables-bootstrap.min.css" type="text/css" rel="stylesheet">
 <link href="resources/bootstrap-notify/css/bootstrap-notify.min.css" type="text/css" rel="stylesheet">
 <style type="text/css">
