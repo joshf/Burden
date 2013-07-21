@@ -17,12 +17,17 @@ require_once("../config.php");
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="../resources/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+<link href="../resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
 <style type="text/css">
 body {
-    padding-top: 60px;
+	padding-top: 60px;
+}
+@media (max-width: 980px) {
+	body {
+		padding-top: 0;
+	}
 }
 </style>
-<link href="../resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
 <!-- Javascript start -->
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>

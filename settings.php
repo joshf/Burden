@@ -57,13 +57,18 @@ if (THEME == "default") {
     echo "<link href=\"//netdna.bootstrapcdn.com/bootswatch/2.3.2/" . THEME . "/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";
 }
 ?>
-<link href="resources/pnotify/jquery.pnotify.default.css" type="text/css" rel="stylesheet">
+<link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
+<link href="resources/pnotify/jquery.pnotify.default.min.css" type="text/css" rel="stylesheet">
 <style type="text/css">
 body {
-    padding-top: 60px;
+	padding-top: 60px;
+}
+@media (max-width: 980px) {
+	body {
+		padding-top: 0;
+	}
 }
 </style>
-<link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
 <!-- Javascript start -->
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
@@ -71,9 +76,9 @@ body {
 <![endif]-->
 <script src="resources/jquery.min.js"></script>
 <script src="resources/bootstrap/js/bootstrap.min.js"></script>
-<script src="resources/validation/jqBootstrapValidation.js"></script>
-<script src="resources/pnotify/jquery.pnotify.js"></script>
-<script src="resources/jquery.cookie.js"></script>
+<script src="resources/validation/jqBootstrapValidation.min.js"></script>
+<script src="resources/pnotify/jquery.pnotify.min.js"></script>
+<script src="resources/cookie/jquery.cookie.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $.pnotify.defaults.width = "200px";
