@@ -38,7 +38,7 @@ if (THEME == "default") {
 <link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
 <link href="resources/datepicker/css/bootstrap-datepicker.min.css" type="text/css" rel="stylesheet">
 <link href="resources/datatables/jquery.dataTables-bootstrap.min.css" type="text/css" rel="stylesheet">
-<link href="resources/pnotify/jquery.pnotify.default.min.css" type="text/css" rel="stylesheet">
+<link href="resources/bootstrap-notify/css/bootstrap-notify.min.css" type="text/css" rel="stylesheet">
 <style type="text/css">
 body {
 	padding-top: 60px;
@@ -64,7 +64,7 @@ if (THEME == "superhero") {
 <script src="resources/bootstrap/js/bootstrap.min.js"></script>
 <script src="resources/datatables/jquery.dataTables.min.js"></script>
 <script src="resources/datatables/jquery.dataTables-bootstrap.min.js"></script>
-<script src="resources/pnotify/jquery.pnotify.js"></script>
+<script src="resources/bootstrap-notify/js/bootstrap-notify.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     /* Table selection */
@@ -102,22 +102,20 @@ $(document).ready(function() {
         }
     });
     /* End */
-    /* pnotify */
-    $.pnotify.defaults.width = "200px";
-    $.pnotify.defaults.history = false;
-    $.pnotify.defaults.delay = "1500"; 
-    /* End */  
     /* Edit */
     $("#edit").click(function() {
         if (id_selected == true) {
             window.location = "edit.php?id="+ id +"";
         } else {
-            $.pnotify({
-                title: "Info",
-                text: "No ID selected",
-                type: "info"
-            }); 
-        }
+			$(".top-right").notify({
+				type: "info",
+				transition: "fade",
+				icon: "info-sign",
+				message: {
+					text: "No ID selected!"
+				}
+			}).show();
+		}
     });
     /* End */
     /* Show Delete Dialog */
@@ -125,12 +123,15 @@ $(document).ready(function() {
         if (id_selected == true) {
             $("#deleteconfirmdialog").modal("show");
         } else {
-            $.pnotify({
-                title: "Info",
-                text: "No ID selected",
-                type: "info"
-            }); 
-        }
+			$(".top-right").notify({
+				type: "info",
+				transition: "fade",
+				icon: "info-sign",
+				message: {
+					text: "No ID selected!"
+				}
+			}).show();
+		}
     });
     /* End */
     /* Delete worker */
@@ -141,58 +142,73 @@ $(document).ready(function() {
             url: "actions/worker.php",  
             data: "action=delete&id="+ id +"",
             error: function() {
-                $.pnotify({
-                    title: "Error",
-                    text: "AJAX call failed",
-                    type: "error"
-                });                
-            },
-            success: function() { 
-                $.pnotify({
-                    title: "Info",
-                    text: "Task deleted",
-                    type: "info",
-                    after_close: function(pnotify) {
-                        window.location.reload();
-                    }
-                }); 
-            }	
-        });
-    });
-    /* End */
-    /* Complete */
+				$(".top-right").notify({
+					type: "error",
+					transition: "fade",
+					icon: "warning-sign",
+					message: {
+						text: "Ajax query failed!"
+					}
+				}).show();
+			},
+			success: function() {
+				$(".top-right").notify({
+					type: "success",
+					transition: "fade",
+					icon: "ok",
+					message: {
+						text: "Task deleted!"
+					},
+					onClosed: function() {
+						window.location.reload();
+					}
+				}).show();
+			}
+		});
+	});
+	/* End */
+	/* Complete */
     $("#complete").click(function() {
         if (id_selected == true) {
             $.ajax({
                 type: "POST",  
                 url: "actions/worker.php",  
                 data: "action=complete&id="+ id +"",
-                error: function() {  
-                    $.pnotify({
-                        title: "Error",
-                        text: "AJAX call failed",
-                        type: "error"
-                    });                
-                },
-                success: function() { 
-                    $.pnotify({
-                        title: "Info",
-                        text: "Task marked as completed",
-                        type: "info",
-                        after_close: function(pnotify) {
-                            window.location.reload();
-                        }
-                    });
-                }	
-            });
-        } else {
-            $.pnotify({
-                title: "Info",
-                text: "No ID selected",
-                type: "info"
-            });
-        }
-    });
+				error: function() {
+					$(".top-right").notify({
+						type: "error",
+						transition: "fade",
+						icon: "warning-sign",
+						message: {
+							text: "Ajax query failed!"
+						}
+					}).show();
+				},
+				success: function() {
+					$(".top-right").notify({
+						type: "success",
+						transition: "fade",
+						icon: "ok",
+						message: {
+							text: "Task marked as completed!"
+						},
+						onClosed: function() {
+							window.location.reload();
+						}
+					}).show();
+				}
+			});
+		} else {
+			$(".top-right").notify({
+				type: "info",
+				transition: "fade",
+				icon: "info-sign",
+				message: {
+					text: "No ID selected!"
+				}
+			}).show();
+		}
+	});
     /* End */
     /* Restore */
     $("#restore").click(function() {
@@ -201,32 +217,41 @@ $(document).ready(function() {
                 type: "POST",  
                 url: "actions/worker.php",
                 data: "action=restore&id="+ id +"",
-                error: function() {
-                    $.pnotify({
-                        title: "Error",
-                        text: "AJAX call failed",
-                        type: "error"
-                    });                
-                },
-                success: function() {
-                    $.pnotify({
-                        title: "Info",
-                        text: "Task restored",
-                        type: "info",
-                        after_close: function(pnotify) {
-                            window.location.reload();
-                        }
-                    }); 
-                }	
-            });
-        } else {
-            $.pnotify({
-                title: "Info",
-                text: "No ID selected",
-                type: "info"
-            }); 
-        }
-    });
+				error: function() {
+					$(".top-right").notify({
+						type: "error",
+						transition: "fade",
+						icon: "warning-sign",
+						message: {
+							text: "Ajax query failed!"
+						}
+					}).show();
+				},
+				success: function() {
+					$(".top-right").notify({
+						type: "success",
+						transition: "fade",
+						icon: "ok",
+						message: {
+							text: "Task restored!"
+						},
+						onClosed: function() {
+							window.location.reload();
+						}
+					}).show();
+				}
+			});
+		} else {
+			$(".top-right").notify({
+				type: "info",
+				transition: "fade",
+				icon: "info-sign",
+				message: {
+					text: "No ID selected!"
+				}
+			}).show();
+		}
+	});
     /* End */
 });
 </script>
@@ -285,7 +310,7 @@ if ($view == "completed") {
 } else {
     echo "<h1>Current Tasks</h1>";
 }
-echo "</div>";		
+echo "</div><div class=\"notifications top-right\"></div>";		
 
 echo "<noscript><div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>Please enable JavaScript to use Burden. For instructions on how to do this, see <a href=\"http://www.activatejavascript.org\" target=\"_blank\">here</a>.</p></div></noscript>";
 
