@@ -34,7 +34,7 @@ $id = mysql_real_escape_string($_POST["id"]);
 $action = $_POST["action"];
 
 if ($action == "complete") {
-    $todaysdate = date("d-m-Y");
+    $todaysdate = date("d/m/Y");
     mysql_query("UPDATE Data SET completed = \"1\", datecompleted = \"$todaysdate\" WHERE id = \"$id\"");
 } elseif ($action == "restore") {
     mysql_query("UPDATE Data SET completed = \"0\", datecompleted = \"\" WHERE id = \"$id\"");
