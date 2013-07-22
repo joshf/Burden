@@ -82,16 +82,16 @@ body {
 <script type="text/javascript">
 $(document).ready(function() {
     if ($.cookie("settings_updated")) {
-		$(".top-right").notify({
-			type: "info",
-			transition: "fade",
-			icon: "info-sign",
-			message: {
-				text: "Settings saved!"
-			}
-		}).show(); 
+        $(".top-right").notify({
+            type: "info",
+            transition: "fade",
+            icon: "info-sign",
+            message: {
+                text: "Settings saved!"
+            }
+        }).show();
         $.removeCookie("settings_updated");
-	}
+    }
     $("form").submit(function() {
         $.cookie("settings_updated", "true");
     });

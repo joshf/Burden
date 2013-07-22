@@ -34,12 +34,12 @@ if (THEME == "default") {
 <link href="resources/datepicker/css/bootstrap-datepicker.min.css" type="text/css" rel="stylesheet">
 <style type="text/css">
 body {
-	padding-top: 60px;
+    padding-top: 60px;
 }
 @media (max-width: 980px) {
-	body {
-		padding-top: 0;
-	}
+    body {
+        padding-top: 0;
+    }
 }
 </style>
 <!-- Javascript start -->
@@ -61,13 +61,13 @@ $(document).ready(function() {
     });
     $("input").not("[type=submit]").jqBootstrapValidation();
     $("#addcategory").click(function () {
-		bootbox.prompt("Add a category", function(newcategory) {
-			if (newcategory != null) {
-				if (newcategory != null && newcategory != "") {
-					$("#category").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
-				}
-			}
-		});
+        bootbox.prompt("Add a category", function(newcategory) {
+            if (newcategory != null) {
+                if (newcategory != null && newcategory != "") {
+                    $("#category").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
+                }
+            }
+        });
     });
 });
 </script>

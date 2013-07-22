@@ -44,7 +44,7 @@ if (!isset($_SESSION["is_logged_in_" . $uniquekey . ""])) {
 <link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
 <style type="text/css">
 body {
-	padding-top: 60px;
+    padding-top: 60px;
     background-color: #f5f5f5;
 }
 .form-signin {
