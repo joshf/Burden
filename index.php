@@ -121,7 +121,12 @@ $(document).ready(function() {
     /* Delete */
     $("#delete").click(function() {
         if (id_selected == true) {
-            bootbox.promptcustom("Confirm Delete", "Are you sure you want to delete the selected task?", function(result) {
+            $("body").on("show", ".bootbox", function () {
+                if (!$(".modal-header")[0]) {
+                    $(".bootbox").prepend("<div class=\"modal-header\"><a href=\"javascript:;\" class=\"close\">&times;</a><h3>Confirm Delete</h3></div>");
+                }
+            });
+            bootbox.confirm("Are you sure you want to delete the selected task?", "No", "Yes", function(result) {
                 if (result == true) {
                     $.ajax({
                         type: "POST",
