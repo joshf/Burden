@@ -64,6 +64,7 @@ if (THEME == "superhero") {
 <script src="resources/datatables/jquery.dataTables.min.js"></script>
 <script src="resources/datatables/jquery.dataTables-bootstrap.min.js"></script>
 <script src="resources/bootstrap-notify/js/bootstrap-notify.min.js"></script>
+<script src="resources/bootbox/bootbox.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     /* Table selection */
@@ -117,11 +118,42 @@ $(document).ready(function() {
 		}
     });
     /* End */
-    /* Show Delete Dialog */
+    /* Delete */
     $("#delete").click(function() {
-        if (id_selected == true) {
-            $("#deleteconfirmdialog").modal("show");
-        } else {
+		if (id_selected == true) {
+			bootbox.promptcustom("Confirm Delete", "Are you sure you want to delete the selected task?", function(result) {
+				if (result == true) {
+					$.ajax({
+						type: "POST",
+						url: "actions/worker.php",  
+			            data: "action=delete&id="+ id +"",
+			            error: function() {
+							$(".top-right").notify({
+								type: "error",
+								transition: "fade",
+								icon: "warning-sign",
+								message: {
+									text: "Ajax query failed!"
+								}
+							}).show();
+						},
+						success: function() {
+							$(".top-right").notify({
+								type: "success",
+								transition: "fade",
+								icon: "ok",
+								message: {
+									text: "Task deleted!"
+								},
+								onClosed: function() {
+									window.location.reload();
+								}
+							}).show();
+						}
+					});
+				}
+			});
+		} else {
 			$(".top-right").notify({
 				type: "info",
 				transition: "fade",
@@ -133,39 +165,6 @@ $(document).ready(function() {
 		}
     });
     /* End */
-    /* Delete worker */
-    $("#deleteconfirm").click(function() {
-        $("#deleteconfirmdialog").modal("hide");
-        $.ajax({
-            type: "POST",  
-            url: "actions/worker.php",  
-            data: "action=delete&id="+ id +"",
-            error: function() {
-				$(".top-right").notify({
-					type: "error",
-					transition: "fade",
-					icon: "warning-sign",
-					message: {
-						text: "Ajax query failed!"
-					}
-				}).show();
-			},
-			success: function() {
-				$(".top-right").notify({
-					type: "success",
-					transition: "fade",
-					icon: "ok",
-					message: {
-						text: "Task deleted!"
-					},
-					onClosed: function() {
-						window.location.reload();
-					}
-				}).show();
-			}
-		});
-	});
-	/* End */
 	/* Complete */
     $("#complete").click(function() {
         if (id_selected == true) {
@@ -437,19 +436,6 @@ if ($view == "normal" || $view == "highpriority") {
 </div>
 <br>
 <br>
-<div id="deleteconfirmdialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="dcdheader" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-<h3 id="dcdheader">Confirm Delete</h3>
-</div>
-<div class="modal-body">
-<p>Are you sure you want to delete the selected task?</p>
-</div>
-<div class="modal-footer">
-<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-<button id="deleteconfirm" class="btn btn-primary">Delete</button>
-</div>
-</div>
 <div class="alert alert-info">   
 <strong>Info:</strong> High priority tasks are highlighted yellow, completed tasks green and overdue tasks red.  
 </div>

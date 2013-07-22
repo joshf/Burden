@@ -51,6 +51,7 @@ body {
 <script src="resources/bootstrap/js/bootstrap.min.js"></script>
 <script src="resources/datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="resources/validation/jqBootstrapValidation.min.js"></script>
+<script src="resources/bootbox/bootbox.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $("#due").datepicker({
@@ -58,13 +59,16 @@ $(document).ready(function() {
         autoclose: "true",
         clearBtn: "true"
     });
+	$("#addcategory").click(function () {
+		bootbox.prompt("Add a category", function(newcategory) {
+			if (newcategory != null) {
+				if (newcategory != null && newcategory != "") {
+					$("#category").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
+				}
+			}
+		});
+	});
     $("input").not("[type=submit]").jqBootstrapValidation();
-    $("#addcategory").click(function () {
-        newcategory=prompt("Add a new category","");
-        if (newcategory != null && newcategory != "") {
-            $("#category").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
-        }
-    });
 });
 </script>
 <!-- Javascript end -->
