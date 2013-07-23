@@ -5,14 +5,12 @@
 $version = "1.5dev";
 
 if (!file_exists("config.php")) {
+    $installstring = "<?php\n\n//Database Settings\ndefine('DB_HOST', '" . getenv("DB_HOST") . "');\ndefine('DB_USER', '" . getenv("DB_USER") . "');\ndefine('DB_PASSWORD', '" . getenv("DB_PASSWORD") . "');\ndefine('DB_NAME', '" . getenv("DB_NAME") . "');\n\n//Admin Details\ndefine('ADMIN_USER', '" . getenv("ADMIN_USER") . "');\ndefine('ADMIN_PASSWORD', '" . getenv("ADMIN_PASSWORD") . "');\ndefine('SALT', '" . getenv("SALT") . "');\n\n//Other Settings\ndefine('UNIQUE_KEY', '" . getenv("UNIQUE_KEY") . "');\ndefine('THEME', '" . getenv("THEME") . "');\n\ndefine('VERSION', '" . getenv("VERSION") . "');\n\n?>";
     
-    $installstring = "<?php\n\n//Database Settings\ndefine('DB_HOST', " . getenv("DB_HOST") . ");\ndefine('DB_USER', " . getenv("DB_USER") . ");\ndefine('DB_PASSWORD', " . getenv("DB_PASSWORD") . ");\ndefine('DB_NAME', " . getenv("DB_NAME") . ");\n\n//Admin Details\ndefine('ADMIN_USER', " . getenv("ADMIN_USER") . ");\ndefine('ADMIN_PASSWORD', " . getenv("ADMIN_PASSWORD") . ");\ndefine('SALT', " . getenv("SALT") . ");\n\n//Other Settings\ndefine('UNIQUE_KEY', " . getenv("UNIQUE_KEY") . ");\ndefine('THEME', " . getenv("THEME") . ");\n\ndefine('VERSION', " . getenv("VERSION") . ");\n\n?>";
-        
-        //Write Config
-        $configfile = fopen("config.php", "w");
-        fwrite($configfile, $installstring);
-        fclose($configfile);
-    
+    //Write Config
+    $configfile = fopen("config.php", "w");
+    fwrite($configfile, $installstring);
+    fclose($configfile);
 }
 
 require_once("config.php");
