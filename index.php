@@ -4,6 +4,18 @@
 
 $version = "1.5dev";
 
+//Workaround for heroku
+if (!file_exists("config.php")) {
+    if (getenv("DB_HOST")) {
+        $installstring = "<?php\n\n//Database Settings\ndefine('DB_HOST', '" . getenv("DB_HOST") . "');\ndefine('DB_USER', '" . getenv("DB_USER") . "');\ndefine('DB_PASSWORD', '" . getenv("DB_PASSWORD") . "');\ndefine('DB_NAME', '" . getenv("DB_NAME") . "');\n\n//Admin Details\ndefine('ADMIN_USER', '" . getenv("ADMIN_USER") . "');\ndefine('ADMIN_PASSWORD', '" . getenv("ADMIN_PASSWORD") . "');\ndefine('SALT', '" . getenv("SALT") . "');\n\n//Other Settings\ndefine('UNIQUE_KEY', '" . getenv("UNIQUE_KEY") . "');\ndefine('THEME', '" . getenv("THEME") . "');\n\ndefine('VERSION', '" . getenv("VERSION") . "');\n\n?>";
+        $configfile = fopen("config.php", "w");
+        fwrite($configfile, $installstring);
+        fclose($configfile);
+    } else {
+        die("Error: Config file not found! Please reinstall Burden.");
+    }
+}
+
 require_once("config.php");
 
 $uniquekey = UNIQUE_KEY;
@@ -122,7 +134,7 @@ $(document).ready(function() {
                     $(".bootbox").prepend("<div class=\"modal-header\"><a href=\"javascript:;\" class=\"close\">&times;</a><h3>Confirm Delete</h3></div>");
                 }
             });
-            bootbox.confirm("Are you sure you want to delete this task?", "No", "Yes", function(result) {
+            bootbox.confirm("Are you sure you want to delete the selected task?", "No", "Yes", function(result) {
                 if (result == true) {
                     $.ajax({
                         type: "POST",
