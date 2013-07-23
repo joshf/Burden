@@ -280,10 +280,11 @@ $(document).ready(function() {
 </ul>
 <ul class="nav pull-right">
 <li class="dropdown">
-<a href="#" class="dropdown-toggle" data-toggle="dropdown">View Options<b class="caret"></b></a>
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">Filters <b class="caret"></b></a>
 <ul class="dropdown-menu">
-<li><a href="index.php?view=highpriority">Show High Priority Tasks</a></li>
-<li><a href="index.php?view=completed">Show Completed Tasks</a></li>
+<li><a href="index.php?view=highpriority">High Priority Tasks</a></li>
+<li><a href="index.php?view=completed">Completed Tasks</a></li>
+<li class="divider"></li>
 <li><a href="index.php">Clear Filters</a></li>
 </ul>
 </li>
