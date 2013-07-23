@@ -2,15 +2,6 @@
 
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
-if (isset($_GET["heroku"]) {
-    if (getenv("DB_HOST")) {
-        $installstring = "<?php\n\n//Database Settings\ndefine('DB_HOST', '" . getenv("DB_HOST") . "');\ndefine('DB_USER', '" . getenv("DB_USER") . "');\ndefine('DB_PASSWORD', '" . getenv("DB_PASSWORD") . "');\ndefine('DB_NAME', '" . getenv("DB_NAME") . "');\n\n//Admin Details\ndefine('ADMIN_USER', '" . getenv("ADMIN_USER") . "');\ndefine('ADMIN_PASSWORD', '" . getenv("ADMIN_PASSWORD") . "');\ndefine('SALT', '" . getenv("SALT") . "');\n\n//Other Settings\ndefine('UNIQUE_KEY', '" . getenv("UNIQUE_KEY") . "');\ndefine('THEME', '" . getenv("THEME") . "');\n\ndefine('VERSION', '" . getenv("VERSION") . "');\n\n?>";
-        $configfile = fopen("../config.php", "w");
-        fwrite($configfile, $installstring);
-        fclose($configfile);
-    }
-}
-
 if (!file_exists("../config.php")) {
     header("Location: index.php");
 }
@@ -65,7 +56,7 @@ body {
 
 //Version
 $version = "1.5";
-    
+
 if ($version == VERSION) {
     die("<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Upgrade Notice</h4><p>Burden does not require an upgrade.<p><a href=\"../login.php\" class=\"btn btn-info\">Go To Login</a></p></div></div></body></html>");
     
