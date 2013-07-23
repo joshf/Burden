@@ -285,7 +285,7 @@ $(document).ready(function() {
 <li><a href="index.php?view=highpriority">High Priority Tasks</a></li>
 <li><a href="index.php?view=completed">Completed Tasks</a></li>
 <li class="divider"></li>
-<li><a href="index.php">Clear Filters</a></li>
+<li><a href="index.php">Reset Filters</a></li>
 </ul>
 </li>
 <li><a href="settings.php">Settings</a></li>
