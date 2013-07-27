@@ -61,10 +61,8 @@ $(document).ready(function() {
     });
 	$("#addcategory").click(function () {
         bootbox.prompt("Add a category", function(newcategory) {
-            if (newcategory != null) {
-                if (newcategory != null && newcategory != "") {
-                    $("#category").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
-                }
+            if (newcategory != null && newcategory != "") {
+                $("#category").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
             }
         });
     });
