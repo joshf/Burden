@@ -141,7 +141,7 @@ mysql_close($con);
 ?>
 <div class="alert alert-success">
 <h4 class="alert-heading">Upgrade Complete</h4>
-<p>Burden has been successfully upgraded. Because Burden 1.5 uses salt password hashing, your password is now <b><?php echo $temppassword; ?></b>. Please change it to something more memorable as soon as possible using the settings page.<p><a href="../login.php" class="btn btn-success">Go To Login</a></p>
+<p>Burden has been successfully upgraded. Because Burden <?php echo $version; ?> uses salt password hashing, your password is now <b><?php echo $temppassword; ?></b>. Please change it to something more memorable as soon as possible using the settings page.<p><a href="../login.php" class="btn btn-success">Go To Login</a></p>
 </div>
 </div>
 <!-- Content end -->
