@@ -33,7 +33,7 @@ $idtoedit = mysql_real_escape_string($_POST["idtoedit"]);
 
 //Set variables
 $newtask = mysql_real_escape_string($_POST["task"]);
-$newcategory = mysql_real_escape_string($_POST["category"]);
+$newcategory = strtolower(mysql_real_escape_string($_POST["category"]));
 $newpriority = mysql_real_escape_string($_POST["priority"]);
 $newdue = mysql_real_escape_string($_POST["due"]);
 
