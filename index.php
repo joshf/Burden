@@ -2,7 +2,7 @@
 
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
-$version = "1.5dev";
+$version = "1.5";
 
 if (!file_exists("config.php")) {
     die("Error: Config file not found! Please reinstall Burden.");
