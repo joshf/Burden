@@ -40,6 +40,7 @@ if (isset($_POST["save"])) {
 
     //Show updated values
     header("Location: settings.php");
+    
     exit;
 }
 

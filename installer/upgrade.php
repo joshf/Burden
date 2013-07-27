@@ -78,6 +78,7 @@ $randsalt = md5(uniqid(rand(), true));
 $salt = substr($randsalt, 0, 3);
 $hashedpassword = hash("sha256", $temppassword);
 $adminpassword = hash("sha256", $salt . $hashedpassword);
+
 $uniquekey = UNIQUE_KEY;
 $theme = THEME;
 
