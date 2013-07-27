@@ -55,7 +55,7 @@ body {
 <?php
 
 //Version
-$version = "1.5";
+$version = "1.6";
 
 if ($version == VERSION) {
     die("<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Upgrade Notice</h4><p>Burden does not require an upgrade.<p><a href=\"../login.php\" class=\"btn btn-info\">Go To Login</a></p></div></div></body></html>");
@@ -67,18 +67,8 @@ $dbuser = DB_USER;
 $dbpassword = DB_PASSWORD;
 $dbname = DB_NAME;
 $adminuser = ADMIN_USER;
-
-//$adminpassword = ADMIN_PASSWORD;
-//$salt = SALT;
-
-//Salt and hash passwords
-//From 1.4 --> 1.5
-$temppassword = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz123456789"), 0, 6);
-$randsalt = md5(uniqid(rand(), true));
-$salt = substr($randsalt, 0, 3);
-$hashedpassword = hash("sha256", $temppassword);
-$adminpassword = hash("sha256", $salt . $hashedpassword);
-
+$adminpassword = ADMIN_PASSWORD;
+$salt = SALT;
 $uniquekey = UNIQUE_KEY;
 $theme = THEME;
 
@@ -114,22 +104,19 @@ if (!$does_db_exist) {
     die("<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Update Failed</h4><p>Error: Database does not exist (" . mysql_error() . "). Check your database settings are correct.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
 }
 
-//Alter Data table
-//From 1.4 --> 1.5
-$altertable = "ALTER TABLE `Data`
-CHANGE `id` `id` SMALLINT(10) NOT NULL,
-CHANGE `category` `category` VARCHAR(20) NOT NULL,
-CHANGE `priority` `highpriority` TINYINT(1) NOT NULL,
-CHANGE `task` `task` VARCHAR(300) NOT NULL,
-CHANGE `due` `due` VARCHAR(10) NOT NULL,
-CHANGE `completed` `completed` TINYINT(1) NOT NULL default \"0\",
-CHANGE `datecompleted` `datecompleted` VARCHAR(12) NOT NULL";
-
-//Run query
-mysql_query($altertable);
-
-//Make sure user doesnt lose their priorities
-mysql_query("UPDATE Data SET highpriority = \"1\" WHERE highpriority >= \"4\"");
+// //Alter Data table
+// //From 1.5 --> 1.6
+// $altertable = "ALTER TABLE `Data`
+// CHANGE `id` `id` SMALLINT(10) NOT NULL,
+// CHANGE `category` `category` VARCHAR(20) NOT NULL,
+// CHANGE `highpriority` `highpriority` TINYINT(1) NOT NULL,
+// CHANGE `task` `task` VARCHAR(300) NOT NULL,
+// CHANGE `due` `due` VARCHAR(10) NOT NULL,
+// CHANGE `completed` `completed` TINYINT(1) NOT NULL default \"0\",
+// CHANGE `datecompleted` `datecompleted` VARCHAR(12) NOT NULL";
+// 
+// //Run query
+// mysql_query($altertable);
 
 //Write Config
 $configfile = fopen("../config.php", "w");
@@ -141,7 +128,7 @@ mysql_close($con);
 ?>
 <div class="alert alert-success">
 <h4 class="alert-heading">Upgrade Complete</h4>
-<p>Burden has been successfully upgraded. Because Burden <?php echo $version; ?> uses salt password hashing, your password is now <b><?php echo $temppassword; ?></b>. Please change it to something more memorable as soon as possible using the settings page.<p><a href="../login.php" class="btn btn-success">Go To Login</a></p>
+<p>Burden has been successfully upgraded to version <?php echo $version; ?>.<p><a href="../login.php" class="btn btn-success">Go To Login</a></p>
 </div>
 </div>
 <!-- Content end -->
