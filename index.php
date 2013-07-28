@@ -278,6 +278,15 @@ $(document).ready(function() {
 </ul>
 <ul class="nav pull-right">
 <li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-filter"></i> Filters <b class="caret"></b></a>
+<ul class="dropdown-menu">
+<li><a href="index.php?view=highpriority">High Priority Tasks</a></li>
+<li><a href="index.php?view=completed">Completed Tasks</a></li>
+<li class="divider"></li>
+<li><a href="index.php">Clear Filters</a></li>
+</ul>
+</li>
+<li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">  <i class="icon-user"></i> <? echo ADMIN_USER; ?> <b class="caret"></b></a>
 <ul class="dropdown-menu">
 <li><a href="settings.php"><i class="icon-cog"></i> Settings</a></li>
