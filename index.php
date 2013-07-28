@@ -288,8 +288,13 @@ $(document).ready(function() {
 <li><a href="index.php">Clear Filters</a></li>
 </ul>
 </li>
-<li><a href="settings.php">Settings</a></li>
-<li><a href="logout.php">Logout</a></li>
+<li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">  <i class="icon-user"></i> <? echo ADMIN_USER; ?> <b class="caret"></b></a>
+<ul class="dropdown-menu">
+<li><a href="settings.php"><i class="icon-cog"></i> Settings</a></li>
+<li><a href="logout.php"><i class="icon-off"></i> Logout</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
