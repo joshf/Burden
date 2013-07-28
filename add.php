@@ -81,17 +81,20 @@ $(document).ready(function() {
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 </a>
-<a class="brand" href="#">Burden</a>
+<a class="brand" href="index.php">Burden</a>
 <div class="nav-collapse collapse">
 <ul class="nav">
-<li><a href="index.php">Home</a></li>
-<li class="divider-vertical"></li>
-<li class="active"><a href="add.php">Add</a></li>
-<li><a href="edit.php">Edit</a></li>
+<li class="active"><a href="add.php"><i class="icon-plus-sign"></i> Add</a></li>
+<li><a href="edit.php"><i class="icon-edit"></i> Edit</a></li>
 </ul>
 <ul class="nav pull-right">
-<li><a href="settings.php">Settings</a></li>
-<li><a href="logout.php">Logout</a></li>
+<li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">  <i class="icon-user"></i> <? echo ADMIN_USER; ?> <b class="caret"></b></a>
+<ul class="dropdown-menu">
+<li><a href="settings.php"><i class="icon-cog"></i> Settings</a></li>
+<li><a href="logout.php"><i class="icon-off"></i> Logout</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>

@@ -270,24 +270,13 @@ $(document).ready(function() {
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 </a>
-<a class="brand" href="#">Burden</a>
+<a class="brand" href="index.php">Burden</a>
 <div class="nav-collapse collapse">
 <ul class="nav">
-<li class="active"><a href="index.php">Home</a></li>
-<li class="divider-vertical"></li>
-<li><a href="add.php">Add</a></li>
-<li><a href="edit.php">Edit</a></li>
+<li><a href="add.php"><i class="icon-plus-sign"></i> Add</a></li>
+<li><a href="edit.php"><i class="icon-edit"></i> Edit</a></li>
 </ul>
 <ul class="nav pull-right">
-<li class="dropdown">
-<a href="#" class="dropdown-toggle" data-toggle="dropdown">Filters <b class="caret"></b></a>
-<ul class="dropdown-menu">
-<li><a href="index.php?view=highpriority">High Priority Tasks</a></li>
-<li><a href="index.php?view=completed">Completed Tasks</a></li>
-<li class="divider"></li>
-<li><a href="index.php">Clear Filters</a></li>
-</ul>
-</li>
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">  <i class="icon-user"></i> <? echo ADMIN_USER; ?> <b class="caret"></b></a>
 <ul class="dropdown-menu">
