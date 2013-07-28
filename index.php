@@ -273,6 +273,7 @@ $(document).ready(function() {
 <a class="brand" href="index.php">Burden</a>
 <div class="nav-collapse collapse">
 <ul class="nav">
+<li class="divider-vertical"></li>
 <li><a href="add.php"><i class="icon-plus-sign"></i> Add</a></li>
 <li><a href="edit.php"><i class="icon-edit"></i> Edit</a></li>
 </ul>
@@ -280,10 +281,10 @@ $(document).ready(function() {
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-filter"></i> Filters <b class="caret"></b></a>
 <ul class="dropdown-menu">
-<li><a href="index.php?view=highpriority">High Priority Tasks</a></li>
-<li><a href="index.php?view=completed">Completed Tasks</a></li>
+<li><a href="index.php?view=highpriority"><i class="icon-exclamation-sign"></i> High Priority Tasks</a></li>
+<li><a href="index.php?view=completed"><i class="icon-ok"></i> Completed Tasks</a></li>
 <li class="divider"></li>
-<li><a href="index.php">Clear Filters</a></li>
+<li><a href="index.php"><i class="icon-remove"></i> Clear Filters</a></li>
 </ul>
 </li>
 <li class="dropdown">

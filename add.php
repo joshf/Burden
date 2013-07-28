@@ -84,6 +84,7 @@ $(document).ready(function() {
 <a class="brand" href="index.php">Burden</a>
 <div class="nav-collapse collapse">
 <ul class="nav">
+<li class="divider-vertical"></li>
 <li class="active"><a href="add.php"><i class="icon-plus-sign"></i> Add</a></li>
 <li><a href="edit.php"><i class="icon-edit"></i> Edit</a></li>
 </ul>
