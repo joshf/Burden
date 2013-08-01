@@ -8,10 +8,8 @@ if (!file_exists("../config.php")) {
 
 require_once("../config.php");
 
-$uniquekey = UNIQUE_KEY;
-
 session_start();
-if (!isset($_SESSION["is_logged_in_" . $uniquekey . ""])) {
+if (!isset($_SESSION["user"])) {
     header("Location: ../login.php");
     exit; 
 }

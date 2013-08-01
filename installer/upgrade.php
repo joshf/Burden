@@ -69,7 +69,6 @@ $dbname = DB_NAME;
 $adminuser = ADMIN_USER;
 $adminpassword = ADMIN_PASSWORD;
 $salt = SALT;
-$uniquekey = UNIQUE_KEY;
 $theme = THEME;
 
 $updatestring = "<?php
@@ -86,7 +85,6 @@ define('ADMIN_PASSWORD', " . var_export($adminpassword, true) . ");
 define('SALT', " . var_export($salt, true) . ");
 
 //Other Settings
-define('UNIQUE_KEY', " . var_export($uniquekey, true) . ");
 define('THEME', 'default');
 define('VERSION', " . var_export($version, true) . ");
 

@@ -11,28 +11,27 @@ require_once("config.php");
 $username = ADMIN_USER;
 $password = ADMIN_PASSWORD;
 $salt = SALT;
-$uniquekey = UNIQUE_KEY;
 
 session_start();
 
 //If cookie is set, skip login
-if (isset($_COOKIE["burdenrememberme_" . $uniquekey . ""])) {
-    $_SESSION["is_logged_in_" . $uniquekey . ""] = true;
+if (isset($_COOKIE["burdenrememberme"])) {
+    $_SESSION["user"] = true;
 }
 
 if (isset($_POST["password"]) && isset($_POST["username"])) {
     $hashedpassword = hash("sha256", $salt . hash("sha256", $_POST["password"]));
     if ($hashedpassword == $password && $_POST["username"] == $username) {
-        $_SESSION["is_logged_in_" . $uniquekey . ""] = true;
+        $_SESSION["user"] = true;
             if (isset($_POST["rememberme"])) {
-                setcookie("burdenrememberme_" . $uniquekey . "", $username, time()+1209600);
+                setcookie("burdenrememberme", $username, time()+1209600);
             }
     } else {
         header("Location: login.php?login_error=true");
     }
 } 
 
-if (!isset($_SESSION["is_logged_in_" . $uniquekey . ""])) {
+if (!isset($_SESSION["user"])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">

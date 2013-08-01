@@ -8,10 +8,8 @@ if (!file_exists("config.php")) {
 
 require_once("config.php");
 
-$uniquekey = UNIQUE_KEY;
-
 session_start();
-if (!isset($_SESSION["is_logged_in_" . $uniquekey . ""])) {
+if (!isset($_SESSION["user"])) {
     header("Location: login.php");
     exit; 
 }
@@ -31,7 +29,7 @@ if (isset($_POST["save"])) {
     }
     $theme = $_POST["theme"];
 
-    $settingsstring = "<?php\n\n//Database Settings\ndefine('DB_HOST', '" . DB_HOST . "');\ndefine('DB_USER', '" . DB_USER . "');\ndefine('DB_PASSWORD', '" . DB_PASSWORD . "');\ndefine('DB_NAME', '" . DB_NAME . "');\n\n//Admin Details\ndefine('ADMIN_USER', " . var_export($adminuser, true) . ");\ndefine('ADMIN_PASSWORD', " . var_export($adminpassword, true) . ");\ndefine('SALT', '" . SALT . "');\n\n//Other Settings\ndefine('UNIQUE_KEY', " . var_export($uniquekey, true) . ");\ndefine('THEME', " . var_export($theme, true) . ");\ndefine('VERSION', '" . VERSION . "');\n\n?>";
+    $settingsstring = "<?php\n\n//Database Settings\ndefine('DB_HOST', '" . DB_HOST . "');\ndefine('DB_USER', '" . DB_USER . "');\ndefine('DB_PASSWORD', '" . DB_PASSWORD . "');\ndefine('DB_NAME', '" . DB_NAME . "');\n\n//Admin Details\ndefine('ADMIN_USER', " . var_export($adminuser, true) . ");\ndefine('ADMIN_PASSWORD', " . var_export($adminpassword, true) . ");\ndefine('SALT', '" . SALT . "');\n\n//Other Settings\ndefine('THEME', " . var_export($theme, true) . ");\ndefine('VERSION', '" . VERSION . "');\n\n?>";
 
     //Write config
     $configfile = fopen("config.php", "w");
