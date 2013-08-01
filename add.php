@@ -161,6 +161,8 @@ while($row = mysql_fetch_assoc($getcategories)) {
     echo "<option value=\"" . $row["category"] . "\">" . ucfirst($row["category"]) . "</option>";
 }
 
+mysql_close($con);
+
 ?>
 </select>
 <span class="help-block"><a id="addcategory">&#43; Add new category</a></span>
