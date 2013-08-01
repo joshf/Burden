@@ -19,6 +19,16 @@ if (!isset($_SESSION["burden_user"])) {
 //Set cookie so we dont constantly check for updates
 setcookie("burdenhascheckedforupdates", "checkedsuccessfully", time()+604800);
 
+@$con = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
+if (!$con) {
+    die("Error: Could not connect to database (" . mysql_error() . "). Check your database settings are correct.");
+} else {
+    $does_db_exist = mysql_select_db(DB_NAME, $con);
+    if (!$does_db_exist) {
+        die("Error: Database does not exist (" . mysql_error() . "). Check your database settings are correct.");
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -320,16 +330,6 @@ if ($view == "completed") {
 echo "</div><div class=\"notifications top-right\"></div>";		
 
 echo "<noscript><div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>Please enable JavaScript to use Burden. For instructions on how to do this, see <a href=\"http://www.activatejavascript.org\" target=\"_blank\">here</a>.</p></div></noscript>";
-
-@$con = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
-if (!$con) {
-    die("<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Error</h4><p>Could not connect to database (" . mysql_error() . "). Check your database settings are correct.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
-} else {
-    $does_db_exist = mysql_select_db(DB_NAME, $con);
-    if (!$does_db_exist) {
-        die("<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Error</h4><p>Database does not exist (" . mysql_error() . "). Check your database settings are correct.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
-    }
-}
 
 if ($view == "completed") {
     $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"1\"");
