@@ -15,23 +15,23 @@ $salt = SALT;
 session_start();
 
 //If cookie is set, skip login
-if (isset($_COOKIE["burdenrememberme"])) {
-    $_SESSION["user"] = true;
+if (isset($_COOKIE["burden_user_rememberme"])) {
+    $_SESSION["burden_user"] = ADMIN_USER;
 }
 
 if (isset($_POST["password"]) && isset($_POST["username"])) {
     $hashedpassword = hash("sha256", $salt . hash("sha256", $_POST["password"]));
     if ($hashedpassword == $password && $_POST["username"] == $username) {
-        $_SESSION["user"] = true;
+        $_SESSION["burden_user"] = ADMIN_USER;
             if (isset($_POST["rememberme"])) {
-                setcookie("burdenrememberme", $username, time()+1209600);
+                setcookie("burden_user_rememberme", $username, time()+1209600);
             }
     } else {
         header("Location: login.php?login_error=true");
     }
 } 
 
-if (!isset($_SESSION["user"])) {
+if (!isset($_SESSION["burden_user"])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">

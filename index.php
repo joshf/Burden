@@ -11,7 +11,7 @@ if (!file_exists("config.php")) {
 require_once("config.php");
 
 session_start();
-if (!isset($_SESSION["user"])) {
+if (!isset($_SESSION["burden_user"])) {
     header("Location: login.php");
     exit; 
 }

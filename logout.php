@@ -10,10 +10,10 @@ require_once("config.php");
 
 session_start();
 
-unset($_SESSION["user"]);
+unset($_SESSION["burden_user"]);
 
-if (isset($_COOKIE["burdenrememberme"])) {
-	setcookie("burdenrememberme", "", time()-86400);
+if (isset($_COOKIE["burden_user_rememberme"])) {
+	setcookie("burden_user_rememberme", "", time()-86400);
 }
 
 header("Location: login.php?logged_out=true");
