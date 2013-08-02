@@ -118,12 +118,16 @@ $(document).ready(function() {
 
 //Quick edit selector
 if (!isset($_GET["id"])) {
-	echo "<form action=\"edit.php\" method=\"get\"><fieldset><div class=\"control-group\"><label class=\"control-label\" for=\"id\">Select a task to edit</label><div class=\"controls\"><select id=\"id\" name=\"id\">";
 	$getids = mysql_query("SELECT id, task FROM Data WHERE completed = \"0\"");
-	while($row = mysql_fetch_assoc($getids)) {    
-    	echo "<option value=\"" . $row["id"] . "\">" . ucfirst($row["task"]) . "</option>";
-	}
-	echo "</select></div></div><div class=\"form-actions\"><button type=\"submit\" class=\"btn btn-primary\">Edit</button></div></fieldset></form>";
+    if (mysql_num_rows($getids) > 0) {
+        echo "<form action=\"edit.php\" method=\"get\"><fieldset><div class=\"control-group\"><label class=\"control-label\" for=\"id\">Select a task to edit</label><div class=\"controls\"><select id=\"id\" name=\"id\">";
+        while($row = mysql_fetch_assoc($getids)) {
+            echo "<option value=\"" . $row["id"] . "\">" . ucfirst($row["task"]) . "</option>";
+        }
+        echo "</select></div></div><div class=\"form-actions\"><button type=\"submit\" class=\"btn btn-primary\">Edit</button></div></fieldset></form>";
+    } else {
+        die("<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Info</h4><p>No tasks available to edit.</p><p><a class=\"btn btn-info\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
+    }
 } else {
 
 ?>
