@@ -133,8 +133,7 @@ $idtoedit = mysql_real_escape_string($_GET["id"]);
 
 //Check if ID exists
 $doesidexist = mysql_query("SELECT id FROM Data WHERE id = \"$idtoedit\"");
-$doesidexistresult = mysql_fetch_assoc($doesidexist); 
-if ($doesidexistresult == 0) {
+if (mysql_num_rows($doesidexist) == 0) {
     die("<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Error</h4><p>ID does not exist.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
 }
 
@@ -162,8 +161,7 @@ $category = $getidinforesult["category"];
 
 //Don't duplicate none entry
 $doesnoneexist = mysql_query("SELECT category FROM Data WHERE category = \"none\"");
-$doesnoneexistresult = mysql_fetch_assoc($doesnoneexist); 
-if ($doesnoneexistresult == 0) {
+if (mysql_num_rows($doesnoneexist) == 0) {
     echo "<option value=\"none\">None</option>";
 }
 
