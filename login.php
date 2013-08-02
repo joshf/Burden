@@ -16,13 +16,13 @@ session_start();
 
 //If cookie is set, skip login
 if (isset($_COOKIE["burden_user_rememberme"])) {
-    $_SESSION["burden_user"] = ADMIN_USER;
+    $_SESSION["burden_user"] = $username;
 }
 
 if (isset($_POST["password"]) && isset($_POST["username"])) {
     $hashedpassword = hash("sha256", $salt . hash("sha256", $_POST["password"]));
     if ($hashedpassword == $password && $_POST["username"] == $username) {
-        $_SESSION["burden_user"] = ADMIN_USER;
+        $_SESSION["burden_user"] = $username;
             if (isset($_POST["rememberme"])) {
                 setcookie("burden_user_rememberme", $username, time()+1209600);
             }
