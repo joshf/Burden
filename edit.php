@@ -146,7 +146,7 @@ if (isset($_GET["error"])) {
     }
 }
 ?>
-<form action="actions/edit.php" method="post">
+<form action="actions/edit.php" method="post" autocomplete="off">
 <fieldset>
 <?php
 

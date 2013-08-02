@@ -117,7 +117,7 @@ if (isset($_POST["doinstall"])) {
 }
 
 ?>	
-<form method="post">
+<form method="post" autocomplete="off">
 <fieldset>
 <h4>Database Settings</h4>
 <div class="control-group">

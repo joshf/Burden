@@ -127,7 +127,7 @@ if (isset($_GET["error"])) {
 }
 
 ?>
-<form action="actions/add.php" method="post">
+<form action="actions/add.php" method="post" autocomplete="off">
 <fieldset>
 <div class="control-group">
 <label class="control-label" for="task">Task</label>
