@@ -41,8 +41,7 @@ $id = ($resultgetlasttasknumber["MAX(id)"] + 1);
 
 //Check if ID exists
 $checkid = mysql_query("SELECT id FROM Data WHERE id = \"$id\"");
-$resultcheckid = mysql_fetch_assoc($checkid); 
-if ($resultcheckid != 0) {
+if (mysql_num_rows($checkid) != 0) {
     header("Location: ../add.php?error=idexists");
     exit;
 }
