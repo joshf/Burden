@@ -331,13 +331,6 @@ echo "</div><div class=\"notifications top-right\"></div>";
 
 echo "<noscript><div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>Please enable JavaScript to use Burden. For instructions on how to do this, see <a href=\"http://www.activatejavascript.org\" target=\"_blank\">here</a>.</p></div></noscript>";
 
-if ($view == "completed") {
-    $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"1\"");
-} elseif ($view == "highpriority") {
-    $gettasks = mysql_query("SELECT * FROM Data WHERE highpriority = \"1\" AND completed = \"0\"");
-} else {
-    $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"0\"");
-}
 
 //Update checking
 if (!isset($_COOKIE["burdenhascheckedforupdates"])) {
@@ -348,6 +341,15 @@ if (!isset($_COOKIE["burdenhascheckedforupdates"])) {
         }
     }
 } 
+
+
+if ($view == "completed") {
+    $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"1\"");
+} elseif ($view == "highpriority") {
+    $gettasks = mysql_query("SELECT * FROM Data WHERE highpriority = \"1\" AND completed = \"0\"");
+} else {
+    $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"0\"");
+}
 
 echo "<table id=\"tasks\" class=\"table table-striped table-bordered table-condensed\">
 <thead>

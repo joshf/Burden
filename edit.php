@@ -126,7 +126,7 @@ if (!isset($_GET["id"])) {
         }
         echo "</select></div></div><div class=\"form-actions\"><button type=\"submit\" class=\"btn btn-primary\">Edit</button></div></fieldset></form>";
     } else {
-        die("<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Info</h4><p>No tasks available to edit.</p><p><a class=\"btn btn-info\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
+        die("<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>No tasks available to edit.</p><p><a class=\"btn btn-info\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
     }
 } else {
 
