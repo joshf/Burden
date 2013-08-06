@@ -24,7 +24,7 @@ mysql_select_db(DB_NAME, $con);
 
 //Set variables
 $task = mysql_real_escape_string($_POST["task"]);
-$category = strtolower(mysql_real_escape_string($_POST["category"]));
+$category = mysql_real_escape_string($_POST["category"]);
 $priority = mysql_real_escape_string($_POST["priority"]);
 $due = mysql_real_escape_string($_POST["due"]);
 
