@@ -119,7 +119,7 @@ $(document).ready(function() {
 <ul class="nav pull-right">
 <li class="divider-vertical"></li>
 <li class="dropdown">
-<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> <? echo ADMIN_USER; ?> <b class="caret"></b></a>
+<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> <?php echo ADMIN_USER; ?> <b class="caret"></b></a>
 <ul class="dropdown-menu">
 <li><a href="settings.php"><i class="icon-cog"></i> Settings</a></li>
 <li><a href="logout.php"><i class="icon-off"></i> Logout</a></li>
