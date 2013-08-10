@@ -134,7 +134,7 @@ $(document).ready(function() {
                     $(".bootbox").prepend("<div class=\"modal-header\"><a href=\"javascript:;\" class=\"close\">&times;</a><h3>Confirm Delete</h3></div>");
                 }
             });
-            bootbox.confirm("Are you sure you want to delete the selected task?", "No", "Yes", function(result) {
+            bootbox.confirm("Are you sure you want this task?", "No", "Yes", function(result) {
                 if (result == true) {
                     $.ajax({
                         type: "POST",
