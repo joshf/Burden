@@ -15,7 +15,7 @@ Features:
 * Themed by Twitter Bootstrap, extra themes available through Bootswatch
 * Sort and search tasks using DataTables
 * Works well on mobile devices due to a responsive layout
-* Beautiful notifications system
+* Beautiful notifications system via BootstrapNotify
 
 Screenshots:
 ------------
