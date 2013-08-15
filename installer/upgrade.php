@@ -102,19 +102,12 @@ if (!$does_db_exist) {
     die("<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Update Failed</h4><p>Error: Database does not exist (" . mysql_error() . "). Check your database settings are correct.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
 }
 
-// //Alter Data table
-// //From 1.5 --> 1.6
-// $altertable = "ALTER TABLE `Data`
-// CHANGE `id` `id` SMALLINT(10) NOT NULL,
-// CHANGE `category` `category` VARCHAR(20) NOT NULL,
-// CHANGE `highpriority` `highpriority` TINYINT(1) NOT NULL,
-// CHANGE `task` `task` VARCHAR(300) NOT NULL,
-// CHANGE `due` `due` VARCHAR(10) NOT NULL,
-// CHANGE `completed` `completed` TINYINT(1) NOT NULL default \"0\",
-// CHANGE `datecompleted` `datecompleted` VARCHAR(12) NOT NULL";
-// 
-// //Run query
-// mysql_query($altertable);
+//Alter Data table
+//From 1.5 --> 1.6
+$altertable = "ALTER TABLE `Data` CHANGE `id` `id` SMALLINT(10) NOT NULL AUTO_INCREMENT";
+ 
+//Run query
+mysql_query($altertable);
 
 //Write Config
 $configfile = fopen("../config.php", "w");

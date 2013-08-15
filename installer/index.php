@@ -93,7 +93,7 @@ if (isset($_POST["doinstall"])) {
 
     //Create Data table
     $createtable = "CREATE TABLE `Data` (
-    `id` SMALLINT(10) NOT NULL,
+    `id` SMALLINT(10) NOT NULL AUTO_INCREMENT,
     `category` VARCHAR(20) NOT NULL,
     `highpriority` TINYINT(1) NOT NULL,
     `task` VARCHAR(300) NOT NULL,
