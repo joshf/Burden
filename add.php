@@ -148,13 +148,13 @@ if (isset($_GET["error"])) {
 <?php
 
 //Don't duplicate none entry
-$doesnoneexist = mysql_query("SELECT category FROM Data WHERE category = \"none\"");
+$doesnoneexist = mysql_query("SELECT `category` FROM `Data` WHERE `category` = \"none\" OR \"None\"");
 if (mysql_num_rows($doesnoneexist) == 0) {
     echo "<option value=\"none\">None</option>";
 }
 
 //Get categories
-$getcategories = mysql_query("SELECT DISTINCT(category) FROM Data WHERE category != \"\"");
+$getcategories = mysql_query("SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\"");
 
 while($row = mysql_fetch_assoc($getcategories)) {    
     echo "<option value=\"" . $row["category"] . "\">" . ucfirst($row["category"]) . "</option>";

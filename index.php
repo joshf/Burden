@@ -342,13 +342,12 @@ if (!isset($_COOKIE["burdenhascheckedforupdates"])) {
     }
 } 
 
-
 if ($view == "completed") {
-    $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"1\"");
+    $gettasks = mysql_query("SELECT * FROM `Data` WHERE `completed` = \"1\"");
 } elseif ($view == "highpriority") {
-    $gettasks = mysql_query("SELECT * FROM Data WHERE highpriority = \"1\" AND completed = \"0\"");
+    $gettasks = mysql_query("SELECT * FROM `Data` WHERE `highpriority` = \"1\" AND `completed` = \"0\"");
 } else {
-    $gettasks = mysql_query("SELECT * FROM Data WHERE completed = \"0\"");
+    $gettasks = mysql_query("SELECT * FROM `Data` WHERE `completed` = \"0\"");
 }
 
 echo "<table id=\"tasks\" class=\"table table-striped table-bordered table-condensed\">
@@ -453,7 +452,7 @@ if ($view == "normal" || $view == "highpriority") {
 <div class="well">
 <?php
 
-$getnumberoftasks = mysql_query("SELECT COUNT(id) FROM Data WHERE completed != \"1\"");
+$getnumberoftasks = mysql_query("SELECT COUNT(id) FROM `Data` WHERE `completed` != \"1\"");
 $resultnumberoftasks = mysql_fetch_assoc($getnumberoftasks);
 echo "<i class=\"icon-tasks\"></i> <b>" . $resultnumberoftasks["COUNT(id)"] . "</b> tasks<br>";
 

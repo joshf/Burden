@@ -35,12 +35,12 @@ if (empty($task) || empty($due)) {
 }
 
 //Get new ID
-$getlasttasknumber = mysql_query("SELECT MAX(id) FROM Data");
+$getlasttasknumber = mysql_query("SELECT MAX(id) FROM `Data`");
 $resultgetlasttasknumber = mysql_fetch_assoc($getlasttasknumber);
 $id = ($resultgetlasttasknumber["MAX(id)"] + 1);
 
 //Check if ID exists
-$checkid = mysql_query("SELECT id FROM Data WHERE id = \"$id\"");
+$checkid = mysql_query("SELECT `id` FROM `Data` WHERE `id` = \"$id\"");
 if (mysql_num_rows($checkid) != 0) {
     header("Location: ../add.php?error=idexists");
     exit;
@@ -52,8 +52,8 @@ if (isset($_POST["highpriority"])) {
     $highpriority = "0";
 }
 
-mysql_query("INSERT INTO Data (id, category, highpriority, task, due, completed)
-VALUES (\"$id\",\"$category\",\"$highpriority\",\"$task\",\"$due\",\"0\")");
+mysql_query("INSERT INTO `Data` (`category`, `highpriority`, `task`, `due`, `completed`)
+VALUES (\"$category\",\"$highpriority\",\"$task\",\"$due\",\"0\")");
 
 mysql_close($con);
 

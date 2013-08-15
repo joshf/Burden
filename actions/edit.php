@@ -47,7 +47,7 @@ if (isset($_POST["highpriority"])) {
     $newhighpriority = "0";
 }
 
-mysql_query("UPDATE Data SET category = \"$newcategory\", highpriority = \"$newhighpriority\", task = \"$newtask\", due = \"$newdue\" WHERE id = \"$idtoedit\"");
+mysql_query("UPDATE `Data` SET `category` = \"$newcategory\", `highpriority` = \"$newhighpriority\", `task` = \"$newtask\", `due` = \"$newdue\" WHERE `id` = \"$idtoedit\"");
 
 mysql_close($con);
 

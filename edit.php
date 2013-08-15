@@ -118,7 +118,7 @@ $(document).ready(function() {
 
 //Quick edit selector
 if (!isset($_GET["id"])) {
-	$getids = mysql_query("SELECT id, task FROM Data WHERE completed = \"0\"");
+	$getids = mysql_query("SELECT `id`, `task` FROM `Data` WHERE `completed` = \"0\"");
     if (mysql_num_rows($getids) > 0) {
         echo "<form action=\"edit.php\" method=\"get\"><fieldset><div class=\"control-group\"><label class=\"control-label\" for=\"id\">Select a task to edit</label><div class=\"controls\"><select id=\"id\" name=\"id\">";
         while($row = mysql_fetch_assoc($getids)) {
@@ -136,7 +136,7 @@ if (!isset($_GET["id"])) {
 $idtoedit = mysql_real_escape_string($_GET["id"]);
 
 //Check if ID exists
-$doesidexist = mysql_query("SELECT id FROM Data WHERE id = $idtoedit");
+$doesidexist = mysql_query("SELECT `id` FROM `Data` WHERE `id` = $idtoedit");
 if (mysql_num_rows($doesidexist) == 0) {
     die("<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Error</h4><p>ID does not exist.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
 }
@@ -153,7 +153,7 @@ if (isset($_GET["error"])) {
 <fieldset>
 <?php
 
-$getidinfo = mysql_query("SELECT * FROM Data WHERE id = \"$idtoedit\"");
+$getidinfo = mysql_query("SELECT * FROM `Data` WHERE `id` = \"$idtoedit\"");
 $getidinforesult = mysql_fetch_assoc($getidinfo);
 
 echo "<div class=\"control-group\"><label class=\"control-label\" for=\"task\">Task</label><div class=\"controls\"><input type=\"text\" id=\"task\" name=\"task\" value=\"" . $getidinforesult["task"] . "\" placeholder=\"Type a task...\" required></div></div>";
@@ -164,13 +164,13 @@ echo "<div class=\"control-group\"><label class=\"control-label\" for=\"category
 $category = $getidinforesult["category"];
 
 //Don't duplicate none entry
-$doesnoneexist = mysql_query("SELECT category FROM Data WHERE category = \"none\"");
+$doesnoneexist = mysql_query("SELECT `category` FROM `Data` WHERE `category` = \"none\" OR \"None\"");
 if (mysql_num_rows($doesnoneexist) == 0) {
     echo "<option value=\"none\">None</option>";
 }
 
 //Get categories
-$getcategories = mysql_query("SELECT DISTINCT(category) FROM Data WHERE category != \"\"");
+$getcategories = mysql_query("SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\"");
 
 while($row = mysql_fetch_assoc($getcategories)) {    
     if ($row["category"] == $category) {
@@ -185,7 +185,7 @@ echo "</select><span class=\"help-block\"><a id=\"addcategory\">&#43; Add new ca
 echo "<div class=\"control-group\"><div class=\"controls\"><label class=\"checkbox\">";
     
 //Check if task is high priority
-$checkifhighpriority = mysql_query("SELECT highpriority FROM Data WHERE id = \"$idtoedit\"");
+$checkifhighpriority = mysql_query("SELECT `highpriority` FROM `Data` WHERE `id` = \"$idtoedit\"");
 $checkifhighpriorityresult = mysql_fetch_assoc($checkifhighpriority); 
 if ($checkifhighpriorityresult["highpriority"] == "1") { 
     echo "<input type=\"checkbox\" id=\"highpriority\" name=\"highpriority\" checked=\"checked\"> High priority";

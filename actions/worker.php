@@ -33,11 +33,11 @@ $action = $_POST["action"];
 
 if ($action == "complete") {
     $todaysdate = date("d/m/Y");
-    mysql_query("UPDATE Data SET completed = \"1\", datecompleted = \"$todaysdate\" WHERE id = \"$id\"");
+    mysql_query("UPDATE `Data` SET `completed` = \"1\", `datecompleted` = \"$todaysdate\" WHERE `id` = \"$id\"");
 } elseif ($action == "restore") {
-    mysql_query("UPDATE Data SET completed = \"0\", datecompleted = \"\" WHERE id = \"$id\"");
+    mysql_query("UPDATE `Data` SET `completed` = \"0\", `datecompleted` = \"\" WHERE `id` = \"$id\"");
 } elseif ($action == "delete") {
-    mysql_query("DELETE FROM Data WHERE id = \"$id\"");
+    mysql_query("DELETE FROM `Data` WHERE `id` = \"$id\"");
 }
 
 mysql_close($con);
