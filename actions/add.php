@@ -34,18 +34,6 @@ if (empty($task) || empty($due)) {
     exit;
 }
 
-//Get new ID
-$getlasttasknumber = mysql_query("SELECT MAX(id) FROM `Data`");
-$resultgetlasttasknumber = mysql_fetch_assoc($getlasttasknumber);
-$id = ($resultgetlasttasknumber["MAX(id)"] + 1);
-
-//Check if ID exists
-$checkid = mysql_query("SELECT `id` FROM `Data` WHERE `id` = \"$id\"");
-if (mysql_num_rows($checkid) != 0) {
-    header("Location: ../add.php?error=idexists");
-    exit;
-}
-
 if (isset($_POST["highpriority"])) {
     $highpriority = "1";
 } else {
