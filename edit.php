@@ -119,7 +119,7 @@ $(document).ready(function() {
 //Quick edit selector
 if (!isset($_GET["id"])) {
 	$getids = mysql_query("SELECT `id`, `task` FROM `Data` WHERE `completed` = \"0\"");
-    if (mysql_num_rows($getids) > 0) {
+    if (mysql_num_rows($getids) != 0) {
         echo "<form action=\"edit.php\" method=\"get\"><fieldset><div class=\"control-group\"><label class=\"control-label\" for=\"id\">Select a task to edit</label><div class=\"controls\"><select id=\"id\" name=\"id\">";
         while($row = mysql_fetch_assoc($getids)) {
             echo "<option value=\"" . $row["id"] . "\">" . ucfirst($row["task"]) . "</option>";

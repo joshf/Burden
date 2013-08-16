@@ -324,7 +324,7 @@ if ($view == "completed") {
     echo "<h1>Completed Tasks</h1>";
 } elseif ($view == "highpriority") {
     echo "<h1>High Priority Tasks</h1>";
-} else {
+} elseif ($view == "normal") {
     echo "<h1>Current Tasks</h1>";
 }
 echo "</div><div class=\"notifications top-right\"></div>";		
