@@ -326,7 +326,6 @@ echo "</div><div class=\"notifications top-right\"></div>";
 
 echo "<noscript><div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>Please enable JavaScript to use Burden. For instructions on how to do this, see <a href=\"http://www.activatejavascript.org\" target=\"_blank\">here</a>.</p></div></noscript>";
 
-
 //Update checking
 if (!isset($_COOKIE["burdenhascheckedforupdates"])) {
     $remoteversion = file_get_contents("https://raw.github.com/joshf/Burden/master/version.txt");
