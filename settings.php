@@ -68,36 +68,10 @@ body {
 	}
 }
 </style>
-<!-- Javascript start -->
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<script src="resources/jquery.min.js"></script>
-<script src="resources/bootstrap/js/bootstrap.min.js"></script>
-<script src="resources/validation/jqBootstrapValidation.min.js"></script>
-<script src="resources/bootstrap-notify/js/bootstrap-notify.min.js"></script>
-<script src="resources/cookie/jquery.cookie.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    if ($.cookie("settings_updated")) {
-        $(".top-right").notify({
-            type: "info",
-            transition: "fade",
-            icon: "info-sign",
-            message: {
-                text: "Settings saved!"
-            }
-        }).show();
-        $.removeCookie("settings_updated");
-    }
-    $("form").submit(function() {
-        $.cookie("settings_updated", "true");
-    });
-    $("input").not("[type=submit]").jqBootstrapValidation();
-});
-</script>
-<!-- Javascript end -->
 </head>
 <body>
 <!-- Nav start -->
@@ -178,5 +152,31 @@ echo "</select>";
 </form>
 </div>
 <!-- Content end -->
+<!-- Javascript start -->
+<script src="resources/jquery.min.js"></script>
+<script src="resources/bootstrap/js/bootstrap.min.js"></script>
+<script src="resources/validation/jqBootstrapValidation.min.js"></script>
+<script src="resources/bootstrap-notify/js/bootstrap-notify.min.js"></script>
+<script src="resources/cookie/jquery.cookie.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    if ($.cookie("settings_updated")) {
+        $(".top-right").notify({
+            type: "info",
+            transition: "fade",
+            icon: "info-sign",
+            message: {
+                text: "Settings saved!"
+            }
+        }).show();
+        $.removeCookie("settings_updated");
+    }
+    $("form").submit(function() {
+        $.cookie("settings_updated", "true");
+    });
+    $("input").not("[type=submit]").jqBootstrapValidation();
+});
+</script>
+<!-- Javascript end -->
 </body>
 </html>

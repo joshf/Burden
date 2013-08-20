@@ -62,206 +62,10 @@ if (THEME == "superhero") {
 }
 ?>
 </style>
-<!-- Javascript start -->
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<script src="resources/jquery.min.js"></script>
-<script src="resources/bootstrap/js/bootstrap.min.js"></script>
-<script src="resources/datatables/jquery.dataTables.min.js"></script>
-<script src="resources/datatables/jquery.dataTables-bootstrap.min.js"></script>
-<script src="resources/bootstrap-notify/js/bootstrap-notify.min.js"></script>
-<script src="resources/bootbox/bootbox.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    /* Table selection */
-    id_selected = false;
-    $("#tasks input[name=id]").click(function() {
-        id = $("#tasks input[name=id]:checked").val();
-        id_selected = true;
-    });
-    /* End */
-    /* Datatables */
-    $("#tasks").dataTable({
-        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-        "sPaginationType": "bootstrap",
-        "aoColumns": [
-            {"bSortable": false},
-            null,
-            null,
-            {"sType": "date-uk"}
-        ]
-    });
-    $.extend($.fn.dataTableExt.oStdClasses, {
-        "sSortable": "header",
-        "sWrapper": "dataTables_wrapper form-inline"
-    });
-    $.extend($.fn.dataTableExt.oSort, {
-        "date-uk-pre": function (a) {
-            var ukDatea = a.split("/");
-            return (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
-        },
-        "date-uk-asc": function (a, b) {
-            return ((a < b) ? -1 : ((a > b) ? 1 : 0));
-        },
-        "date-uk-desc": function (a, b) {
-            return ((a < b) ? 1 : ((a > b) ? -1 : 0));
-        }
-    });
-    /* End */
-    /* Edit */
-    $("#edit").click(function() {
-        if (id_selected == true) {
-            window.location = "edit.php?id="+ id +"";
-        } else {
-            $(".top-right").notify({
-                type: "info",
-                transition: "fade",
-                icon: "info-sign",
-                message: {
-                    text: "No ID selected!"
-                }
-            }).show();
-        }
-    });
-    /* End */
-    /* Delete */
-    $("#delete").click(function() {
-        if (id_selected == true) {
-            bootbox.confirm("Are you sure you want to delete this task?", "No", "Yes", function(result) {
-                if (result == true) {
-                    $.ajax({
-                        type: "POST",
-                        url: "actions/worker.php",
-                        data: "action=delete&id="+ id +"",
-                        error: function() {
-                            $(".top-right").notify({
-                                type: "error",
-                                transition: "fade",
-                                icon: "warning-sign",
-                                message: {
-                                    text: "Ajax query failed!"
-                                }
-                            }).show();
-                        },
-                        success: function() {
-                            $(".top-right").notify({
-                                type: "success",
-                                transition: "fade",
-                                icon: "ok",
-                                message: {
-                                    text: "Task deleted!"
-                                },
-                                onClosed: function() {
-                                    window.location.reload();
-                                }
-                            }).show();
-                        }
-                    });
-                }
-            });
-        } else {
-            $(".top-right").notify({
-                type: "info",
-                transition: "fade",
-                icon: "info-sign",
-                message: {
-                    text: "No ID selected!"
-                }
-            }).show();
-        }
-    });
-    /* End */
-    /* Complete */
-    $("#complete").click(function() {
-        if (id_selected == true) {
-            $.ajax({
-                type: "POST",
-                url: "actions/worker.php",
-                data: "action=complete&id="+ id +"",
-                error: function() {
-                    $(".top-right").notify({
-                        type: "error",
-                        transition: "fade",
-                        icon: "warning-sign",
-                        message: {
-                            text: "Ajax query failed!"
-                        }
-                    }).show();
-                },
-                success: function() {
-                    $(".top-right").notify({
-                        type: "success",
-                        transition: "fade",
-                        icon: "ok",
-                        message: {
-                            text: "Task marked as completed!"
-                        },
-                        onClosed: function() {
-                            window.location.reload();
-                        }
-                    }).show();
-                }
-            });
-        } else {
-            $(".top-right").notify({
-                type: "info",
-                transition: "fade",
-                icon: "info-sign",
-                message: {
-                    text: "No ID selected!"
-                }
-            }).show();
-        }
-    });
-    /* End */
-    /* Restore */
-    $("#restore").click(function() {
-        if (id_selected == true) {
-            $.ajax({
-                type: "POST",
-                url: "actions/worker.php",
-                data: "action=restore&id="+ id +"",
-                error: function() {
-                    $(".top-right").notify({
-                        type: "error",
-                        transition: "fade",
-                        icon: "warning-sign",
-                        message: {
-                            text: "Ajax query failed!"
-                        }
-                    }).show();
-                },
-                success: function() {
-                    $(".top-right").notify({
-                        type: "success",
-                        transition: "fade",
-                        icon: "ok",
-                        message: {
-                            text: "Task restored!"
-                        },
-                        onClosed: function() {
-                            window.location.reload();
-                        }
-                    }).show();
-                }
-            });
-        } else {
-            $(".top-right").notify({
-                type: "info",
-                transition: "fade",
-                icon: "info-sign",
-                message: {
-                    text: "No ID selected!"
-                }
-            }).show();
-        }
-    });
-    /* End */
-});
-</script>
-<!-- Javascript end -->
 </head>
 <body>
 <!-- Nav start -->
@@ -462,4 +266,200 @@ mysql_close($con);
 <p class="muted pull-right">Burden <?php echo $version; ?> &copy; <a href="http://github.com/joshf" target="_blank">Josh Fradley</a> <?php echo date("Y"); ?>. Themed by <a href="http://twitter.github.com/bootstrap/" target="_blank">Bootstrap</a>.</p>
 </div>
 <!-- Content end -->
+<!-- Javascript start -->
+<script src="resources/jquery.min.js"></script>
+<script src="resources/bootstrap/js/bootstrap.min.js"></script>
+<script src="resources/datatables/jquery.dataTables.min.js"></script>
+<script src="resources/datatables/jquery.dataTables-bootstrap.min.js"></script>
+<script src="resources/bootstrap-notify/js/bootstrap-notify.min.js"></script>
+<script src="resources/bootbox/bootbox.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    /* Table selection */
+    id_selected = false;
+    $("#tasks input[name=id]").click(function() {
+        id = $("#tasks input[name=id]:checked").val();
+        id_selected = true;
+    });
+    /* End */
+    /* Datatables */
+    $("#tasks").dataTable({
+        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+        "sPaginationType": "bootstrap",
+        "aoColumns": [
+            {"bSortable": false},
+            null,
+            null,
+            {"sType": "date-uk"}
+        ]
+    });
+    $.extend($.fn.dataTableExt.oStdClasses, {
+        "sSortable": "header",
+        "sWrapper": "dataTables_wrapper form-inline"
+    });
+    $.extend($.fn.dataTableExt.oSort, {
+        "date-uk-pre": function (a) {
+            var ukDatea = a.split("/");
+            return (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
+        },
+        "date-uk-asc": function (a, b) {
+            return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+        },
+        "date-uk-desc": function (a, b) {
+            return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+        }
+    });
+    /* End */
+    /* Edit */
+    $("#edit").click(function() {
+        if (id_selected == true) {
+            window.location = "edit.php?id="+ id +"";
+        } else {
+            $(".top-right").notify({
+                type: "info",
+                transition: "fade",
+                icon: "info-sign",
+                message: {
+                    text: "No ID selected!"
+                }
+            }).show();
+        }
+    });
+    /* End */
+    /* Delete */
+    $("#delete").click(function() {
+        if (id_selected == true) {
+            bootbox.confirm("Are you sure you want to delete this task?", "No", "Yes", function(result) {
+                if (result == true) {
+                    $.ajax({
+                        type: "POST",
+                        url: "actions/worker.php",
+                        data: "action=delete&id="+ id +"",
+                        error: function() {
+                            $(".top-right").notify({
+                                type: "error",
+                                transition: "fade",
+                                icon: "warning-sign",
+                                message: {
+                                    text: "Ajax query failed!"
+                                }
+                            }).show();
+                        },
+                        success: function() {
+                            $(".top-right").notify({
+                                type: "success",
+                                transition: "fade",
+                                icon: "ok",
+                                message: {
+                                    text: "Task deleted!"
+                                },
+                                onClosed: function() {
+                                    window.location.reload();
+                                }
+                            }).show();
+                        }
+                    });
+                }
+            });
+        } else {
+            $(".top-right").notify({
+                type: "info",
+                transition: "fade",
+                icon: "info-sign",
+                message: {
+                    text: "No ID selected!"
+                }
+            }).show();
+        }
+    });
+    /* End */
+    /* Complete */
+    $("#complete").click(function() {
+        if (id_selected == true) {
+            $.ajax({
+                type: "POST",
+                url: "actions/worker.php",
+                data: "action=complete&id="+ id +"",
+                error: function() {
+                    $(".top-right").notify({
+                        type: "error",
+                        transition: "fade",
+                        icon: "warning-sign",
+                        message: {
+                            text: "Ajax query failed!"
+                        }
+                    }).show();
+                },
+                success: function() {
+                    $(".top-right").notify({
+                        type: "success",
+                        transition: "fade",
+                        icon: "ok",
+                        message: {
+                            text: "Task marked as completed!"
+                        },
+                        onClosed: function() {
+                            window.location.reload();
+                        }
+                    }).show();
+                }
+            });
+        } else {
+            $(".top-right").notify({
+                type: "info",
+                transition: "fade",
+                icon: "info-sign",
+                message: {
+                    text: "No ID selected!"
+                }
+            }).show();
+        }
+    });
+    /* End */
+    /* Restore */
+    $("#restore").click(function() {
+        if (id_selected == true) {
+            $.ajax({
+                type: "POST",
+                url: "actions/worker.php",
+                data: "action=restore&id="+ id +"",
+                error: function() {
+                    $(".top-right").notify({
+                        type: "error",
+                        transition: "fade",
+                        icon: "warning-sign",
+                        message: {
+                            text: "Ajax query failed!"
+                        }
+                    }).show();
+                },
+                success: function() {
+                    $(".top-right").notify({
+                        type: "success",
+                        transition: "fade",
+                        icon: "ok",
+                        message: {
+                            text: "Task restored!"
+                        },
+                        onClosed: function() {
+                            window.location.reload();
+                        }
+                    }).show();
+                }
+            });
+        } else {
+            $(".top-right").notify({
+                type: "info",
+                transition: "fade",
+                icon: "info-sign",
+                message: {
+                    text: "No ID selected!"
+                }
+            }).show();
+        }
+    });
+    /* End */
+});
+</script>
+<!-- Javascript end -->
 </html>

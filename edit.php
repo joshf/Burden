@@ -48,34 +48,10 @@ body {
     }
 }
 </style>
-<!-- Javascript start -->
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<script src="resources/jquery.min.js"></script>
-<script src="resources/bootstrap/js/bootstrap.min.js"></script>
-<script src="resources/datepicker/js/bootstrap-datepicker.min.js"></script>
-<script src="resources/validation/jqBootstrapValidation.min.js"></script>
-<script src="resources/bootbox/bootbox.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#due").datepicker({
-        format: "dd/mm/yyyy",
-        autoclose: "true",
-        clearBtn: "true"
-    });
-    $("input").not("[type=submit]").jqBootstrapValidation();
-    $("#addcategory").click(function () {
-        bootbox.prompt("Add a category", function(newcategory) {
-            if (newcategory != null && newcategory != "") {
-                $("#category").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
-            }
-        });
-    });
-});
-</script>
-<!-- Javascript end -->
 </head>
 <body>
 <!-- Nav start -->
@@ -126,7 +102,7 @@ if (!isset($_GET["id"])) {
         }
         echo "</select></div></div><div class=\"form-actions\"><button type=\"submit\" class=\"btn btn-primary\">Edit</button></div></fieldset></form>";
     } else {
-        die("<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>No tasks available to edit.</p><p><a class=\"btn btn-info\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
+        echo "<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>No tasks available to edit.</p><p><a class=\"btn btn-info\" href=\"javascript:history.go(-1)\">Go Back</a></p></div>";
     }
 } else {
 
@@ -135,10 +111,11 @@ if (!isset($_GET["id"])) {
 
 $idtoedit = mysql_real_escape_string($_GET["id"]);
 
+//TODO: Find a decent way of doing this
 //Check if ID exists
 $doesidexist = mysql_query("SELECT `id` FROM `Data` WHERE `id` = $idtoedit");
 if (mysql_num_rows($doesidexist) == 0) {
-    die("<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Error</h4><p>ID does not exist.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
+    echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>ID does not exist.</p></div>";
 }
 
 //Error display
@@ -153,7 +130,7 @@ if (isset($_GET["error"])) {
 <fieldset>
 <?php
 
-$getidinfo = mysql_query("SELECT * FROM `Data` WHERE `id` = \"$idtoedit\"");
+$getidinfo = mysql_query("SELECT * FROM `Data` WHERE `id` = $idtoedit");
 $getidinforesult = mysql_fetch_assoc($getidinfo);
 
 echo "<div class=\"control-group\"><label class=\"control-label\" for=\"task\">Task</label><div class=\"controls\"><input type=\"text\" id=\"task\" name=\"task\" value=\"" . $getidinforesult["task"] . "\" placeholder=\"Type a task...\" required></div></div>";
@@ -210,5 +187,29 @@ mysql_close($con);
 ?>
 </div>
 <!-- Content end -->
+<!-- Javascript start -->
+<script src="resources/jquery.min.js"></script>
+<script src="resources/bootstrap/js/bootstrap.min.js"></script>
+<script src="resources/datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="resources/validation/jqBootstrapValidation.min.js"></script>
+<script src="resources/bootbox/bootbox.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#due").datepicker({
+        format: "dd/mm/yyyy",
+        autoclose: "true",
+        clearBtn: "true"
+    });
+    $("input").not("[type=submit]").jqBootstrapValidation();
+    $("#addcategory").click(function () {
+        bootbox.prompt("Add a category", function(newcategory) {
+            if (newcategory != null && newcategory != "") {
+                $("#category").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
+            }
+        });
+    });
+});
+</script>
+<!-- Javascript end -->
 </body>
 </html>

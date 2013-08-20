@@ -8,6 +8,25 @@ if (!file_exists("../config.php")) {
 
 require_once("../config.php");
 
+//Check if we can connect
+$con = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
+if (!$con) {
+    die("Error: Could not connect to database (" . mysql_error() . "). Check your database settings are correct.");
+}
+
+//Check if database exists
+$does_db_exist = mysql_select_db(DB_NAME, $con);
+if (!$does_db_exist) {
+    die("Error: Database does not exist (" . mysql_error() . "). Check your database settings are correct.");
+}
+
+//Define Version
+$version = "1.6";
+
+if ($version == VERSION) {
+    die("Information: The latest version of Burden is already installed and an upgrade is not required.");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,14 +47,10 @@ body {
     }
 }
 </style>
-<!-- Javascript start -->
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<script src="../resources/jquery.min.js"></script>
-<script src="../resources/bootstrap/js/bootstrap.min.js"></script>
-<!-- Javascript end -->
 </head>
 <body>
 <!-- Nav start -->
@@ -53,14 +68,6 @@ body {
 <h1>Upgrade</h1>
 </div>
 <?php
-
-//Version
-$version = "1.6";
-
-if ($version == VERSION) {
-    die("<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Upgrade Notice</h4><p>Burden does not require an upgrade.<p><a href=\"../login.php\" class=\"btn btn-info\">Go To Login</a></p></div></div></body></html>");
-    
-}
 
 $dbhost = DB_HOST;
 $dbuser = DB_USER;
@@ -90,18 +97,6 @@ define('VERSION', " . var_export($version, true) . ");
 
 ?>";
 
-//Check if we can connect
-$con = mysql_connect($dbhost, $dbuser, $dbpassword);
-if (!$con) {
-    die("<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Update Failed</h4><p>Error: Could not connect to database (" . mysql_error() . "). Check your database settings are correct.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
-}
-
-//Check if database exists
-$does_db_exist = mysql_select_db($dbname, $con);
-if (!$does_db_exist) {
-    die("<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Update Failed</h4><p>Error: Database does not exist (" . mysql_error() . "). Check your database settings are correct.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div></div></body></html>");
-}
-
 //Alter Data table
 //From 1.5 --> 1.6
 $altertable = "ALTER TABLE `Data` CHANGE `id` `id` SMALLINT(10) NOT NULL AUTO_INCREMENT";
@@ -123,5 +118,9 @@ mysql_close($con);
 </div>
 </div>
 <!-- Content end -->
+<!-- Javascript start -->
+<script src="../resources/jquery.min.js"></script>
+<script src="../resources/bootstrap/js/bootstrap.min.js"></script>
+<!-- Javascript end -->
 </body>
 </html>

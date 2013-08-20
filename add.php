@@ -48,34 +48,10 @@ body {
     }
 }
 </style>
-<!-- Javascript start -->
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<script src="resources/jquery.min.js"></script>
-<script src="resources/bootstrap/js/bootstrap.min.js"></script>
-<script src="resources/datepicker/js/bootstrap-datepicker.min.js"></script>
-<script src="resources/validation/jqBootstrapValidation.min.js"></script>
-<script src="resources/bootbox/bootbox.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#due").datepicker({
-        format: "dd/mm/yyyy",
-        autoclose: "true",
-        clearBtn: "true"
-    });
-	$("#addcategory").click(function () {
-        bootbox.prompt("Add a category", function(newcategory) {
-            if (newcategory != null && newcategory != "") {
-                $("#category").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
-            }
-        });
-    });
-    $("input").not("[type=submit]").jqBootstrapValidation();
-});
-</script>
-<!-- Javascript end -->
 </head>
 <body>
 <!-- Nav start -->
@@ -179,5 +155,29 @@ mysql_close($con);
 </form>
 </div>
 <!-- Content end -->
+<!-- Javascript start -->
+<script src="resources/jquery.min.js"></script>
+<script src="resources/bootstrap/js/bootstrap.min.js"></script>
+<script src="resources/datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="resources/validation/jqBootstrapValidation.min.js"></script>
+<script src="resources/bootbox/bootbox.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#due").datepicker({
+        format: "dd/mm/yyyy",
+        autoclose: "true",
+        clearBtn: "true"
+    });
+	$("#addcategory").click(function () {
+        bootbox.prompt("Add a category", function(newcategory) {
+            if (newcategory != null && newcategory != "") {
+                $("#category").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
+            }
+        });
+    });
+    $("input").not("[type=submit]").jqBootstrapValidation();
+});
+</script>
+<!-- Javascript end -->
 </body>
 </html>
