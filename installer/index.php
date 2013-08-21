@@ -1,6 +1,6 @@
 <?php
 
-//Burden, Copyright Josh Fradley (http://github.com/joshf/Bu
+//Burden, Copyright Josh Fradley (http://github.com/joshf/Burden
 
 //Check if Burden has been installed
 if (file_exists("../config.php")) {
