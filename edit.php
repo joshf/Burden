@@ -111,12 +111,11 @@ if (!isset($_GET["id"])) {
 
 $idtoedit = mysql_real_escape_string($_GET["id"]);
 
-//TODO: Find a decent way of doing this
 //Check if ID exists
 $doesidexist = mysql_query("SELECT `id` FROM `Data` WHERE `id` = $idtoedit");
 if (mysql_num_rows($doesidexist) == 0) {
-    echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>ID does not exist.</p></div>";
-}
+    echo "<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Error</h4><p>ID does not exist.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div>";
+} else {
 
 //Error display
 if (isset($_GET["error"])) {
@@ -184,6 +183,7 @@ mysql_close($con);
 </form>
 <?php
 }
+    }
 ?>
 </div>
 <!-- Content end -->
