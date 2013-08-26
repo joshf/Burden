@@ -122,7 +122,7 @@ if (isset($_GET["error"])) {
 <?php
 
 //Don't duplicate none entry
-$doesnoneexist = mysql_query("SELECT `category` FROM `Data` WHERE `category` = \"none\" OR \"None\"");
+$doesnoneexist = mysql_query("SELECT `category` FROM `Data` WHERE `category` = \"none\"");
 if (mysql_num_rows($doesnoneexist) == 0) {
     echo "<option value=\"none\">None</option>";
 }
