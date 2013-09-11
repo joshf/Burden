@@ -10,7 +10,7 @@ require_once("config.php");
 
 session_start();
 
-unset($_SESSION["burden_user"]);
+session_destroy();
 
 if (isset($_COOKIE["burden_user_rememberme"])) {
 	setcookie("burden_user_rememberme", "", time()-86400);
