@@ -283,6 +283,18 @@ mysql_close($con);
 <script src="resources/bootbox/bootbox.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+    /* Set Up Notifications */
+    var show_notification = function(type, icon, text) {
+        $(".top-right").notify({
+            type: type,
+            transition: "fade",
+            icon: icon,
+            message: {
+                text: text
+            }
+        }).show();
+    };
+    /* End */
     /* Table selection */
     id_selected = false;
     $("#tasks input[name=id]").click(function() {
@@ -323,14 +335,7 @@ $(document).ready(function() {
         if (id_selected == true) {
             window.location = "edit.php?id="+ id +"";
         } else {
-            $(".top-right").notify({
-                type: "info",
-                transition: "fade",
-                icon: "info-sign",
-                message: {
-                    text: "No ID selected!"
-                }
-            }).show();
+            show_notification("info", "info-sign", "No ID selected!");
         }
     });
     /* End */
@@ -344,40 +349,16 @@ $(document).ready(function() {
                         url: "actions/worker.php",
                         data: "action=delete&id="+ id +"",
                         error: function() {
-                            $(".top-right").notify({
-                                type: "error",
-                                transition: "fade",
-                                icon: "warning-sign",
-                                message: {
-                                    text: "Ajax query failed!"
-                                }
-                            }).show();
+                            show_notification("error", "warning-sign", "Ajax query failed!");
                         },
                         success: function() {
-                            $(".top-right").notify({
-                                type: "success",
-                                transition: "fade",
-                                icon: "ok",
-                                message: {
-                                    text: "Task deleted!"
-                                },
-                                onClosed: function() {
-                                    window.location.reload();
-                                }
-                            }).show();
+                            show_notification("success", "ok", "Task deleted!");
                         }
                     });
                 }
             });
         } else {
-            $(".top-right").notify({
-                type: "info",
-                transition: "fade",
-                icon: "info-sign",
-                message: {
-                    text: "No ID selected!"
-                }
-            }).show();
+            show_notification("info", "info-sign", "No ID selected!");
         }
     });
     /* End */
@@ -389,38 +370,14 @@ $(document).ready(function() {
                 url: "actions/worker.php",
                 data: "action=complete&id="+ id +"",
                 error: function() {
-                    $(".top-right").notify({
-                        type: "error",
-                        transition: "fade",
-                        icon: "warning-sign",
-                        message: {
-                            text: "Ajax query failed!"
-                        }
-                    }).show();
+                    show_notification("error", "warning-sign", "Ajax query failed!");
                 },
                 success: function() {
-                    $(".top-right").notify({
-                        type: "success",
-                        transition: "fade",
-                        icon: "ok",
-                        message: {
-                            text: "Task marked as completed!"
-                        },
-                        onClosed: function() {
-                            window.location.reload();
-                        }
-                    }).show();
+                    show_notification("success", "ok", "Task marked as completed!");
                 }
             });
         } else {
-            $(".top-right").notify({
-                type: "info",
-                transition: "fade",
-                icon: "info-sign",
-                message: {
-                    text: "No ID selected!"
-                }
-            }).show();
+            show_notification("info", "info-sign", "No ID selected!");
         }
     });
     /* End */
@@ -432,38 +389,14 @@ $(document).ready(function() {
                 url: "actions/worker.php",
                 data: "action=restore&id="+ id +"",
                 error: function() {
-                    $(".top-right").notify({
-                        type: "error",
-                        transition: "fade",
-                        icon: "warning-sign",
-                        message: {
-                            text: "Ajax query failed!"
-                        }
-                    }).show();
+                    show_notification("error", "warning-sign", "Ajax query failed!");
                 },
                 success: function() {
-                    $(".top-right").notify({
-                        type: "success",
-                        transition: "fade",
-                        icon: "ok",
-                        message: {
-                            text: "Task restored!"
-                        },
-                        onClosed: function() {
-                            window.location.reload();
-                        }
-                    }).show();
+                    show_notification("success", "ok", "Task restored!");
                 }
             });
         } else {
-            $(".top-right").notify({
-                type: "info",
-                transition: "fade",
-                icon: "info-sign",
-                message: {
-                    text: "No ID selected!"
-                }
-            }).show();
+            show_notification("info", "info-sign", "No ID selected!");
         }
     });
     /* End */
