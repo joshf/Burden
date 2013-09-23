@@ -12,35 +12,48 @@ session_start();
 if (!isset($_SESSION["burden_user"])) {
     header("Location: login.php");
     exit; 
+} 
+
+//Connect to database
+@$con = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
+if (!$con) {
+    die("Error: Could not connect to database (" . mysql_error() . "). Check your database settings are correct.");
 }
 
-//Get current settings
-$currentadminuser = ADMIN_USER;
-$currentadminpassword = ADMIN_PASSWORD;
-$currenttheme = THEME; 
+mysql_select_db(DB_NAME, $con);
+
+$getusersettings = mysql_query("SELECT `user`, `password`, `salt`, `theme` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
+if (mysql_num_rows($getusersettings) == 0) {
+    session_destroy();
+    header("Location: login.php");
+    exit;
+}
+$resultgetusersettings = mysql_fetch_assoc($getusersettings);
 
 if (isset($_POST["save"])) {
     //Get new settings from POST
     $adminuser = $_POST["adminuser"];
     $adminpassword = $_POST["adminpassword"];
-    if ($adminpassword != $currentadminpassword) {
+    $salt = $resultgetusersettings["salt"];
+    if ($adminpassword != $resultgetusersettings["password"]) {
+        //Salt and hash passwords
+        $randsalt = md5(uniqid(rand(), true));
+        $salt = substr($randsalt, 0, 3);
         $hashedpassword = hash("sha256", $adminpassword);
-        $adminpassword = hash("sha256", SALT . $hashedpassword);
+        $adminpassword = hash("sha256", $salt . $hashedpassword);
     }
     $theme = $_POST["theme"];
 
-    $settingsstring = "<?php\n\n//Database Settings\ndefine('DB_HOST', '" . DB_HOST . "');\ndefine('DB_USER', '" . DB_USER . "');\ndefine('DB_PASSWORD', '" . DB_PASSWORD . "');\ndefine('DB_NAME', '" . DB_NAME . "');\n\n//Admin Details\ndefine('ADMIN_USER', " . var_export($adminuser, true) . ");\ndefine('ADMIN_PASSWORD', " . var_export($adminpassword, true) . ");\ndefine('SALT', '" . SALT . "');\n\n//Other Settings\ndefine('THEME', " . var_export($theme, true) . ");\ndefine('VERSION', '" . VERSION . "');\n\n?>";
-
-    //Write config
-    $configfile = fopen("config.php", "w");
-    fwrite($configfile, $settingsstring);
-    fclose($configfile);
-
+    //Run query
+    mysql_query("UPDATE Users SET `user` = \"$adminuser\", `password` = \"$adminpassword\", `salt` = \"$salt\", `theme` = \"$theme\" WHERE `user` = \"" . $resultgetusersettings["user"] . "\"");
+    
     //Show updated values
     header("Location: settings.php");
     
     exit;
 }
+
+mysql_close($con);
 
 ?>
 <!DOCTYPE html>
@@ -50,10 +63,10 @@ if (isset($_POST["save"])) {
 <title>Burden &middot; Settings</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php
-if (THEME == "default") {
+if ($resultgetusersettings["theme"] == "default") {
     echo "<link href=\"resources/bootstrap/css/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
 } else {
-    echo "<link href=\"//netdna.bootstrapcdn.com/bootswatch/2.3.2/" . THEME . "/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";
+    echo "<link href=\"//netdna.bootstrapcdn.com/bootswatch/2.3.2/" . $resultgetusersettings["theme"] . "/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";
 }
 ?>
 <link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
@@ -93,7 +106,7 @@ body {
 <ul class="nav pull-right">
 <li class="divider-vertical"></li>
 <li class="dropdown">
-<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> <?php echo ADMIN_USER; ?> <b class="caret"></b></a>
+<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> <?php echo $resultgetusersettings["user"]; ?> <b class="caret"></b></a>
 <ul class="dropdown-menu">
 <li><a href="settings.php"><i class="icon-cog"></i> Settings</a></li>
 <li><a href="logout.php"><i class="icon-off"></i> Logout</a></li>
@@ -117,13 +130,13 @@ body {
 <div class="control-group">
 <label class="control-label" for="adminuser">Admin User</label>
 <div class="controls">
-<input type="text" id="adminuser" name="adminuser" value="<?php echo $currentadminuser; ?>" placeholder="Enter a username..." required>
+<input type="text" id="adminuser" name="adminuser" value="<?php echo $resultgetusersettings["user"]; ?>" placeholder="Enter a username..." required>
 </div>
 </div>
 <div class="control-group">
 <label class="control-label" for="adminpassword">Admin Password</label>
 <div class="controls">
-<input type="password" id="adminpassword" name="adminpassword" value="<?php echo $currentadminpassword; ?>" placeholder="Enter a password..." required>
+<input type="password" id="adminpassword" name="adminpassword" value="<?php echo $resultgetusersettings["password"]; ?>" placeholder="Enter a password..." required>
 </div>
 </div>
 <h4>Theme</h4>
@@ -135,7 +148,7 @@ $themes = array("default", "amelia", "cerulean", "cosmo", "cyborg", "flatly", "j
 
 echo "<select id=\"theme\" name=\"theme\">";
 foreach ($themes as $value) {
-    if ($value == $currenttheme) {
+    if ($value == $resultgetusersettings["theme"]) {
         echo "<option value=\"$value\" selected=\"selected\">". ucfirst($value) . "</option>";
     } else {
         echo "<option value=\"$value\">". ucfirst($value) . "</option>";

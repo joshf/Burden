@@ -29,6 +29,14 @@ if (!$con) {
     }
 }
 
+$getusersettings = mysql_query("SELECT `user`, `theme`, `admin` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
+if (mysql_num_rows($getusersettings) == 0) {
+    session_destroy();
+    header("Location: login.php");
+    exit;
+}
+$resultgetusersettings = mysql_fetch_assoc($getusersettings);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,10 +45,10 @@ if (!$con) {
 <title>Burden</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php
-if (THEME == "default") {
+if ($resultgetusersettings["theme"] == "default") {
     echo "<link href=\"resources/bootstrap/css/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
 } else {
-    echo "<link href=\"//netdna.bootstrapcdn.com/bootswatch/2.3.2/" . THEME . "/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";
+    echo "<link href=\"//netdna.bootstrapcdn.com/bootswatch/2.3.2/" . $resultgetusersettings["theme"] . "/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";
 }
 ?>
 <link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
@@ -57,7 +65,7 @@ body {
 }
 <?php
 //Fix broken superhero theme
-if (THEME == "superhero") {
+if ($resultgetusersettings["theme"] == "superhero") {
     echo "td {\n    color: #5A6A7D;\n}\n";
 }
 ?>
@@ -96,7 +104,7 @@ if (THEME == "superhero") {
 </li>
 <li class="divider-vertical"></li>
 <li class="dropdown">
-<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> <?php echo ADMIN_USER; ?> <b class="caret"></b></a>
+<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> <?php echo $resultgetusersettings["user"]; ?> <b class="caret"></b></a>
 <ul class="dropdown-menu">
 <li><a href="settings.php"><i class="icon-cog"></i> Settings</a></li>
 <li><a href="logout.php"><i class="icon-off"></i> Logout</a></li>

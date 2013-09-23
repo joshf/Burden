@@ -8,28 +8,49 @@ if (!file_exists("config.php")) {
 
 require_once("config.php");
 
-$username = ADMIN_USER;
-$password = ADMIN_PASSWORD;
-$salt = SALT;
-
 session_start();
 
+//Connect to database
+@$con = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
+if (!$con) {
+    die("Error: Could not connect to database (" . mysql_error() . "). Check your database settings are correct.");
+}
+
+mysql_select_db(DB_NAME, $con);
+    
 //If cookie is set, skip login
 if (isset($_COOKIE["burden_user_rememberme"])) {
-    $_SESSION["burden_user"] = $username;
+    $id = $_COOKIE["burden_user_rememberme"];
+    $getid = mysql_query("SELECT `id` FROM `Users` WHERE `id` = \"$id\"");
+    $getidresult = mysql_fetch_assoc($getid);
+    if (mysql_num_rows($getid) == 0) {
+        header("Location: logout.php");
+        exit;
+    }
+    $_SESSION["burden_user"] = $userinforesult["id"];
 }
 
 if (isset($_POST["password"]) && isset($_POST["username"])) {
-    $hashedpassword = hash("sha256", $salt . hash("sha256", $_POST["password"]));
-    if ($hashedpassword == $password && $_POST["username"] == $username) {
-        $_SESSION["burden_user"] = $username;
-            if (isset($_POST["rememberme"])) {
-                setcookie("burden_user_rememberme", $username, time()+1209600);
-            }
+    $username = mysql_real_escape_string($_POST["username"]);
+    $password = $_POST["password"];
+    $userinfo = mysql_query("SELECT `id`, `user`, `password`, `salt` FROM `Users` WHERE `user` = \"$username\"");
+    $userinforesult = mysql_fetch_assoc($userinfo);
+    if (mysql_num_rows($userinfo) == 0) {
+        header("Location: login.php?user_doesnt_exist=true");
+        exit;
+    }
+    $salt = $userinforesult["salt"];
+    $hashedpassword = hash("sha256", $salt . hash("sha256", $password));
+    if ($hashedpassword == $userinforesult["password"]) {
+        $_SESSION["burden_user"] = $userinforesult["id"];
+        if (isset($_POST["rememberme"])) {
+            setcookie("burden_user_rememberme", $username, time()+1209600);
+        }
     } else {
         header("Location: login.php?login_error=true");
+        exit;
     }
-} 
+}
 
 if (!isset($_SESSION["burden_user"])) {
 ?>
@@ -84,6 +105,8 @@ body {
 <?php 
 if (isset($_GET["login_error"])) {
     echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>Incorrect username or password.</div>";
+} elseif (isset($_GET["user_doesnt_exist"])) {
+    echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>User does not exist.</div>";
 } elseif (isset($_GET["logged_out"])) {
     echo "<div class=\"alert alert-success\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>Successfully logged out.</div>";
 }

@@ -86,23 +86,28 @@ define('DB_USER', " . var_export($dbuser, true) . ");
 define('DB_PASSWORD', " . var_export($dbpassword, true) . ");
 define('DB_NAME', " . var_export($dbname, true) . ");
 
-//Admin Details
-define('ADMIN_USER', " . var_export($adminuser, true) . ");
-define('ADMIN_PASSWORD', " . var_export($adminpassword, true) . ");
-define('SALT', " . var_export($salt, true) . ");
-
 //Other Settings
-define('THEME', 'default');
 define('VERSION', " . var_export($version, true) . ");
 
 ?>";
 
-//Alter Data table
-//From 1.5 --> 1.6
-$altertable = "ALTER TABLE `Data` CHANGE `id` `id` SMALLINT(10) NOT NULL AUTO_INCREMENT";
- 
-//Run query
-mysql_query($altertable);
+//Create Users table
+$createuserstable = "CREATE TABLE `Users` (
+`id` smallint(10) NOT NULL AUTO_INCREMENT,
+`user` varchar(20) NOT NULL,
+`password` varchar(200) NOT NULL,
+`salt` varchar(3) NOT NULL,
+`email` varchar(100) NOT NULL,
+`admin` tinyint(1) NOT NULL,
+`theme` varchar(20) NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=MyISAM;";
+
+mysql_query($createuserstable);
+
+//Add admin user
+mysql_query("INSERT INTO Users (user, password, salt, email, admin, theme)
+VALUES (\"$adminuser\",\"$adminpassword\",\"$salt\",\"$adminuser@" . $_SERVER["SERVER_NAME"] . "\",\"1\",\"$theme\")");
 
 //Write Config
 $configfile = fopen("../config.php", "w");

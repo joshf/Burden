@@ -14,6 +14,7 @@ if (isset($_POST["install"])) {
     $dbpassword = $_POST["dbpassword"];
     $dbname = $_POST["dbname"];
     $adminuser = $_POST["adminuser"];
+    $adminemail = $_POST["adminemail"];
     if (empty($_POST["adminpassword"])) {
         die("Error: No admin password set.");
     } else {
@@ -25,7 +26,7 @@ if (isset($_POST["install"])) {
     }
     $version = "1.7dev";
     
-    $installstring = "<?php\n\n//Database Settings\ndefine('DB_HOST', " . var_export($dbhost, true) . ");\ndefine('DB_USER', " . var_export($dbuser, true) . ");\ndefine('DB_PASSWORD', " . var_export($dbpassword, true) . ");\ndefine('DB_NAME', " . var_export($dbname, true) . ");\n\n//Admin Details\ndefine('ADMIN_USER', " . var_export($adminuser, true) . ");\ndefine('ADMIN_PASSWORD', " . var_export($adminpassword, true) . ");\ndefine('SALT', " . var_export($salt, true) . ");\n\n//Other Settings\ndefine('THEME', 'default');\ndefine('VERSION', " . var_export($version, true) . ");\n\n?>";
+    $installstring = "<?php\n\n//Database Settings\ndefine('DB_HOST', " . var_export($dbhost, true) . ");\ndefine('DB_USER', " . var_export($dbuser, true) . ");\ndefine('DB_PASSWORD', " . var_export($dbpassword, true) . ");\ndefine('DB_NAME', " . var_export($dbname, true) . ");\n\n//Other Settings\ndefine('VERSION', " . var_export($version, true) . ");\n\n?>";
 
     //Check if we can connect
     $con = mysql_connect($dbhost, $dbuser, $dbpassword);
@@ -40,19 +41,37 @@ if (isset($_POST["install"])) {
     }
 
     //Create Data table
-    $createtable = "CREATE TABLE `Data` (
-    `id` SMALLINT(10) NOT NULL AUTO_INCREMENT,
-    `category` VARCHAR(20) NOT NULL,
-    `highpriority` TINYINT(1) NOT NULL,
-    `task` VARCHAR(300) NOT NULL,
-    `due` VARCHAR(10) NOT NULL,
-    `completed` TINYINT(1) NOT NULL default \"0\",
-    `datecompleted` VARCHAR(12) NOT NULL,
-    PRIMARY KEY (id)
-    ) ENGINE = MYISAM;";
-
-    //Run query
-    mysql_query($createtable);
+    $createdatatable = "CREATE TABLE `Data` (
+    `id` smallint(10) NOT NULL AUTO_INCREMENT,
+    `category` varchar(20) NOT NULL,
+    `highpriority` tinyint(1) NOT NULL,
+    `task` varchar(300) NOT NULL,
+    `due` varchar(10) NOT NULL,
+    `completed` tinyint(1) NOT NULL DEFAULT \"0\",
+    `datecompleted` varchar(12) NOT NULL,
+    `user` varchar(20) NOT NULL,
+    PRIMARY KEY (`id`)
+    ) ENGINE=MyISAM;";
+    
+    mysql_query($createdatatable);
+    
+    //Create Users table
+    $createuserstable = "CREATE TABLE `Users` (
+    `id` smallint(10) NOT NULL AUTO_INCREMENT,
+    `user` varchar(20) NOT NULL,
+    `password` varchar(200) NOT NULL,
+    `salt` varchar(3) NOT NULL,
+    `email` varchar(100) NOT NULL,
+    `admin` tinyint(1) NOT NULL,
+    `theme` varchar(20) NOT NULL,
+    PRIMARY KEY (`id`)
+    ) ENGINE=MyISAM;";
+    
+    mysql_query($createuserstable);
+    
+    //Add admin user
+    mysql_query("INSERT INTO Users (user, password, salt, email, admin, theme)
+    VALUES (\"$adminuser\",\"$adminpassword\",\"$salt\",\"$adminemail\",\"1\",\"default\")");
 
     //Write Config
     $configfile = fopen("../config.php", "w");
@@ -137,6 +156,12 @@ if (!isset($_POST["install"])) {
 <label class="control-label" for="adminuser">Admin User</label>
 <div class="controls">
 <input type="text" id="adminuser" name="adminuser" placeholder="Type a username..." required>
+</div>
+</div>
+<div class="control-group">
+<label class="control-label" for="adminemail">Email</label>
+<div class="controls">
+<input type="email" id="adminemail" name="adminemail" placeholder="Type an email..." required>
 </div>
 </div>
 <div class="control-group">
