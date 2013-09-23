@@ -44,7 +44,7 @@ if (isset($_POST["password"]) && isset($_POST["username"])) {
     if ($hashedpassword == $userinforesult["password"]) {
         $_SESSION["burden_user"] = $userinforesult["id"];
         if (isset($_POST["rememberme"])) {
-            setcookie("burden_user_rememberme", $username, time()+1209600);
+            setcookie("burden_user_rememberme", $userinforesult["id"], time()+1209600);
         }
     } else {
         header("Location: login.php?login_error=true");
