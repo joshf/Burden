@@ -400,6 +400,9 @@ $(document).ready(function() {
         }
     });
     /* End */
+    /* Update Title */
+    document.title = "Burden (<?php echo $resultnumberoftasks["COUNT(id)"]; ?>)";
+    /* End */
 });
 </script>
 <!-- Javascript end -->
