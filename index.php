@@ -284,13 +284,18 @@ mysql_close($con);
 <script type="text/javascript">
 $(document).ready(function() {
     /* Set Up Notifications */
-    var show_notification = function(type, icon, text) {
+    var show_notification = function(type, icon, text, reload) {
         $(".top-right").notify({
             type: type,
             transition: "fade",
             icon: icon,
             message: {
                 text: text
+            },
+            onClosed: function() {
+                if (reload == true) {
+                    window.location.reload();
+                }
             }
         }).show();
     };
@@ -352,7 +357,7 @@ $(document).ready(function() {
                             show_notification("error", "warning-sign", "Ajax query failed!");
                         },
                         success: function() {
-                            show_notification("success", "ok", "Task deleted!");
+                            show_notification("success", "ok", "Task deleted!", true);
                         }
                     });
                 }
@@ -373,7 +378,7 @@ $(document).ready(function() {
                     show_notification("error", "warning-sign", "Ajax query failed!");
                 },
                 success: function() {
-                    show_notification("success", "ok", "Task marked as completed!");
+                    show_notification("success", "ok", "Task marked as completed!", true);
                 }
             });
         } else {
@@ -392,7 +397,7 @@ $(document).ready(function() {
                     show_notification("error", "warning-sign", "Ajax query failed!");
                 },
                 success: function() {
-                    show_notification("success", "ok", "Task restored!");
+                    show_notification("success", "ok", "Task restored!", true);
                 }
             });
         } else {
