@@ -69,7 +69,7 @@ if (isset($_POST["install"])) {
     
     mysql_query($createuserstable);
     
-    //Add  user
+    //Add user
     mysql_query("INSERT INTO Users (user, password, salt, email, admin, theme)
     VALUES (\"$user\",\"$password\",\"$salt\",\"$email\",\"1\",\"default\")");
 
