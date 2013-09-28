@@ -73,8 +73,8 @@ $dbhost = DB_HOST;
 $dbuser = DB_USER;
 $dbpassword = DB_PASSWORD;
 $dbname = DB_NAME;
-$adminuser = ADMIN_USER;
-$adminpassword = ADMIN_PASSWORD;
+$user = ADMIN_USER;
+$password = ADMIN_PASSWORD;
 $salt = SALT;
 $theme = THEME;
 
@@ -107,7 +107,7 @@ mysql_query($createuserstable);
 
 //Add admin user
 mysql_query("INSERT INTO Users (user, password, salt, email, admin, theme)
-VALUES (\"$adminuser\",\"$adminpassword\",\"$salt\",\"$adminuser@" . $_SERVER["SERVER_NAME"] . "\",\"1\",\"$theme\")");
+VALUES (\"$user\",\"$password\",\"$salt\",\"$user@" . $_SERVER["SERVER_NAME"] . "\",\"1\",\"$theme\")");
 
 //Write Config
 $configfile = fopen("../config.php", "w");

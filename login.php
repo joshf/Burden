@@ -22,7 +22,6 @@ mysql_select_db(DB_NAME, $con);
 if (isset($_COOKIE["burden_user_rememberme"])) {
     $id = $_COOKIE["burden_user_rememberme"];
     $getid = mysql_query("SELECT `id` FROM `Users` WHERE `id` = \"$id\"");
-    $getidresult = mysql_fetch_assoc($getid);
     if (mysql_num_rows($getid) == 0) {
         header("Location: logout.php");
         exit;

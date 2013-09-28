@@ -32,20 +32,20 @@ $resultgetusersettings = mysql_fetch_assoc($getusersettings);
 
 if (isset($_POST["save"])) {
     //Get new settings from POST
-    $adminuser = $_POST["adminuser"];
-    $adminpassword = $_POST["adminpassword"];
+    $user = $_POST["user"];
+    $password = $_POST["password"];
     $salt = $resultgetusersettings["salt"];
-    if ($adminpassword != $resultgetusersettings["password"]) {
+    if ($password != $resultgetusersettings["password"]) {
         //Salt and hash passwords
         $randsalt = md5(uniqid(rand(), true));
         $salt = substr($randsalt, 0, 3);
-        $hashedpassword = hash("sha256", $adminpassword);
-        $adminpassword = hash("sha256", $salt . $hashedpassword);
+        $hashedpassword = hash("sha256", $password);
+        $password = hash("sha256", $salt . $hashedpassword);
     }
     $theme = $_POST["theme"];
 
-    //Run query
-    mysql_query("UPDATE Users SET `user` = \"$adminuser\", `password` = \"$adminpassword\", `salt` = \"$salt\", `theme` = \"$theme\" WHERE `user` = \"" . $resultgetusersettings["user"] . "\"");
+    //Update Settings
+    mysql_query("UPDATE Users SET `user` = \"$user\", `password` = \"$password\", `salt` = \"$salt\", `theme` = \"$theme\" WHERE `user` = \"" . $resultgetusersettings["user"] . "\"");
     
     //Show updated values
     header("Location: settings.php");
@@ -126,17 +126,17 @@ body {
 <div class="notifications top-right"></div>
 <form method="post" autocomplete="off">
 <fieldset>
-<h4>Admin Details</h4>
+<h4>User Details</h4>
 <div class="control-group">
-<label class="control-label" for="adminuser">Admin User</label>
+<label class="control-label" for="user">User</label>
 <div class="controls">
-<input type="text" id="adminuser" name="adminuser" value="<?php echo $resultgetusersettings["user"]; ?>" placeholder="Enter a username..." required>
+<input type="text" id="user" name="user" value="<?php echo $resultgetusersettings["user"]; ?>" placeholder="Enter a username..." required>
 </div>
 </div>
 <div class="control-group">
-<label class="control-label" for="adminpassword">Admin Password</label>
+<label class="control-label" for="password">Password</label>
 <div class="controls">
-<input type="password" id="adminpassword" name="adminpassword" value="<?php echo $resultgetusersettings["password"]; ?>" placeholder="Enter a password..." required>
+<input type="password" id="password" name="password" value="<?php echo $resultgetusersettings["password"]; ?>" placeholder="Enter a password..." required>
 </div>
 </div>
 <h4>Theme</h4>

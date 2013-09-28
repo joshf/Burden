@@ -13,16 +13,16 @@ if (isset($_POST["install"])) {
     $dbuser = $_POST["dbuser"];
     $dbpassword = $_POST["dbpassword"];
     $dbname = $_POST["dbname"];
-    $adminuser = $_POST["adminuser"];
-    $adminemail = $_POST["adminemail"];
-    if (empty($_POST["adminpassword"])) {
-        die("Error: No admin password set.");
+    $user = $_POST["user"];
+    $email = $_POST["email"];
+    if (empty($_POST["password"])) {
+        die("Error: No  password set.");
     } else {
         //Salt and hash passwords
         $randsalt = md5(uniqid(rand(), true));
         $salt = substr($randsalt, 0, 3);
-        $hashedpassword = hash("sha256", $_POST["adminpassword"]);
-        $adminpassword = hash("sha256", $salt . $hashedpassword);
+        $hashedpassword = hash("sha256", $_POST["password"]);
+        $password = hash("sha256", $salt . $hashedpassword);
     }
     $version = "1.7dev";
     
@@ -69,9 +69,9 @@ if (isset($_POST["install"])) {
     
     mysql_query($createuserstable);
     
-    //Add admin user
-    mysql_query("INSERT INTO Users (user, password, salt, email, admin, theme)
-    VALUES (\"$adminuser\",\"$adminpassword\",\"$salt\",\"$adminemail\",\"1\",\"default\")");
+    //Add  user
+    mysql_query("INSERT INTO Users (user, password, salt, email, , theme)
+    VALUES (\"$user\",\"$password\",\"$salt\",\"$email\",\"1\",\"default\")");
 
     //Write Config
     $configfile = fopen("../config.php", "w");
@@ -151,29 +151,29 @@ if (!isset($_POST["install"])) {
 <input type="text" id="dbname" name="dbname" placeholder="Type your database name..." required>
 </div>
 </div>
-<h4>Admin Details</h4>
+<h4>User Details</h4>
 <div class="control-group">
-<label class="control-label" for="adminuser">Admin User</label>
+<label class="control-label" for="user">User</label>
 <div class="controls">
-<input type="text" id="adminuser" name="adminuser" placeholder="Type a username..." required>
-</div>
-</div>
-<div class="control-group">
-<label class="control-label" for="adminemail">Email</label>
-<div class="controls">
-<input type="email" id="adminemail" name="adminemail" placeholder="Type an email..." required>
+<input type="text" id="user" name="user" placeholder="Type a username..." required>
 </div>
 </div>
 <div class="control-group">
-<label class="control-label" for="adminpassword">Password</label>
+<label class="control-label" for="email">Email</label>
 <div class="controls">
-<input type="password" id="adminpassword" name="adminpassword" placeholder="Type a password..." required>
+<input type="email" id="email" name="email" placeholder="Type an email..." required>
 </div>
 </div>
 <div class="control-group">
-<label class="control-label" for="adminpasswordconfirm">Confirm Password</label>
+<label class="control-label" for="password">Password</label>
 <div class="controls">
-<input type="password" id="adminpasswordconfirm" name="adminpasswordconfirm" placeholder="Type your password again..." data-validation-match-match="adminpassword" required>
+<input type="password" id="password" name="password" placeholder="Type a password..." required>
+</div>
+</div>
+<div class="control-group">
+<label class="control-label" for="passwordconfirm">Confirm Password</label>
+<div class="controls">
+<input type="password" id="passwordconfirm" name="passwordconfirm" placeholder="Type your password again..." data-validation-match-match="password" required>
 <span class="help-block">It is recommended that your password be at least 6 characters long</span>
 </div>
 </div>
@@ -185,7 +185,7 @@ if (!isset($_POST["install"])) {
 </form>
 <?php
 } else {
-    echo "<div class=\"alert alert-success\"><h4 class=\"alert-heading\">Install Complete</h4><p>Burden has been successfully installed. Please delete the \"installer\" folder from your server, as it poses a potential security risk!</p><p>Your login details are shown below, please make a note of them.</p><ul><li>User: $adminuser</li><li>Password: <i>Password you set during install</i></li></ul><p><a href=\"../login.php\" class=\"btn btn-success\">Go To Login</a></p></div>";
+    echo "<div class=\"alert alert-success\"><h4 class=\"alert-heading\">Install Complete</h4><p>Burden has been successfully installed. Please delete the \"installer\" folder from your server, as it poses a potential security risk!</p><p>Your login details are shown below, please make a note of them.</p><ul><li>User: $user</li><li>Password: <i>Password you set during install</i></li></ul><p><a href=\"../login.php\" class=\"btn btn-success\">Go To Login</a></p></div>";
 }
 ?>
 </div>
