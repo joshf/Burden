@@ -22,7 +22,7 @@ if (!$con) {
 
 mysql_select_db(DB_NAME, $con);
 
-$getusersettings = mysql_query("SELECT `user`, `password`, `salt`, `theme` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
+$getusersettings = mysql_query("SELECT `user`, `password`, `email`, `salt`, `theme` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
 if (mysql_num_rows($getusersettings) == 0) {
     session_destroy();
     header("Location: login.php");
@@ -34,6 +34,7 @@ if (isset($_POST["save"])) {
     //Get new settings from POST
     $user = $_POST["user"];
     $password = $_POST["password"];
+    $email = $_POST["email"];
     $salt = $resultgetusersettings["salt"];
     if ($password != $resultgetusersettings["password"]) {
         //Salt and hash passwords
@@ -45,7 +46,7 @@ if (isset($_POST["save"])) {
     $theme = $_POST["theme"];
 
     //Update Settings
-    mysql_query("UPDATE Users SET `user` = \"$user\", `password` = \"$password\", `salt` = \"$salt\", `theme` = \"$theme\" WHERE `user` = \"" . $resultgetusersettings["user"] . "\"");
+    mysql_query("UPDATE Users SET `user` = \"$user\", `password` = \"$password\", `email` = \"$email\", `salt` = \"$salt\", `theme` = \"$theme\" WHERE `user` = \"" . $resultgetusersettings["user"] . "\"");
     
     //Show updated values
     header("Location: settings.php");
@@ -131,6 +132,12 @@ body {
 <label class="control-label" for="user">User</label>
 <div class="controls">
 <input type="text" id="user" name="user" value="<?php echo $resultgetusersettings["user"]; ?>" placeholder="Enter a username..." required>
+</div>
+</div>
+<div class="control-group">
+<label class="control-label" for="email">Email</label>
+<div class="controls">
+<input type="email" id="email" name="email" value="<?php echo $resultgetusersettings["email"]; ?>" placeholder="Type an email..." required>
 </div>
 </div>
 <div class="control-group">
