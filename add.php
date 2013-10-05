@@ -118,6 +118,12 @@ if (isset($_GET["error"])) {
 </div>
 </div>
 <div class="control-group">
+<label class="control-label" for="details">Details</label>
+<div class="controls">
+<textarea rows="2" id="details" name="details" placeholder="Type any extra details.."></textarea>
+</div>
+</div>
+<div class="control-group">
 <label class="control-label" for="due">Due</label>
 <div class="controls">
 <input type="text" id="due" name="due" placeholder="Type a due date..." pattern="((((0?[1-9]|[12]\d|3[01])[\.\-\/](0?[13578]|1[02])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|[12]\d|30)[\.\-\/](0?[13456789]|1[012])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|1\d|2[0-8])[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|(29[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00)))|(((0[1-9]|[12]\d|3[01])(0[13578]|1[02])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|[12]\d|30)(0[13456789]|1[012])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|1\d|2[0-8])02((1[6-9]|[2-9]\d)?\d{2}))|(2902((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00))))" data-validation-pattern-message="Please enter a valid date in the format DD/MM/YYYY." required>

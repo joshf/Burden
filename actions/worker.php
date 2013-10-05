@@ -38,6 +38,28 @@ if ($action == "complete") {
     mysql_query("UPDATE `Data` SET `completed` = \"0\", `datecompleted` = \"\" WHERE `id` = \"$id\"");
 } elseif ($action == "delete") {
     mysql_query("DELETE FROM `Data` WHERE `id` = \"$id\"");
+} elseif ($action == "details") {
+    $getdetails = mysql_query("SELECT `created`, `due`, `details` FROM `Data` WHERE `id` = \"$id\"");
+    $resultgetdetails = mysql_fetch_assoc($getdetails);
+    
+    list($day, $month, $year) = explode("/", $resultgetdetails["due"]);
+    $dueflipped = "$year-$month-$day";
+    $today = strtotime(date("Y-m-d")); 
+    $due = strtotime($dueflipped);
+    $datediff = abs($today - $due);
+    $duein = floor($datediff/(60*60*24));
+    
+    if ($today > $due) {
+        $suffix = "day(s) ago";
+    } else {
+        $suffix = "day(s)";
+    }
+    
+    $message = "<b>Details: </b> " . $resultgetdetails["details"] . "";
+    $message .= "<br><br><b>Created on:</b> " . $resultgetdetails["created"] . "";
+    $message .= "<br><br><b>Due:</b> $duein $suffix";
+    
+    echo $message;
 }
 
 mysql_close($con);

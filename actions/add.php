@@ -24,6 +24,7 @@ mysql_select_db(DB_NAME, $con);
 
 //Set variables
 $task = mysql_real_escape_string($_POST["task"]);
+$details = mysql_real_escape_string($_POST["details"]);
 $category = mysql_real_escape_string($_POST["category"]);
 $priority = mysql_real_escape_string($_POST["priority"]);
 $due = mysql_real_escape_string($_POST["due"]);
@@ -40,8 +41,10 @@ if (isset($_POST["highpriority"])) {
     $highpriority = "0";
 }
 
-mysql_query("INSERT INTO `Data` (`category`, `highpriority`, `task`, `due`, `completed`)
-VALUES (\"$category\",\"$highpriority\",\"$task\",\"$due\",\"0\")");
+$created = date("d/m/Y");
+
+mysql_query("INSERT INTO `Data` (`category`, `highpriority`, `task`, `details`, `created`, `due`, `completed`)
+VALUES (\"$category\",\"$highpriority\",\"$task\",\"$details\",\"$created\",\"$due\",\"0\")");
 
 mysql_close($con);
 

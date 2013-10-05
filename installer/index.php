@@ -46,6 +46,8 @@ if (isset($_POST["install"])) {
     `category` varchar(20) NOT NULL,
     `highpriority` tinyint(1) NOT NULL,
     `task` varchar(300) NOT NULL,
+    `details` varchar(300) NOT NULL,
+    `created` varchar(10) NOT NULL,
     `due` varchar(10) NOT NULL,
     `completed` tinyint(1) NOT NULL DEFAULT \"0\",
     `datecompleted` varchar(12) NOT NULL,

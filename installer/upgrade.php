@@ -91,6 +91,12 @@ define('VERSION', " . var_export($version, true) . ");
 
 ?>";
 
+//Alter Data table
+//From 1.6 --> 1.7
+$altertable = "ALTER TABLE `Data` ADD `details` VARCHAR(300) NOT NULL AFTER `task`, ADD `created` VARCHAR(10) NOT NULL AFTER `details`;";
+ 
+mysql_query($altertable);
+
 //Create Users table
 $createuserstable = "CREATE TABLE `Users` (
 `id` smallint(10) NOT NULL AUTO_INCREMENT,

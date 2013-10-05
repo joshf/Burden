@@ -31,6 +31,7 @@ $idtoedit = mysql_real_escape_string($_POST["idtoedit"]);
 
 //Set variables
 $newtask = mysql_real_escape_string($_POST["task"]);
+$newdetails = mysql_real_escape_string($_POST["details"]);
 $newcategory = mysql_real_escape_string($_POST["category"]);
 $newpriority = mysql_real_escape_string($_POST["priority"]);
 $newdue = mysql_real_escape_string($_POST["due"]);
@@ -47,7 +48,7 @@ if (isset($_POST["highpriority"])) {
     $newhighpriority = "0";
 }
 
-mysql_query("UPDATE `Data` SET `category` = \"$newcategory\", `highpriority` = \"$newhighpriority\", `task` = \"$newtask\", `due` = \"$newdue\" WHERE `id` = \"$idtoedit\"");
+mysql_query("UPDATE `Data` SET `category` = \"$newcategory\", `highpriority` = \"$newhighpriority\", `task` = \"$newtask\", `details` = \"$newdetails\", `due` = \"$newdue\" WHERE `id` = \"$idtoedit\"");
 
 mysql_close($con);
 

@@ -240,6 +240,7 @@ echo "</tbody></table>";
 ?>
 <div class="btn-group">
 <button id="edit" class="btn">Edit</button>
+<button id="details" class="btn">Details</button>
 <button id="delete" class="btn">Delete</button>
 <?php
 if ($view == "completed") {
@@ -360,6 +361,25 @@ $(document).ready(function() {
                             show_notification("success", "ok", "Task deleted!", true);
                         }
                     });
+                }
+            });
+        } else {
+            show_notification("info", "info-sign", "No ID selected!");
+        }
+    });
+    /* End */
+    /* Details */
+    $("#details").click(function() {
+        if (id_selected == true) {
+            $.ajax({
+                type: "POST",
+                url: "actions/worker.php",
+                data: "action=details&id="+ id +"",
+                error: function() {
+                    show_notification("error", "warning-sign", "Ajax query failed!");
+                },
+                success: function(message) {
+                    bootbox.alert(message);
                 }
             });
         } else {
