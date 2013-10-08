@@ -55,9 +55,9 @@ if ($action == "complete") {
         $suffix = "day(s)";
     }
     
-    $message = "<b>Details: </b> " . $resultgetdetails["details"] . "";
-    $message .= "<br><br><b>Created on:</b> " . $resultgetdetails["created"] . "";
-    $message .= "<br><br><b>Due:</b> $duein $suffix";
+    $message = "<p><b>Details: </b> " . $resultgetdetails["details"] . "</p>";
+    $message .= "<p><b>Created on:</b> " . $resultgetdetails["created"] . "</p>";
+    $message .= "<p><b>Due:</b> $duein $suffix</p>";
     
     echo $message;
 }
