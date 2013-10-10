@@ -170,10 +170,13 @@ if ($view == "completed") {
 echo "</tr></thead><tbody>";
 
 //Set counters to zero
+$numberoftasks = "0"; 
 $numberoftasksoverdue = "0"; 
 $numberoftasksduetoday = "0";
 
 while($row = mysql_fetch_assoc($gettasks)) {
+    //Count tasks
+    $numberoftasks++;
     //Logic for due date
     list($day, $month, $year) = explode("/", $row["due"]);
     $dueflipped = "$year-$month-$day";
@@ -259,13 +262,7 @@ if ($view == "normal" || $view == "highpriority") {
 <div class="well">
 <?php
 
-$getnumberoftasks = mysql_query("SELECT COUNT(id) FROM `Data` WHERE `completed` != \"1\"");
-$resultnumberoftasks = mysql_fetch_assoc($getnumberoftasks);
-echo "<i class=\"icon-tasks\"></i> <b>" . $resultnumberoftasks["COUNT(id)"] . "</b> tasks<br>";
-
-echo "<i class=\"icon-warning-sign\"></i> <b>$numberoftasksduetoday</b> due today<br>";
-
-echo "<i class=\"icon-exclamation-sign\"></i> <b>$numberoftasksoverdue</b> overdue";
+echo "<i class=\"icon-tasks\"></i> <b>$resultnumberoftasks</b> tasks<br><i class=\"icon-warning-sign\"></i> <b>$numberoftasksduetoday</b> due today<br><i class=\"icon-exclamation-sign\"></i> <b>$numberoftasksoverdue</b> overdue";
 
 mysql_close($con);
 
@@ -426,7 +423,7 @@ $(document).ready(function() {
     });
     /* End */
     /* Update Title */
-    document.title = "Burden (<?php echo $resultnumberoftasks["COUNT(id)"]; ?>)";
+    document.title = "Burden (<?php echo $numberoftasks; ?>)";
     /* End */
 });
 </script>
