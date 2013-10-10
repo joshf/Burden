@@ -262,7 +262,7 @@ if ($view == "normal" || $view == "highpriority") {
 <div class="well">
 <?php
 
-echo "<i class=\"icon-tasks\"></i> <b>$resultnumberoftasks</b> tasks<br><i class=\"icon-warning-sign\"></i> <b>$numberoftasksduetoday</b> due today<br><i class=\"icon-exclamation-sign\"></i> <b>$numberoftasksoverdue</b> overdue";
+echo "<i class=\"icon-tasks\"></i> <b>$numberoftasks</b> tasks<br><i class=\"icon-warning-sign\"></i> <b>$numberoftasksduetoday</b> due today<br><i class=\"icon-exclamation-sign\"></i> <b>$numberoftasksoverdue</b> overdue";
 
 mysql_close($con);
 
