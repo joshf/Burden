@@ -26,6 +26,7 @@ if (isset($_COOKIE["burden_user_rememberme"])) {
         header("Location: logout.php");
         exit;
     }
+    $userinforesult = mysql_fetch_assoc($getid); 
     $_SESSION["burden_user"] = $userinforesult["id"];
 }
 
