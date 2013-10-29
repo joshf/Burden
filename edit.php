@@ -71,7 +71,7 @@ body {
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 </a>
-<a class="brand" href="index.php">Burden</a>
+<a class="brand" href="#">Burden</a>
 <div class="nav-collapse collapse">
 <ul class="nav">
 <li class="divider-vertical"></li>
