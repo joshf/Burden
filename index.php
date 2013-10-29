@@ -99,6 +99,20 @@ if ($resultgetusersettings["theme"] == "superhero") {
 <li><a href="index.php?view=highpriority"><i class="icon-exclamation-sign"></i> High Priority Tasks</a></li>
 <li><a href="index.php?view=completed"><i class="icon-ok"></i> Completed Tasks</a></li>
 <li class="divider"></li>
+<li class="nav-header">Categories</li>
+<?php
+
+//Get categories
+$getcategories = mysql_query("SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\" AND `completed` != \"1\"");
+
+echo "<li><a href=\"index.php?view=categories&amp;cat=none\"><i class=\"icon-chevron-right\"></i> None</a></li>";
+
+while($row = mysql_fetch_assoc($getcategories)) {
+    echo "<li><a href=\"index.php?view=categories&amp;cat=" . $row["category"] . "\"><i class=\"icon-chevron-right\"></i> " . ucfirst($row["category"]) . "</a></li>";
+}    
+
+?>
+<li class="divider"></li>
 <li><a href="index.php"><i class="icon-remove"></i> Clear Filters</a></li>
 </ul>
 </li>
@@ -123,6 +137,23 @@ if ($resultgetusersettings["theme"] == "superhero") {
 
 if (isset($_GET["view"])) {
     $view = $_GET["view"];
+    //Prevent bad strings from messing with sorting
+    $views = array("categories", "normal", "highpriority", "completed");
+    if (!in_array($view, $views)) {
+        $view = "normal";
+    }
+    //Make sure cat exists
+	if ($view == "categories") {
+		if (isset($_GET["cat"])) {
+		    $cat = mysql_real_escape_string($_GET["cat"]);
+		    $checkcatexists = mysql_query("SELECT `category` FROM `Data` WHERE `category` = \"$cat\"");
+		    if (mysql_num_rows($checkcatexists) == 0) {
+		        $view = "normal";
+		    }
+		} else {
+			$view = "normal";
+		}
+	}
 } else {
     $view = "normal";
 }
@@ -131,6 +162,8 @@ if ($view == "completed") {
     echo "<h1>Completed Tasks</h1>";
 } elseif ($view == "highpriority") {
     echo "<h1>High Priority Tasks</h1>";
+} elseif ($view == "categories") {
+    echo "<h1>Tasks in \"$cat\" category</h1>";
 } elseif ($view == "normal") {
     echo "<h1>Current Tasks</h1>";
 }
@@ -152,6 +185,8 @@ if ($view == "completed") {
     $gettasks = mysql_query("SELECT * FROM `Data` WHERE `completed` = \"1\"");
 } elseif ($view == "highpriority") {
     $gettasks = mysql_query("SELECT * FROM `Data` WHERE `highpriority` = \"1\" AND `completed` = \"0\"");
+} elseif ($view == "categories") {
+	$gettasks = mysql_query("SELECT * FROM `Data` WHERE `completed` = \"0\" AND `category` = \"$cat\"");
 } else {
     $gettasks = mysql_query("SELECT * FROM `Data` WHERE `completed` = \"0\"");
 }
@@ -248,8 +283,7 @@ echo "</tbody></table>";
 <?php
 if ($view == "completed") {
     echo "<button id=\"restore\" class=\"btn\">Restore</button>";
-}
-if ($view == "normal" || $view == "highpriority") {
+} else {
     echo "<button id=\"complete\" class=\"btn\">Complete</button>";
 }
 ?>
