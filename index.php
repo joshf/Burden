@@ -313,7 +313,7 @@ mysql_close($con);
 <script src="resources/datatables/jquery.dataTables.min.js"></script>
 <script src="resources/datatables/jquery.dataTables-bootstrap.min.js"></script>
 <script src="resources/bootstrap-notify/js/bootstrap-notify.min.js"></script>
-<script src="resources/bootbox/bootbox.min.js"></script>
+<script src="resources/bootbox.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     /* Set Up Notifications */

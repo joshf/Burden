@@ -174,8 +174,8 @@ mysql_close($con);
 <script src="resources/jquery.min.js"></script>
 <script src="resources/bootstrap/js/bootstrap.min.js"></script>
 <script src="resources/datepicker/js/bootstrap-datepicker.min.js"></script>
-<script src="resources/validation/jqBootstrapValidation.min.js"></script>
-<script src="resources/bootbox/bootbox.min.js"></script>
+<script src="resources/jqBootstrapValidation.min.js"></script>
+<script src="resources/bootbox.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $("#due").datepicker({
