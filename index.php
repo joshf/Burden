@@ -44,11 +44,10 @@ $resultgetusersettings = mysql_fetch_assoc($getusersettings);
 <meta charset="utf-8">
 <title>Burden</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="resources/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
 <?php
-if ($resultgetusersettings["theme"] == "default") {
-    echo "<link href=\"resources/bootstrap/css/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
-} else {
-    echo "<link href=\"//netdna.bootstrapcdn.com/bootswatch/2.3.2/" . $resultgetusersettings["theme"] . "/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";
+if ($resultgetusersettings["theme"] == "dark") { 
+    echo "<link href=\"resources/bootstrap/css/darkstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
 }
 ?>
 <link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
@@ -63,12 +62,6 @@ body {
         padding-top: 0;
     }
 }
-<?php
-//Fix broken superhero theme
-if ($resultgetusersettings["theme"] == "superhero") {
-    echo "td {\n    color: #5A6A7D;\n}\n";
-}
-?>
 </style>
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>

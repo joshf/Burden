@@ -63,11 +63,10 @@ mysql_close($con);
 <meta charset="utf-8">
 <title>Burden &middot; Settings</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="resources/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
 <?php
-if ($resultgetusersettings["theme"] == "default") {
-    echo "<link href=\"resources/bootstrap/css/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
-} else {
-    echo "<link href=\"//netdna.bootstrapcdn.com/bootswatch/2.3.2/" . $resultgetusersettings["theme"] . "/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";
+if ($resultgetusersettings["theme"] == "dark") { 
+    echo "<link href=\"resources/bootstrap/css/darkstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
 }
 ?>
 <link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
@@ -152,7 +151,7 @@ body {
 <label class="control-label" for="theme">Theme</label>
 <div class="controls">
 <?php
-$themes = array("default", "amelia", "cerulean", "cosmo", "cyborg", "flatly", "journal", "readable", "simplex", "slate", "spacelab", "spruce", "superhero", "united");
+$themes = array("default", "dark");
 
 echo "<select id=\"theme\" name=\"theme\">";
 foreach ($themes as $value) {
@@ -166,6 +165,7 @@ echo "</select>";
 ?>
 </div>
 </div>
+<p>Dark theme created by <a href="https://github.com/danneu/darkstrap" target="_blank">Dan Neumann.</a></p>
 <div class="form-actions">
 <button type="submit" name="save" class="btn btn-primary">Save Changes</button>
 </div>
