@@ -90,8 +90,8 @@ body {
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Filters <b class="caret"></b></a>
 <ul class="dropdown-menu">
-<li><a href="index.php?view=highpriority">High Priority Tasks</a></li>
-<li><a href="index.php?view=completed">Completed Tasks</a></li>
+<li><a href="index.php?filter=highpriority">High Priority Tasks</a></li>
+<li><a href="index.php?filter=completed">Completed Tasks</a></li>
 <li class="divider"></li>
 <li class="nav-header">Categories</li>
 <?php
@@ -99,10 +99,10 @@ body {
 //Get categories
 $getcategories = mysql_query("SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\" AND `completed` != \"1\"");
 
-echo "<li><a href=\"index.php?view=categories&amp;cat=none\">None</a></li>";
+echo "<li><a href=\"index.php?filter=categories&amp;cat=none\">None</a></li>";
 
 while($row = mysql_fetch_assoc($getcategories)) {
-    echo "<li><a href=\"index.php?view=categories&amp;cat=" . $row["category"] . "\">" . ucfirst($row["category"]) . "</a></li>";
+    echo "<li><a href=\"index.php?filter=categories&amp;cat=" . $row["category"] . "\">" . ucfirst($row["category"]) . "</a></li>";
 }    
 
 ?>
@@ -129,36 +129,36 @@ while($row = mysql_fetch_assoc($getcategories)) {
 <div class="page-header">
 <?php
 
-if (isset($_GET["view"])) {
-    $view = $_GET["view"];
+if (isset($_GET["filter"])) {
+    $filter = $_GET["filter"];
     //Prevent bad strings from messing with sorting
-    $views = array("categories", "normal", "highpriority", "completed");
-    if (!in_array($view, $views)) {
-        $view = "normal";
+    $filters = array("categories", "normal", "highpriority", "completed");
+    if (!in_array($filter, $filters)) {
+        $filter = "normal";
     }
     //Make sure cat exists
-	if ($view == "categories") {
+	if ($filter == "categories") {
 		if (isset($_GET["cat"])) {
 		    $cat = mysql_real_escape_string($_GET["cat"]);
 		    $checkcatexists = mysql_query("SELECT `category` FROM `Data` WHERE `category` = \"$cat\"");
 		    if (mysql_num_rows($checkcatexists) == 0) {
-		        $view = "normal";
+		        $filter = "normal";
 		    }
 		} else {
-			$view = "normal";
+			$filter = "normal";
 		}
 	}
 } else {
-    $view = "normal";
+    $filter = "normal";
 }
 
-if ($view == "completed") {
+if ($filter == "completed") {
     echo "<h1>Completed Tasks</h1>";
-} elseif ($view == "highpriority") {
+} elseif ($filter == "highpriority") {
     echo "<h1>High Priority Tasks</h1>";
-} elseif ($view == "categories") {
+} elseif ($filter == "categories") {
     echo "<h1>Tasks in \"$cat\" category</h1>";
-} elseif ($view == "normal") {
+} elseif ($filter == "normal") {
     echo "<h1>Current Tasks</h1>";
 }
 echo "</div><div class=\"notifications top-right\"></div>";		
@@ -175,11 +175,11 @@ if (!isset($_COOKIE["burdenhascheckedforupdates"])) {
     }
 } 
 
-if ($view == "completed") {
+if ($filter == "completed") {
     $gettasks = mysql_query("SELECT * FROM `Data` WHERE `completed` = \"1\"");
-} elseif ($view == "highpriority") {
+} elseif ($filter == "highpriority") {
     $gettasks = mysql_query("SELECT * FROM `Data` WHERE `highpriority` = \"1\" AND `completed` = \"0\"");
-} elseif ($view == "categories") {
+} elseif ($filter == "categories") {
 	$gettasks = mysql_query("SELECT * FROM `Data` WHERE `completed` = \"0\" AND `category` = \"$cat\"");
 } else {
     $gettasks = mysql_query("SELECT * FROM `Data` WHERE `completed` = \"0\"");
@@ -191,7 +191,7 @@ echo "<table id=\"tasks\" class=\"table table-striped table-bordered table-conde
 <th></th>
 <th class=\"hidden-phone\">Category</th>
 <th>Task</th>";
-if ($view == "completed") {
+if ($filter == "completed") {
     echo "<th>Date Completed</th>"; 
 } else {
     echo "<th>Due</th>"; 
@@ -263,7 +263,7 @@ while($row = mysql_fetch_assoc($gettasks)) {
     echo "<td><input name=\"id\" type=\"radio\" value=\"" . $row["id"] . "\"></td>";
     echo "<td class=\"hidden-phone\">" . ucfirst($row["category"]) . "</td>";
     echo "<td>" . $row["task"] . "</td>";
-    if ($view == "completed") {
+    if ($filter == "completed") {
         echo "<td>" . $row["datecompleted"] . "</td>";
     } else {
         echo "<td>" . $row["due"] . "</td>";
@@ -278,7 +278,7 @@ echo "</tbody></table>";
 <button id="details" class="btn">Details</button>
 <button id="delete" class="btn">Delete</button>
 <?php
-if ($view == "completed") {
+if ($filter == "completed") {
     echo "<button id=\"restore\" class=\"btn\">Restore</button>";
 } else {
     echo "<button id=\"complete\" class=\"btn\">Complete</button>";
