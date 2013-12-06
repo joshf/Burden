@@ -12,10 +12,10 @@ Features:
 * Tasks can be marked as important to highlight critical tasks
 * Overdue tasks are highlighted clearly
 * Tasks can be sorted into categories
-* Themed by Twitter Bootstrap, extra themes available through Bootswatch
+* Choice of light or dark theme
 * Sort and search tasks using DataTables
 * Works well on mobile devices due to a responsive layout
-* Beautiful notifications system via Bootstrap Notify
+* Beautiful notifications system thanks to Bootstrap Notify
 
 Screenshots:
 ------------
@@ -35,14 +35,14 @@ Installation:
 3. Upload the Burden folder to your server via FTP or your hosts control panel
 4. Open up http://yoursite.com/Burden/installer in your browser and enter your database/user details
 5. Delete the "installer" folder from your server
-6. Login to the admin panel using the username and password you set during the install process
+6. Login to Burden using the username and password you set during the install process
 7. Add your tasks
 8. Burden should now be set up
 
 Usage:
 ------
 
-Login to the script and add your tasks. For each task you can set a due date, its category and whether or not it is of high importance. You can also easily edit, delete or mark tasks as completed by using the admin panel.
+Login to the script and add your tasks. For each task you can set a due date, a category, add extra details and whether or not it is of high importance. You can also easily edit, delete or mark tasks as completed by using the script.
 
 Rather than save all of your categories, Burden will only keep categories for non-deleted tasks. This helps to stop the build up of unnecessary categories.
 
@@ -74,4 +74,4 @@ For help and support post an issue on [GitHub](https://github.com/joshf/Burden/i
 Contributing:
 -------------
 
-Feel free to fork and make any changes you want to Burden. If you want them to be added to master then send a pull request.
+Feel free to fork and make any changes you want to Burden. If you want them to be added to master then send a pull request via GitHub.
