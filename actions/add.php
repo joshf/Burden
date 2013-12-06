@@ -26,7 +26,9 @@ mysql_select_db(DB_NAME, $con);
 $task = mysql_real_escape_string($_POST["task"]);
 $details = mysql_real_escape_string($_POST["details"]);
 $category = mysql_real_escape_string($_POST["category"]);
-$priority = mysql_real_escape_string($_POST["priority"]);
+if (isset($_POST["priority"])) {
+    $priority = mysql_real_escape_string($_POST["priority"]);
+}
 $due = mysql_real_escape_string($_POST["due"]);
 
 //Failsafes

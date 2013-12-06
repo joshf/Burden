@@ -33,7 +33,9 @@ $idtoedit = mysql_real_escape_string($_POST["idtoedit"]);
 $newtask = mysql_real_escape_string($_POST["task"]);
 $newdetails = mysql_real_escape_string($_POST["details"]);
 $newcategory = mysql_real_escape_string($_POST["category"]);
-$newpriority = mysql_real_escape_string($_POST["priority"]);
+if (isset($_POST["priority"])) {
+    $newpriority = mysql_real_escape_string($_POST["priority"]);
+}
 $newdue = mysql_real_escape_string($_POST["due"]);
 
 //Failsafes

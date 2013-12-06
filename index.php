@@ -207,7 +207,10 @@ while($row = mysql_fetch_assoc($gettasks)) {
     //Count tasks
     $numberoftasks++;
     //Logic for due date
-    list($day, $month, $year) = explode("/", $row["due"]);
+    $segments = explode("/", $row["due"]);
+    if (count($segments) == 3) {
+        list($day, $month, $year) = $segments;
+    }
     $dueflipped = "$year-$month-$day";
     $today = strtotime(date("Y-m-d")); 
     $due = strtotime($dueflipped);
