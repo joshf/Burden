@@ -73,10 +73,6 @@ $dbhost = DB_HOST;
 $dbuser = DB_USER;
 $dbpassword = DB_PASSWORD;
 $dbname = DB_NAME;
-$user = ADMIN_USER;
-$password = ADMIN_PASSWORD;
-$salt = SALT;
-$theme = THEME;
 
 $updatestring = "<?php
 
@@ -90,30 +86,6 @@ define('DB_NAME', " . var_export($dbname, true) . ");
 define('VERSION', " . var_export($version, true) . ");
 
 ?>";
-
-//Alter Data table
-//From 1.6 --> 1.7
-$altertable = "ALTER TABLE `Data` ADD `details` VARCHAR(300) NOT NULL AFTER `task`, ADD `created` VARCHAR(10) NOT NULL AFTER `details`;";
- 
-mysql_query($altertable);
-
-//Create Users table
-$createuserstable = "CREATE TABLE `Users` (
-`id` smallint(10) NOT NULL AUTO_INCREMENT,
-`user` varchar(20) NOT NULL,
-`password` varchar(200) NOT NULL,
-`salt` varchar(3) NOT NULL,
-`email` varchar(100) NOT NULL,
-`admin` tinyint(1) NOT NULL,
-`theme` varchar(20) NOT NULL,
-PRIMARY KEY (`id`)
-) ENGINE=MyISAM;";
-
-mysql_query($createuserstable);
-
-//Add admin user
-mysql_query("INSERT INTO Users (user, password, salt, email, admin, theme)
-VALUES (\"$user\",\"$password\",\"$salt\",\"$user@" . $_SERVER["SERVER_NAME"] . "\",\"1\",\"$theme\")");
 
 //Write Config
 $configfile = fopen("../config.php", "w");
