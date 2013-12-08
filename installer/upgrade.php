@@ -21,7 +21,7 @@ if (!$does_db_exist) {
 }
 
 //Define Version
-$version = "1.7";
+$version = "1.8";
 
 if ($version == VERSION) {
     die("Information: The latest version of Burden is already installed and an upgrade is not required.");
