@@ -17,18 +17,6 @@ if (!$con) {
 }
 
 mysql_select_db(DB_NAME, $con);
-    
-//If cookie is set, skip login
-if (isset($_COOKIE["burden_user_rememberme"])) {
-    $id = $_COOKIE["burden_user_rememberme"];
-    $getid = mysql_query("SELECT `id` FROM `Users` WHERE `id` = \"$id\"");
-    if (mysql_num_rows($getid) == 0) {
-        header("Location: logout.php");
-        exit;
-    }
-    $userinforesult = mysql_fetch_assoc($getid); 
-    $_SESSION["burden_user"] = $userinforesult["id"];
-}
 
 if (isset($_POST["password"]) && isset($_POST["username"])) {
     $username = mysql_real_escape_string($_POST["username"]);
@@ -121,13 +109,6 @@ if (isset($_GET["login_error"])) {
 <label class="control-label" for="password">Password</label>
 <div class="controls">
 <input type="password" id="password" name="password" class="input-block-level" placeholder="Password...">
-</div>
-</div>
-<div class="control-group">
-<div class="controls">
-<label class="checkbox">
-<input type="checkbox" id="rememberme" name="rememberme"> Remember Me
-</label>
 </div>
 </div>
 <button type="submit" class="btn pull-right">Login</button>
