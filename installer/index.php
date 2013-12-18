@@ -195,7 +195,7 @@ if (!isset($_POST["install"])) {
 <!-- Javascript start -->
 <script src="../resources/jquery.min.js"></script>
 <script src="../resources/bootstrap/js/bootstrap.min.js"></script>
-<script src="../resources/validation/jqBootstrapValidation.min.js"></script>
+<script src="../resources/jqBootstrapValidation.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $("input").not("[type=submit]").jqBootstrapValidation();
