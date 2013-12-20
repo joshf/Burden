@@ -178,10 +178,7 @@ mysql_close($con);
 }
     }
 ?>
-<br>
 </div>
-<!-- Content end -->
-<!-- Javascript start -->
 <script src="assets/jquery.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/datepicker/js/bootstrap-datepicker.min.js"></script>
@@ -206,6 +203,5 @@ $(document).ready(function() {
     });
 });
 </script>
-<!-- Javascript end -->
 </body>
 </html>
