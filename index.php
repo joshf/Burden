@@ -101,7 +101,7 @@ th.sorting_disabled {
 echo "<li><a href=\"index.php?filter=categories&amp;cat=none\">None</a></li>";
 
 //Get categories
-$getcategories = mysql_query("SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\" AND `completed` != \"1\"");
+$getcategories = mysql_query("SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"none\" OR \"\" AND `completed` != \"1\"");
 
 while($row = mysql_fetch_assoc($getcategories)) {
     echo "<li><a href=\"index.php?filter=categories&amp;cat=" . $row["category"] . "\">" . ucfirst($row["category"]) . "</a></li>";
