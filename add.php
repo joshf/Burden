@@ -163,6 +163,8 @@ $(document).ready(function() {
         bootbox.prompt("Add a category", function(newcategory) {
             if (newcategory != null && newcategory != "") {
                 $("#category").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
+                $("select").selectpicker("render");
+                $("select").selectpicker("refresh");
             }
         });
     });
