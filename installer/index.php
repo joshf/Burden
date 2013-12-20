@@ -24,7 +24,7 @@ if (isset($_POST["install"])) {
         $hashedpassword = hash("sha256", $_POST["password"]);
         $password = hash("sha256", $salt . $hashedpassword);
     }
-    $version = "2.0";
+    $version = "2.0dev";
     
     $installstring = "<?php\n\n//Database Settings\ndefine('DB_HOST', " . var_export($dbhost, true) . ");\ndefine('DB_USER', " . var_export($dbuser, true) . ");\ndefine('DB_PASSWORD', " . var_export($dbpassword, true) . ");\ndefine('DB_NAME', " . var_export($dbname, true) . ");\n\n//Other Settings\ndefine('VERSION', " . var_export($version, true) . ");\n\n?>";
 
