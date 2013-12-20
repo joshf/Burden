@@ -35,51 +35,46 @@ $resultgetusersettings = mysql_fetch_assoc($getusersettings);
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Burden &middot; Add</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="resources/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
-<?php
-if ($resultgetusersettings["theme"] == "dark") { 
-    echo "<link href=\"resources/bootstrap/css/darkstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
-}
-?>
-<link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
-<link href="resources/datepicker/css/bootstrap-datepicker.min.css" type="text/css" rel="stylesheet">
+<title>Burden &middot; Add</title>
+<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/datepicker/css/datepicker3.min.css" rel="stylesheet">
+<link href="assets/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
 <style type="text/css">
 body {
-    padding-top: 60px;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
-@media (max-width: 980px) {
-    body {
-        padding-top: 0;
-    }
-}
+/*.form-control {
+    width: 30%;
+}*/
 </style>
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
-<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 <![endif]-->
 </head>
 <body>
-<!-- Nav start -->
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 <div class="container">
-<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+<span class="sr-only">Toggle navigation</span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
-</a>
-<a class="brand" href="#">Burden</a>
-<div class="nav-collapse collapse">
-<ul class="nav">
-<li class="divider-vertical"></li>
+</button>
+<a class="navbar-brand" href="#">Burden</a>
+</div>
+<div class="navbar-collapse collapse">
+<ul class="nav navbar-nav">
 <li><a href="index.php">Home</a></li>
 <li class="active"><a href="add.php">Add</a></li>
 <li><a href="edit.php">Edit</a></li>
 </ul>
-<ul class="nav pull-right">
-<li class="divider-vertical"></li>
+<ul class="nav navbar-nav navbar-right">
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $resultgetusersettings["user"]; ?> <b class="caret"></b></a>
 <ul class="dropdown-menu">
@@ -91,9 +86,6 @@ body {
 </div>
 </div>
 </div>
-</div>
-<!-- Nav end -->
-<!-- Content start -->
 <div class="container">
 <div class="page-header">
 <h1>Add</h1>
@@ -104,35 +96,27 @@ body {
 if (isset($_GET["error"])) {
     $error = $_GET["error"];
     if ($error == "emptyfields") {
-        echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>One or more fields were left empty.</p></div>";
+        echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>One or more fields were left empty.</p></div>";
     }
 }
 
 ?>
-<form action="actions/add.php" method="post" autocomplete="off">
-<fieldset>
-<div class="control-group">
-<label class="control-label" for="task">Task</label>
-<div class="controls">
-<input type="text" id="task" name="task" placeholder="Type a task..." required>
+<form role="form" action="actions/add.php" method="post" autocomplete="off">
+<div class="form-group">
+<label for="task">Task</label>
+<input type="text" class="form-control" id="task" name="task" placeholder="Type a task..." required>
 </div>
+<div class="form-group">
+<label for="details">Details</label>
+<textarea rows="2" class="form-control" id="details" name="details" placeholder="Type any extra details.."></textarea>
 </div>
-<div class="control-group">
-<label class="control-label" for="details">Details</label>
-<div class="controls">
-<textarea rows="2" id="details" name="details" placeholder="Type any extra details.."></textarea>
+<div class="form-group">
+<label for="due">Due</label>
+<input type="text" class="form-control" id="due" name="due" placeholder="Type a due date..." required>
 </div>
-</div>
-<div class="control-group">
-<label class="control-label" for="due">Due</label>
-<div class="controls">
-<input type="text" id="due" name="due" placeholder="Type a due date..." pattern="((((0?[1-9]|[12]\d|3[01])[\.\-\/](0?[13578]|1[02])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|[12]\d|30)[\.\-\/](0?[13456789]|1[012])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|1\d|2[0-8])[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|(29[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00)))|(((0[1-9]|[12]\d|3[01])(0[13578]|1[02])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|[12]\d|30)(0[13456789]|1[012])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|1\d|2[0-8])02((1[6-9]|[2-9]\d)?\d{2}))|(2902((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00))))" data-validation-pattern-message="Please enter a valid date in the format DD/MM/YYYY." required>
-</div>
-</div>
-<div class="control-group">
-<label class="control-label" for="category">Category</label>
-<div class="controls">
-<select id="category" name="category">
+<div class="form-group">
+<label for="category">Category</label>
+<select class="form-control" id="category" name="category">
 <?php
 
 //Don't duplicate none entry
@@ -154,27 +138,21 @@ mysql_close($con);
 </select>
 <span class="help-block"><a id="addcategory">&#43; Add new category</a></span>
 </div>
-</div>
-<div class="control-group">
-<div class="controls">
-<label class="checkbox">
+<div class="checkbox">
+<label>
 <input type="checkbox" id="highpriority" name="highpriority"> High priority
 </label>
 </div>
-</div>
-<div class="form-actions">
-<button type="submit" class="btn btn-primary">Add</button>
-</div>
-</fieldset>
+<button type="submit" class="btn btn-default">Add</button>
 </form>
 </div>
-<!-- Content end -->
-<!-- Javascript start -->
-<script src="resources/jquery.min.js"></script>
-<script src="resources/bootstrap/js/bootstrap.min.js"></script>
-<script src="resources/datepicker/js/bootstrap-datepicker.min.js"></script>
-<script src="resources/jqBootstrapValidation.min.js"></script>
-<script src="resources/bootbox.min.js"></script>
+<script src="assets/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/bootbox.min.js"></script>
+<script src="assets/datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="assets/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="assets/validation/jquery.validate.js"></script>
+<script src="assets/validation/jquery.validate-custom.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $("#due").datepicker({
@@ -189,9 +167,10 @@ $(document).ready(function() {
             }
         });
     });
-    $("input").not("[type=submit]").jqBootstrapValidation();
+    $("select").selectpicker({
+        liveSearch: "true"
+    });
 });
 </script>
-<!-- Javascript end -->
 </body>
 </html>

@@ -46,19 +46,20 @@ if (!isset($_SESSION["burden_user"])) {
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Burden &middot; Login</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<link href="resources/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
-<link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
+<link href="assets/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
 <style type="text/css">
 body {
-    padding-top: 60px;
-    background-color: #f5f5f5;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #eee;
 }
 .form-signin {
     max-width: 300px;
-    padding: 19px 29px 29px;
+    padding: 19px 29px 60px;
     margin: 0 auto 20px;
     background-color: #fff;
     border: 1px solid #e5e5e5;
@@ -87,44 +88,30 @@ body {
 <body>
 <!-- Content start -->
 <div class="container">
-<form class="form-signin" method="post">
-<fieldset>
+<form role="form" class="form-signin" method="post">
 <h2 class="form-signin-heading text-center">Burden</h2>
 <?php 
 if (isset($_GET["login_error"])) {
-    echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>Incorrect username or password.</div>";
+    echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>Incorrect username or password.</div>";
 } elseif (isset($_GET["user_doesnt_exist"])) {
-    echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>User does not exist.</div>";
+    echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>User does not exist.</div>";
 } elseif (isset($_GET["logged_out"])) {
     echo "<div class=\"alert alert-success\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>Successfully logged out.</div>";
 }
 ?>
-<div class="control-group">
-<label class="control-label" for="username">Username</label>
-<div class="controls">
-<input type="text" id="username" name="username" class="input-block-level" placeholder="Username...">
+<div class="form-group">
+<label for="username">Username</label>
+<input type="text" class="form-control" id="username" name="username" placeholder="Username..." autofocus>
 </div>
+<div class="form-group">
+<label for="password">Password</label>
+<input type="password" class="form-control" id="password" name="password" placeholder="Password...">
 </div>
-<div class="control-group">
-<label class="control-label" for="password">Password</label>
-<div class="controls">
-<input type="password" id="password" name="password" class="input-block-level" placeholder="Password...">
-</div>
-</div>
-<button type="submit" class="btn pull-right">Login</button>
-</fieldset>
+<button type="submit" class="btn btn-default pull-right">Login</button>
 </form>
 </div>
-<!-- Content end -->
-<!-- Javascript start -->
-<script src="resources/jquery.min.js"></script>
-<script src="resources/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#username").focus();
-});
-</script>
-<!-- Javascript end -->
+<script src="assets/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
 <?php

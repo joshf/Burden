@@ -24,7 +24,7 @@ if (isset($_POST["install"])) {
         $hashedpassword = hash("sha256", $_POST["password"]);
         $password = hash("sha256", $salt . $hashedpassword);
     }
-    $version = "1.8.1";
+    $version = "2.0";
     
     $installstring = "<?php\n\n//Database Settings\ndefine('DB_HOST', " . var_export($dbhost, true) . ");\ndefine('DB_USER', " . var_export($dbuser, true) . ");\ndefine('DB_PASSWORD', " . var_export($dbpassword, true) . ");\ndefine('DB_NAME', " . var_export($dbname, true) . ");\n\n//Other Settings\ndefine('VERSION', " . var_export($version, true) . ");\n\n?>";
 
@@ -72,8 +72,8 @@ if (isset($_POST["install"])) {
     mysql_query($createuserstable);
     
     //Add user
-    mysql_query("INSERT INTO Users (user, password, salt, email, admin, theme)
-    VALUES (\"$user\",\"$password\",\"$salt\",\"$email\",\"1\",\"default\")");
+    mysql_query("INSERT INTO Users (user, password, salt, email, admin)
+    VALUES (\"$user\",\"$password\",\"$salt\",\"$email\",\"1\")");
 
     //Write Config
     $configfile = fopen("../config.php", "w");
@@ -88,37 +88,34 @@ if (isset($_POST["install"])) {
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Burden &middot; Installer</title>
-<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="../resources/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
-<link href="../resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
+<meta name="robots" content="noindex, nofollow">
+<title>Burden &middot; Installer</title>
+<link href="../assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <style type="text/css">
 body {
-    padding-top: 60px;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
-@media (max-width: 980px) {
-    body {
-        padding-top: 0;
-    }
-}
+/*.form-control {
+    width: 30%;
+}*/
 </style>
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
-<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 <![endif]-->
 </head>
 <body>
-<!-- Nav start -->
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 <div class="container">
-<a class="brand" href="#">Burden</a>
+<div class="navbar-header">
+<a class="navbar-brand" href="#">Burden</a>
 </div>
 </div>
 </div>
-<!-- Nav end -->
-<!-- Content start -->
 <div class="container">
 <div class="page-header">
 <h1>Installer</h1>
@@ -126,64 +123,46 @@ body {
 <?php
 if (!isset($_POST["install"])) {
 ?>	
-<form method="post" autocomplete="off">
-<fieldset>
+<form role="form" method="post" autocomplete="off">
 <h4>Database Settings</h4>
-<div class="control-group">
-<label class="control-label" for="dbhost">Database Host</label>
-<div class="controls">
-<input type="text" id="dbhost" name="dbhost" value="localhost" placeholder="Type your database host..." required>
+<div class="form-group">
+<label for="dbhost">Database Host</label>
+<input type="text" class="form-control" id="dbhost" name="dbhost" value="localhost" placeholder="Type your database host..." required>
 </div>
+<div class="form-group">
+<label for="dbuser">Database User</label>
+<input type="text" class="form-control" id="dbuser" name="dbuser" placeholder="Type your database user..." required>
 </div>
-<div class="control-group">
-<label class="control-label" for="dbuser">Database User</label>
-<div class="controls">
-<input type="text" id="dbuser" name="dbuser" placeholder="Type your database user..." required>
+<div class="form-group">
+<label for="dbpassword">Database Password</label>
+<input type="password" class="form-control" id="dbpassword" name="dbpassword" placeholder="Type your database password..." required>
 </div>
-</div>
-<div class="control-group">
-<label class="control-label" for="dbpassword">Database Password</label>
-<div class="controls">
-<input type="password" id="dbpassword" name="dbpassword" placeholder="Type your database password..." required>
-</div>
-</div>
-<div class="control-group">
-<label class="control-label" for="dbname">Database Name</label>
-<div class="controls">
-<input type="text" id="dbname" name="dbname" placeholder="Type your database name..." required>
-</div>
+<div class="form-group">
+<label for="dbname">Database Name</label>
+<input type="text" class="form-control" id="dbname" name="dbname" placeholder="Type your database name..." required>
 </div>
 <h4>User Details</h4>
-<div class="control-group">
-<label class="control-label" for="user">User</label>
-<div class="controls">
-<input type="text" id="user" name="user" placeholder="Type a username..." required>
+<div class="form-group">
+<label for="user">User</label>
+<input type="text" class="form-control" id="user" name="user" placeholder="Type a username..." required>
 </div>
+<div class="form-group">
+<label for="email">Email</label>
+<input type="email" class="form-control" id="email" name="email" placeholder="Type an email..." required>
 </div>
-<div class="control-group">
-<label class="control-label" for="email">Email</label>
-<div class="controls">
-<input type="email" id="email" name="email" placeholder="Type an email..." required>
+<div class="form-group">
+<label for="password">Password</label>
+<input type="password" class="form-control" id="password" name="password" placeholder="Type a password..." required>
 </div>
-</div>
-<div class="control-group">
-<label class="control-label" for="password">Password</label>
-<div class="controls">
-<input type="password" id="password" name="password" placeholder="Type a password..." required>
-</div>
-</div>
-<div class="control-group">
-<label class="control-label" for="passwordconfirm">Confirm Password</label>
-<div class="controls">
-<input type="password" id="passwordconfirm" name="passwordconfirm" placeholder="Type your password again..." data-validation-match-match="password" required>
+<div class="form-group">
+<label for="passwordconfirm">Confirm Password</label>
+<input type="password" class="form-control" id="passwordconfirm" name="passwordconfirm" placeholder="Type your password again..." data-validation-match-match="password" required>
 <span class="help-block">It is recommended that your password be at least 6 characters long</span>
-</div>
 </div>
 <div class="form-actions">
 <input type="hidden" name="install">
-<input type="submit" class="btn btn-primary" value="Install">
+<input type="submit" class="btn btn-default" value="Install">
 </div>
-</fieldset>
 </form>
 <?php
 } else {
@@ -191,16 +170,7 @@ if (!isset($_POST["install"])) {
 }
 ?>
 </div>
-<!-- Content end -->
-<!-- Javascript start -->
-<script src="../resources/jquery.min.js"></script>
-<script src="../resources/bootstrap/js/bootstrap.min.js"></script>
-<script src="../resources/jqBootstrapValidation.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    $("input").not("[type=submit]").jqBootstrapValidation();
-});
-</script>
-<!-- Javascript end -->
+<script src="../assets/jquery.min.js"></script>
+<script src="../assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -35,51 +35,46 @@ $resultgetusersettings = mysql_fetch_assoc($getusersettings);
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Burden &middot; Edit</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="resources/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
-<?php
-if ($resultgetusersettings["theme"] == "dark") { 
-    echo "<link href=\"resources/bootstrap/css/darkstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
-}
-?>
-<link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
-<link href="resources/datepicker/css/bootstrap-datepicker.min.css" type="text/css" rel="stylesheet">
+<title>Burden &middot; Edit</title>
+<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/datepicker/css/datepicker3.min.css" rel="stylesheet">
+<link href="assets/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
 <style type="text/css">
 body {
-    padding-top: 60px;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
-@media (max-width: 980px) {
-    body {
-        padding-top: 0;
-    }
-}
+/*.form-control {
+    width: 30%;
+}*/
 </style>
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
-<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 <![endif]-->
 </head>
 <body>
-<!-- Nav start -->
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 <div class="container">
-<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+<span class="sr-only">Toggle navigation</span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
-</a>
-<a class="brand" href="#">Burden</a>
-<div class="nav-collapse collapse">
-<ul class="nav">
-<li class="divider-vertical"></li>
+</button>
+<a class="navbar-brand" href="#">Burden</a>
+</div>
+<div class="navbar-collapse collapse">
+<ul class="nav navbar-nav">
 <li><a href="index.php">Home</a></li>
 <li><a href="add.php">Add</a></li>
 <li class="active"><a href="edit.php">Edit</a></li>
 </ul>
-<ul class="nav pull-right">
-<li class="divider-vertical"></li>
+<ul class="nav navbar-nav navbar-right">
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $resultgetusersettings["user"]; ?> <b class="caret"></b></a>
 <ul class="dropdown-menu">
@@ -91,9 +86,6 @@ body {
 </div>
 </div>
 </div>
-</div>
-<!-- Nav end -->
-<!-- Content start -->   
 <div class="container">
 <div class="page-header">
 <h1>Edit</h1>
@@ -104,11 +96,11 @@ body {
 if (!isset($_GET["id"])) {
 	$getids = mysql_query("SELECT `id`, `task` FROM `Data` WHERE `completed` = \"0\"");
     if (mysql_num_rows($getids) != 0) {
-        echo "<form action=\"edit.php\" method=\"get\"><fieldset><div class=\"control-group\"><label class=\"control-label\" for=\"id\">Select a task to edit</label><div class=\"controls\"><select id=\"id\" name=\"id\">";
+        echo "<form role=\"form\" method=\"get\"><div class=\"form-group\"><label for=\"id\">Select a task to edit</label><select class=\"form-control\" id=\"id\" name=\"id\">";
         while($row = mysql_fetch_assoc($getids)) {
             echo "<option value=\"" . $row["id"] . "\">" . ucfirst($row["task"]) . "</option>";
         }
-        echo "</select></div></div><div class=\"form-actions\"><button type=\"submit\" class=\"btn btn-primary\">Edit</button></div></fieldset></form>";
+        echo "</select></div><button type=\"submit\" class=\"btn btn-default\">Select</button></form>";
     } else {
         echo "<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>No tasks available to edit.</p><p><a class=\"btn btn-info\" href=\"javascript:history.go(-1)\">Go Back</a></p></div>";
     }
@@ -122,31 +114,27 @@ $idtoedit = mysql_real_escape_string($_GET["id"]);
 //Check if ID exists
 $doesidexist = mysql_query("SELECT `id` FROM `Data` WHERE `id` = $idtoedit");
 if (mysql_num_rows($doesidexist) == 0) {
-    echo "<div class=\"alert alert-error\"><h4 class=\"alert-heading\">Error</h4><p>ID does not exist.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div>";
+    echo "<div class=\"alert alert-danger\"><h4 class=\"alert-heading\">Error</h4><p>ID does not exist.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div>";
 } else {
 
 //Error display
 if (isset($_GET["error"])) {
     $error = $_GET["error"];
     if ($error == "emptyfields") {
-        echo "<div class=\"alert alert-error\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>One or more fields were left empty.</p></div>";
+        echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>One or more fields were left empty.</p></div>";
     }
 }
 ?>
-<form action="actions/edit.php" method="post" autocomplete="off">
-<fieldset>
+<form role="form" action="actions/edit.php" method="post" autocomplete="off">
 <?php
 
 $getidinfo = mysql_query("SELECT * FROM `Data` WHERE `id` = $idtoedit");
 $getidinforesult = mysql_fetch_assoc($getidinfo);
 
-echo "<div class=\"control-group\"><label class=\"control-label\" for=\"task\">Task</label><div class=\"controls\"><input type=\"text\" id=\"task\" name=\"task\" value=\"" . $getidinforesult["task"] . "\" placeholder=\"Type a task...\" required></div></div>";
-echo "<div class=\"control-group\"><label class=\"control-label\" for=\"details\">Details</label><div class=\"controls\"><textarea rows=\"2\" id=\"details\" name=\"details\" placeholder=\"Type any extra details..\">" . $getidinforesult["details"] . "</textarea></div></div>";
-echo "<div class=\"control-group\"><label class=\"control-label\" for=\"due\">Due</label><div class=\"controls\"><input type=\"text\" id=\"due\" name=\"due\" value=\"" . $getidinforesult["due"] . "\" placeholder=\"Type a due date...\" pattern=\"((((0?[1-9]|[12]\d|3[01])[\.\-\/](0?[13578]|1[02])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|[12]\d|30)[\.\-\/](0?[13456789]|1[012])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|1\d|2[0-8])[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|(29[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00)))|(((0[1-9]|[12]\d|3[01])(0[13578]|1[02])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|[12]\d|30)(0[13456789]|1[012])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|1\d|2[0-8])02((1[6-9]|[2-9]\d)?\d{2}))|(2902((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00))))\" data-validation-pattern-message=\"Please enter a valid date in the format DD/MM/YYYY.\" required></div></div>";
-echo "<div class=\"control-group\"><label class=\"control-label\" for=\"category\">Category</label><div class=\"controls\"><select id=\"category\" name=\"category\">";
-
-//Set category in variable
-$category = $getidinforesult["category"];
+echo "<div class=\"form-group\"><label for=\"task\">Task</label><input type=\"text\" class=\"form-control\" id=\"task\" name=\"task\" value=\"" . $getidinforesult["task"] . "\" placeholder=\"Type a task...\" required></div>";
+echo "<div class=\"form-group\"><label for=\"details\">Details</label><textarea rows=\"2\" class=\"form-control\" id=\"details\" name=\"details\" placeholder=\"Type any extra details..\">" . $getidinforesult["details"] . "</textarea></div>";
+echo "<div class=\"form-group\"><label for=\"due\">Due</label><input type=\"text\" class=\"form-control\" id=\"due\" name=\"due\" value=\"" . $getidinforesult["due"] . "\" placeholder=\"Type a due date...\" required></div>";
+echo "<div class=\"form-group\"><label for=\"category\">Category</label><select class=\"form-control\" id=\"category\" name=\"category\">";
 
 //Don't duplicate none entry
 $doesnoneexist = mysql_query("SELECT `category` FROM `Data` WHERE `category` = \"none\"");
@@ -158,16 +146,16 @@ if (mysql_num_rows($doesnoneexist) == 0) {
 $getcategories = mysql_query("SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\"");
 
 while($row = mysql_fetch_assoc($getcategories)) {    
-    if ($row["category"] == $category) {
+    if ($row["category"] == $getidinforesult["category"]) {
         echo "<option value=\"" . $row["category"] . "\" selected=\"selected\">" . ucfirst($row["category"]) . "</option>";
     } else {    
         echo "<option value=\"" . $row["category"] . "\">" . ucfirst($row["category"]) . "</option>";
     }
 }
 
-echo "</select><span class=\"help-block\"><a id=\"addcategory\">&#43; Add new category</a></span></div></div>";
+echo "</select><span class=\"help-block\"><a id=\"addcategory\">&#43; Add new category</a></span></div>";
 
-echo "<div class=\"control-group\"><div class=\"controls\"><label class=\"checkbox\">";
+echo "<div class=\"checkbox\"><label>";
     
 //Check if task is high priority
 $checkifhighpriority = mysql_query("SELECT `highpriority` FROM `Data` WHERE `id` = \"$idtoedit\"");
@@ -183,25 +171,22 @@ mysql_close($con);
 ?>
 </label>
 </div>
-</div>
-<div class="form-actions">
 <input type="hidden" id="idtoedit" name="idtoedit" value="<?php echo $idtoedit; ?>" />
-<button type="submit" class="btn btn-primary">Update</button>
-</div>
-</fieldset>
+<button type="submit" class="btn btn-default">Edit</button>
 </form>
 <?php
 }
     }
 ?>
+<br>
 </div>
 <!-- Content end -->
 <!-- Javascript start -->
-<script src="resources/jquery.min.js"></script>
-<script src="resources/bootstrap/js/bootstrap.min.js"></script>
-<script src="resources/datepicker/js/bootstrap-datepicker.min.js"></script>
-<script src="resources/jqBootstrapValidation.min.js"></script>
-<script src="resources/bootbox.min.js"></script>
+<script src="assets/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="assets/bootbox.min.js"></script>
+<script src="assets/bootstrap-select/js/bootstrap-select.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $("#due").datepicker({
@@ -209,13 +194,15 @@ $(document).ready(function() {
         autoclose: "true",
         clearBtn: "true"
     });
-    $("input").not("[type=submit]").jqBootstrapValidation();
     $("#addcategory").click(function () {
         bootbox.prompt("Add a category", function(newcategory) {
             if (newcategory != null && newcategory != "") {
                 $("#category").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
             }
         });
+    });
+    $("select").selectpicker({
+        liveSearch: "true"
     });
 });
 </script>

@@ -2,7 +2,7 @@
 
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
-$version = "1.8.1";
+$version = "2.0";
 
 if (!file_exists("config.php")) {
     die("Error: Config file not found! Please reinstall Burden.");
@@ -42,58 +42,60 @@ $resultgetusersettings = mysql_fetch_assoc($getusersettings);
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Burden</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="resources/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
-<?php
-if ($resultgetusersettings["theme"] == "dark") { 
-    echo "<link href=\"resources/bootstrap/css/darkstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\n";  
-}
-?>
-<link href="resources/bootstrap/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
-<link href="resources/datatables/jquery.dataTables-bootstrap.min.css" type="text/css" rel="stylesheet">
-<link href="resources/bootstrap-notify/css/bootstrap-notify.min.css" type="text/css" rel="stylesheet">
+<link rel="apple-touch-icon" href="assets/icon.png"/>
+<title>Burden</title>
+<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="assets/datatables/css/dataTables.bootstrap.min.css" rel="stylesheet">
+<link href="assets/bootstrap-notify/css/bootstrap-notify.min.css" rel="stylesheet">
 <style type="text/css">
 body {
-    padding-top: 60px;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
-@media (max-width: 980px) {
-    body {
-        padding-top: 0;
-    }
+/* Fix weird notification appearance */
+a.close.pull-right {
+    padding-left: 10px;
+}
+/* Slim down the actions column */
+th.sorting_disabled {
+    width: 75px;
 }
 </style>
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
-<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 <![endif]-->
 </head>
 <body>
-<!-- Nav start -->
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 <div class="container">
-<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+<span class="sr-only">Toggle navigation</span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
-</a>
-<a class="brand" href="#">Burden</a>
-<div class="nav-collapse collapse">
-<ul class="nav">
-<li class="divider-vertical"></li>
+</button>
+<a class="navbar-brand" href="#">Burden</a>
+</div>
+<div class="navbar-collapse collapse">
+<ul class="nav navbar-nav">
 <li class="active"><a href="index.php">Home</a></li>
 <li><a href="add.php">Add</a></li>
 <li><a href="edit.php">Edit</a></li>
 </ul>
-<ul class="nav pull-right">
+<ul class="nav navbar-nav navbar-right">
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Filters <b class="caret"></b></a>
 <ul class="dropdown-menu">
 <li><a href="index.php?filter=highpriority">High Priority Tasks</a></li>
 <li><a href="index.php?filter=completed">Completed Tasks</a></li>
 <li class="divider"></li>
-<li class="nav-header">Categories</li>
+<li class="dropdown-header">Categories</li>
 <?php
 
 //Get categories
@@ -102,7 +104,7 @@ $getcategories = mysql_query("SELECT DISTINCT(category) FROM `Data` WHERE `categ
 echo "<li><a href=\"index.php?filter=categories&amp;cat=none\">None</a></li>";
 
 while($row = mysql_fetch_assoc($getcategories)) {
-    echo "<li><a href=\"index.php?filter=categories&amp;cat=" . $row["category"] . "\">" . ucfirst($row["category"]) . "</a></li>";
+echo "<li><a href=\"index.php?filter=categories&amp;cat=" . $row["category"] . "\">" . ucfirst($row["category"]) . "</a></li>";
 }    
 
 ?>
@@ -110,7 +112,6 @@ while($row = mysql_fetch_assoc($getcategories)) {
 <li><a href="index.php">Clear Filters</a></li>
 </ul>
 </li>
-<li class="divider-vertical"></li>
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $resultgetusersettings["user"]; ?> <b class="caret"></b></a>
 <ul class="dropdown-menu">
@@ -122,9 +123,6 @@ while($row = mysql_fetch_assoc($getcategories)) {
 </div>
 </div>
 </div>
-</div>
-<!-- Nav end -->
-<!-- Content start -->
 <div class="container">
 <div class="page-header">
 <?php
@@ -170,7 +168,7 @@ if (!isset($_COOKIE["burdenhascheckedforupdates"])) {
     $remoteversion = file_get_contents("https://raw.github.com/joshf/Burden/master/version.txt");
     if (preg_match("/^[0-9.-]{1,}$/", $remoteversion)) {
         if ($version < $remoteversion) {
-            echo "<div class=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Update</h4><p>Burden <a href=\"https://github.com/joshf/Burden/releases/$remoteversion\" target=\"_blank\">$remoteversion</a> is available. <a href=\"https://github.com/joshf/Burden#updating\" target=\"_blank\">Click here to update</a>.</p></div>";
+            echo "<div class=\"alert alert-warning\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Update</h4><p>Burden <a href=\"https://github.com/joshf/Burden/releases/$remoteversion\" target=\"_blank\">$remoteversion</a> is available. <a href=\"https://github.com/joshf/Burden#updating\" target=\"_blank\">Click here to update</a>.</p></div>";
         }
     }
 } 
@@ -185,17 +183,17 @@ if ($filter == "completed") {
     $gettasks = mysql_query("SELECT * FROM `Data` WHERE `completed` = \"0\"");
 }
 
-echo "<table id=\"tasks\" class=\"table table-striped table-bordered table-condensed\">
+echo "<table id=\"tasks\" class=\"table table-bordered table-hover table-condensed\">
 <thead>
 <tr>
-<th></th>
-<th class=\"hidden-phone\">Category</th>
-<th>Task</th>";
+<th>Task</th>
+<th class=\"hidden-xs\">Category</th>";
 if ($filter == "completed") {
     echo "<th>Date Completed</th>"; 
 } else {
     echo "<th>Due</th>"; 
 }
+echo "<th>Actions</th>"; 
 echo "</tr></thead><tbody>";
 
 //Set counters to zero
@@ -251,7 +249,7 @@ while($row = mysql_fetch_assoc($gettasks)) {
             echo "<tr class=\"warning\">";
             break;
         case "overdue":
-            echo "<tr class=\"error\">";
+            echo "<tr class=\"danger\">";
             break;
         case "completed":
             echo "<tr class=\"success\">";
@@ -260,56 +258,48 @@ while($row = mysql_fetch_assoc($gettasks)) {
             echo "<tr>";
             break;
     } 
-    echo "<td><input name=\"id\" type=\"radio\" value=\"" . $row["id"] . "\"></td>";
-    echo "<td class=\"hidden-phone\">" . ucfirst($row["category"]) . "</td>";
     echo "<td>" . $row["task"] . "</td>";
+    echo "<td class=\"hidden-xs\">" . ucfirst($row["category"]) . "</td>";
     if ($filter == "completed") {
         echo "<td>" . $row["datecompleted"] . "</td>";
     } else {
-        echo "<td>" . $row["due"] . "</td>";
+        echo "<td>" . $row["due"] . " ($case)</td>";
     }
+    echo "<td><div class=\"btn-toolbar\" role=\"toolbar\"><div class=\"btn-group\"><a href=\"edit.php?id=" . $row["id"] . "\" class=\"btn btn-default btn-xs\" role=\"button\"><span class=\"glyphicon glyphicon-edit\"></span></a><button type=\"button\" class=\"details btn btn-default btn-xs\" data-id=\"" . $row["id"] . "\"><span class=\"glyphicon glyphicon-question-sign\"></span></button>";
+    if ($filter == "completed") {
+        echo "<button type=\"button\" class=\"restore btn btn-default btn-xs\" data-id=\"" . $row["id"] . "\"><span class=\"glyphicon glyphicon-repeat\"></span></button>";
+    } else {
+        echo "<button type=\"button\" class=\"complete btn btn-default btn-xs\" data-id=\"" . $row["id"] . "\"><span class=\"glyphicon glyphicon-ok\"></span></button>";
+    }
+    echo "<button type=\"button\" class=\"delete btn btn-default btn-xs\" data-id=\"" . $row["id"] . "\"><span class=\"glyphicon glyphicon-trash\"></span></button></div></div></td>";
     echo "</tr>";
 }
 echo "</tbody></table>";
 
 ?>
-<div class="btn-group">
-<button id="edit" class="btn">Edit</button>
-<button id="details" class="btn">Details</button>
-<button id="delete" class="btn">Delete</button>
-<?php
-if ($filter == "completed") {
-    echo "<button id=\"restore\" class=\"btn\">Restore</button>";
-} else {
-    echo "<button id=\"complete\" class=\"btn\">Complete</button>";
-}
-?>
-</div>
-<br>
-<br>
 <div class="alert alert-info">   
 <strong>Info:</strong> High priority tasks are highlighted yellow, completed tasks green and overdue tasks red.  
 </div>
 <div class="well">
 <?php
 
-echo "<i class=\"icon-tasks\"></i> <b>$numberoftasks</b> tasks<br><i class=\"icon-warning-sign\"></i> <b>$numberoftasksduetoday</b> due today<br><i class=\"icon-exclamation-sign\"></i> <b>$numberoftasksoverdue</b> overdue";
+echo "<i class=\"glyphicon glyphicon-tasks\"></i> <b>$numberoftasks</b> tasks<br><i class=\"glyphicon glyphicon-warning-sign\"></i> <b>$numberoftasksduetoday</b> due today<br><i class=\"glyphicon glyphicon-exclamation-sign\"></i> <b>$numberoftasksoverdue</b> overdue";
 
 mysql_close($con);
 
 ?>
 </div>
 <hr>
-<p class="muted pull-right">Burden <?php echo $version; ?> &copy; <a href="http://github.com/joshf" target="_blank">Josh Fradley</a> <?php echo date("Y"); ?>. Themed by <a href="http://twitter.github.com/bootstrap/" target="_blank">Bootstrap</a>.</p>
+<div class="footer">
+Burden <?php echo $version; ?> &copy; <a href="http://github.com/joshf" target="_blank">Josh Fradley</a> <?php echo date("Y"); ?>. Themed by <a href="http://twitter.github.com/bootstrap/" target="_blank">Bootstrap</a>.
 </div>
-<!-- Content end -->
-<!-- Javascript start -->
-<script src="resources/jquery.min.js"></script>
-<script src="resources/bootstrap/js/bootstrap.min.js"></script>
-<script src="resources/datatables/jquery.dataTables.min.js"></script>
-<script src="resources/datatables/jquery.dataTables-bootstrap.min.js"></script>
-<script src="resources/bootstrap-notify/js/bootstrap-notify.min.js"></script>
-<script src="resources/bootbox.min.js"></script>
+</div>
+<script src="assets/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/datatables/js/jquery.dataTables.min.js"></script>
+<script src="assets/datatables/js/dataTables.bootstrap.min.js"></script>
+<script src="assets/bootbox.min.js"></script>
+<script src="assets/bootstrap-notify/js/bootstrap-notify.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     /* Set Up Notifications */
@@ -329,27 +319,14 @@ $(document).ready(function() {
         }).show();
     };
     /* End */
-    /* Table selection */
-    id_selected = false;
-    $("#tasks input[name=id]").click(function() {
-        id = $("#tasks input[name=id]:checked").val();
-        id_selected = true;
-    });
-    /* End */
     /* Datatables */
     $("#tasks").dataTable({
-        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-        "sPaginationType": "bootstrap",
         "aoColumns": [
-            {"bSortable": false},
             null,
             null,
-            {"sType": "date-uk"}
+            {"sType": "date-uk"},
+            {"bSortable": false}
         ]
-    });
-    $.extend($.fn.dataTableExt.oStdClasses, {
-        "sSortable": "header",
-        "sWrapper": "dataTables_wrapper form-inline"
     });
     $.extend($.fn.dataTableExt.oSort, {
         "date-uk-pre": function (a) {
@@ -364,93 +341,72 @@ $(document).ready(function() {
         }
     });
     /* End */
-    /* Edit */
-    $("#edit").click(function() {
-        if (id_selected == true) {
-            window.location = "edit.php?id="+ id +"";
-        } else {
-            show_notification("info", "info-sign", "No ID selected!");
-        }
-    });
-    /* End */
     /* Delete */
-    $("#delete").click(function() {
-        if (id_selected == true) {
-            bootbox.confirm("Are you sure you want to delete this task?", "No", "Yes", function(result) {
-                if (result == true) {
-                    $.ajax({
-                        type: "POST",
-                        url: "actions/worker.php",
-                        data: "action=delete&id="+ id +"",
-                        error: function() {
-                            show_notification("error", "warning-sign", "Ajax query failed!");
-                        },
-                        success: function() {
-                            show_notification("success", "ok", "Task deleted!", true);
-                        }
-                    });
-                }
-            });
-        } else {
-            show_notification("info", "info-sign", "No ID selected!");
-        }
+    $("table").on("click", ".delete", function() {
+        var id = $(this).data("id");
+        bootbox.confirm("Are you sure you want to delete this task?", function(result) {
+            if (result == true) {
+                $.ajax({
+                    type: "POST",
+                    url: "actions/worker.php",
+                    data: "action=delete&id="+ id +"",
+                    error: function() {
+                        show_notification("danger", "warning-sign", "Ajax query failed!");
+                    },
+                    success: function() {
+                        show_notification("success", "ok", "Task deleted!", true);
+                    }
+                });
+            }
+        });
     });
     /* End */
     /* Details */
-    $("#details").click(function() {
-        if (id_selected == true) {
-            $.ajax({
-                type: "POST",
-                url: "actions/worker.php",
-                data: "action=details&id="+ id +"",
-                error: function() {
-                    show_notification("error", "warning-sign", "Ajax query failed!");
-                },
-                success: function(message) {
-                    bootbox.alert(message);
-                }
-            });
-        } else {
-            show_notification("info", "info-sign", "No ID selected!");
-        }
+    $("table").on("click", ".details", function() {
+        var id = $(this).data("id");
+        $.ajax({
+            type: "POST",
+            url: "actions/worker.php",
+            data: "action=details&id="+ id +"",
+            error: function() {
+                show_notification("danger", "warning-sign", "Ajax query failed!");
+            },
+            success: function(message) {
+                bootbox.alert(message);
+            }
+        });
     });
     /* End */
     /* Complete */
-    $("#complete").click(function() {
-        if (id_selected == true) {
-            $.ajax({
-                type: "POST",
-                url: "actions/worker.php",
-                data: "action=complete&id="+ id +"",
-                error: function() {
-                    show_notification("error", "warning-sign", "Ajax query failed!");
-                },
-                success: function() {
-                    show_notification("success", "ok", "Task marked as completed!", true);
-                }
-            });
-        } else {
-            show_notification("info", "info-sign", "No ID selected!");
-        }
+    $("table").on("click", ".complete", function() {
+        var id = $(this).data("id");
+        $.ajax({
+            type: "POST",
+            url: "actions/worker.php",
+            data: "action=complete&id="+ id +"",
+            error: function() {
+                show_notification("danger", "warning-sign", "Ajax query failed!");
+            },
+            success: function() {
+                show_notification("success", "ok", "Task marked as completed!", true);
+            }
+        });
     });
     /* End */
     /* Restore */
-    $("#restore").click(function() {
-        if (id_selected == true) {
-            $.ajax({
-                type: "POST",
-                url: "actions/worker.php",
-                data: "action=restore&id="+ id +"",
-                error: function() {
-                    show_notification("error", "warning-sign", "Ajax query failed!");
-                },
-                success: function() {
-                    show_notification("success", "ok", "Task restored!", true);
-                }
-            });
-        } else {
-            show_notification("info", "info-sign", "No ID selected!");
-        }
+    $("table").on("click", ".restore", function() {
+        var id = $(this).data("id");
+        $.ajax({
+            type: "POST",
+            url: "actions/worker.php",
+            data: "action=restore&id="+ id +"",
+            error: function() {
+                show_notification("danger", "warning-sign", "Ajax query failed!");
+            },
+            success: function() {
+                show_notification("success", "ok", "Task restored!", true);
+            }
+        });
     });
     /* End */
     /* Update Title */
@@ -458,6 +414,5 @@ $(document).ready(function() {
     /* End */
 });
 </script>
-<!-- Javascript end -->
 </body>
 </html>
