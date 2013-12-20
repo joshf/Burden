@@ -104,7 +104,7 @@ $getcategories = mysql_query("SELECT DISTINCT(category) FROM `Data` WHERE `categ
 echo "<li><a href=\"index.php?filter=categories&amp;cat=none\">None</a></li>";
 
 while($row = mysql_fetch_assoc($getcategories)) {
-echo "<li><a href=\"index.php?filter=categories&amp;cat=" . $row["category"] . "\">" . ucfirst($row["category"]) . "</a></li>";
+    echo "<li><a href=\"index.php?filter=categories&amp;cat=" . $row["category"] . "\">" . ucfirst($row["category"]) . "</a></li>";
 }    
 
 ?>
