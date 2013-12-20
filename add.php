@@ -154,11 +154,13 @@ mysql_close($con);
 <script src="assets/nod.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    $("#due").datepicker({
-        format: "dd/mm/yyyy",
-        autoclose: "true",
-        clearBtn: "true"
-    });
+    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {    
+        $("#due").datepicker({
+            format: "dd/mm/yyyy",
+            autoclose: "true",
+            clearBtn: "true"
+        });
+    }
 	$("#addcategory").click(function () {
         bootbox.prompt("Add a category", function(newcategory) {
             if (newcategory != null && newcategory != "") {
