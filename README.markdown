@@ -12,7 +12,6 @@ Features:
 * Tasks can be marked as important to highlight critical tasks
 * Overdue tasks are highlighted clearly
 * Tasks can be sorted into categories
-* Choice of light or dark theme
 * Sort and search tasks using DataTables
 * Works well on mobile devices due to a responsive layout
 * Beautiful notifications system thanks to Bootstrap Notify
