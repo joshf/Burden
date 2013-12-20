@@ -59,7 +59,7 @@ body {
 </div>
 <div class="container">
 <div class="page-header">
-<h1>Installer</h1>
+<h1>Upgrade</h1>
 </div>
 <?php
 

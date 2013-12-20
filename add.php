@@ -95,8 +95,8 @@ body {
 //Error display
 if (isset($_GET["error"])) {
     $error = $_GET["error"];
-    if ($error == "emptyfields") {
-        echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>One or more fields were left empty.</p></div>";
+    if ($error == "emptyfields") {        
+        echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>One or more fields were left empty.</p></div>";
     }
 }
 
