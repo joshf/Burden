@@ -121,7 +121,7 @@ if (mysql_num_rows($doesidexist) == 0) {
 if (isset($_GET["error"])) {
     $error = $_GET["error"];
     if ($error == "emptyfields") {
-        echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>One or more fields were left empty.</p></div>";
+        echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button><h4 class=\"alert-heading\">Error</h4><p>One or more fields were left empty.</p></div>";
     }
 }
 ?>
@@ -133,7 +133,7 @@ $getidinforesult = mysql_fetch_assoc($getidinfo);
 
 echo "<div class=\"form-group\"><label for=\"task\">Task</label><input type=\"text\" class=\"form-control\" id=\"task\" name=\"task\" value=\"" . $getidinforesult["task"] . "\" placeholder=\"Type a task...\" required></div>";
 echo "<div class=\"form-group\"><label for=\"details\">Details</label><textarea rows=\"2\" class=\"form-control\" id=\"details\" name=\"details\" placeholder=\"Type any extra details..\">" . $getidinforesult["details"] . "</textarea></div>";
-echo "<div class=\"form-group\"><label for=\"due\">Due</label><input type=\"text\" class=\"form-control\" id=\"due\" name=\"due\" value=\"" . $getidinforesult["due"] . "\" placeholder=\"Type a due date...\" required></div>";
+echo "<div class=\"form-group\"><label for=\"due\">Due</label><input type=\"date\" class=\"form-control\" id=\"due\" name=\"due\" value=\"" . $getidinforesult["due"] . "\" placeholder=\"Type a due date...\" required></div>";
 echo "<div class=\"form-group\"><label for=\"category\">Category</label><select class=\"form-control\" id=\"category\" name=\"category\">";
 
 //Don't duplicate none entry

@@ -24,16 +24,13 @@ if (isset($_POST["password"]) && isset($_POST["username"])) {
     $userinfo = mysql_query("SELECT `id`, `user`, `password`, `salt` FROM `Users` WHERE `user` = \"$username\"");
     $userinforesult = mysql_fetch_assoc($userinfo);
     if (mysql_num_rows($userinfo) == 0) {
-        header("Location: login.php?user_doesnt_exist=true");
+        header("Location: login.php?login_error=true");
         exit;
     }
     $salt = $userinforesult["salt"];
     $hashedpassword = hash("sha256", $salt . hash("sha256", $password));
     if ($hashedpassword == $userinforesult["password"]) {
         $_SESSION["burden_user"] = $userinforesult["id"];
-        if (isset($_POST["rememberme"])) {
-            setcookie("burden_user_rememberme", $userinforesult["id"], time()+1209600);
-        }
     } else {
         header("Location: login.php?login_error=true");
         exit;
@@ -47,8 +44,8 @@ if (!isset($_SESSION["burden_user"])) {
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>Burden &middot; Login</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Burden &middot; Login</title>
 <meta name="robots" content="noindex, nofollow">
 <link href="assets/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
 <style type="text/css">
@@ -86,17 +83,14 @@ body {
 <![endif]-->
 </head>
 <body>
-<!-- Content start -->
 <div class="container">
 <form role="form" class="form-signin" method="post">
 <h2 class="form-signin-heading text-center">Burden</h2>
 <?php 
 if (isset($_GET["login_error"])) {
-    echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>Incorrect username or password.</div>";
-} elseif (isset($_GET["user_doesnt_exist"])) {
-    echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>User does not exist.</div>";
+    echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Incorrect username or password.</div>";
 } elseif (isset($_GET["logged_out"])) {
-    echo "<div class=\"alert alert-success\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>Successfully logged out.</div>";
+    echo "<div class=\"alert alert-success\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Successfully logged out.</div>";
 }
 ?>
 <div class="form-group">

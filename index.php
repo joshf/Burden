@@ -44,8 +44,8 @@ $resultgetusersettings = mysql_fetch_assoc($getusersettings);
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="apple-touch-icon" href="assets/icon.png"/>
 <title>Burden</title>
+<link rel="apple-touch-icon" href="assets/icon.png">
 <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="assets/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="assets/datatables/css/dataTables.bootstrap.min.css" rel="stylesheet">
@@ -98,10 +98,10 @@ th.sorting_disabled {
 <li class="dropdown-header">Categories</li>
 <?php
 
+echo "<li><a href=\"index.php?filter=categories&amp;cat=none\">None</a></li>";
+
 //Get categories
 $getcategories = mysql_query("SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\" AND `completed` != \"1\"");
-
-echo "<li><a href=\"index.php?filter=categories&amp;cat=none\">None</a></li>";
 
 while($row = mysql_fetch_assoc($getcategories)) {
     echo "<li><a href=\"index.php?filter=categories&amp;cat=" . $row["category"] . "\">" . ucfirst($row["category"]) . "</a></li>";
@@ -161,14 +161,14 @@ if ($filter == "completed") {
 }
 echo "</div><div class=\"notifications top-right\"></div>";		
 
-echo "<noscript><div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>Please enable JavaScript to use Burden. For instructions on how to do this, see <a href=\"http://www.activatejavascript.org\" target=\"_blank\">here</a>.</p></div></noscript>";
+echo "<noscript><div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>Please enable JavaScript to use Burden. For instructions on how to do this, see <a href=\"http://www.activatejavascript.org\" class=\"alert-link\" target=\"_blank\">here</a>.</p></div></noscript>";
 
 //Update checking
 if (!isset($_COOKIE["burdenhascheckedforupdates"])) {
     $remoteversion = file_get_contents("https://raw.github.com/joshf/Burden/master/version.txt");
     if (preg_match("/^[0-9.-]{1,}$/", $remoteversion)) {
         if ($version < $remoteversion) {
-            echo "<div class=\"alert alert-warning\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button><h4 class=\"alert-heading\">Update</h4><p>Burden <a href=\"https://github.com/joshf/Burden/releases/$remoteversion\" class=\"alert-link\" target=\"_blank\">$remoteversion</a> is available. <a href=\"https://github.com/joshf/Burden#updating\" class=\"alert-link\" target=\"_blank\">Click here for instructions on how to update</a>.</p></div>";
+            echo "<div class=\"alert alert-warning\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button><h4 class=\"alert-heading\">Update</h4><p>Burden <a href=\"https://github.com/joshf/Burden/releases/$remoteversion\" class=\"alert-link\" target=\"_blank\">$remoteversion</a> is available. <a href=\"https://github.com/joshf/Burden#updating\" class=\"alert-link\" target=\"_blank\">Click here for instructions on how to update</a>.</p></div>";
         }
     }
 } 
