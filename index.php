@@ -263,7 +263,7 @@ while($row = mysql_fetch_assoc($gettasks)) {
     if ($filter == "completed") {
         echo "<td>" . $row["datecompleted"] . "</td>";
     } else {
-        echo "<td>" . $row["due"] . " ($case)</td>";
+        echo "<td>" . $row["due"] . "</td>";
     }
     echo "<td><div class=\"btn-toolbar\" role=\"toolbar\"><div class=\"btn-group\"><a href=\"edit.php?id=" . $row["id"] . "\" class=\"btn btn-default btn-xs\" role=\"button\"><span class=\"glyphicon glyphicon-edit\"></span></a><button type=\"button\" class=\"details btn btn-default btn-xs\" data-id=\"" . $row["id"] . "\"><span class=\"glyphicon glyphicon-question-sign\"></span></button>";
     if ($filter == "completed") {
