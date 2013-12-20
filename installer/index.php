@@ -172,5 +172,21 @@ if (!isset($_POST["install"])) {
 </div>
 <script src="../assets/jquery.min.js"></script>
 <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="../assets/nod.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    var metrics = [
+        ["#dbhost", "presence", "Database host cannot be empty!"],
+        ["#dbuser", "presence", "Database user cannot be empty!"],
+        ["#dbpassword", "presence", "Database password cannot be empty!"],        
+        ["#dbname", "presence", "Database name cannot be empty!"],
+        ["#user", "presence", "User name cannot be empty!"],
+        ["#email", "email", "Enter a valid email address"],
+        ["#password", "presence", "Passwords should be more than 6 characters"],
+        ["#passwordconfirm", "same-as: #password", "Passwords do not match!"]
+    ];
+    $("form").nod(metrics);
+});
+</script>
 </body>
 </html>

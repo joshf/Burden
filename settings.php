@@ -140,6 +140,7 @@ a.close.pull-right {
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/bootstrap-notify/js/bootstrap-notify.min.js"></script>
 <script src="assets/jquery.cookie.min.js"></script>
+<script src="assets/nod.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     if ($.cookie("settings_updated")) {
@@ -156,6 +157,12 @@ $(document).ready(function() {
     $("form").submit(function() {
         $.cookie("settings_updated", "true");
     });
+    var metrics = [
+        ["#user", "presence", "User name cannot be empty!"],
+        ["#email", "email", "Enter a valid email address"],
+        ["#password", "presence", "Passwords should be more than 6 characters"]
+    ];
+    $("form").nod(metrics);
 });
 </script>
 </body>

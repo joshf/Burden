@@ -184,6 +184,7 @@ mysql_close($con);
 <script src="assets/datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="assets/bootbox.min.js"></script>
 <script src="assets/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="assets/nod.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $("#due").datepicker({
@@ -201,6 +202,11 @@ $(document).ready(function() {
     $("select").selectpicker({
         liveSearch: "true"
     });
+    var metrics = [
+        ["#task", "presence", "Task cannot be empty"],
+        ["#due", "presence", "A due date is required (DD/MM/YYYY)"]
+    ];
+    $("form").nod(metrics);
 });
 </script>
 </body>
