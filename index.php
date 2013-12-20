@@ -29,7 +29,7 @@ if (!$con) {
     }
 }
 
-$getusersettings = mysql_query("SELECT `user`, `theme` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
+$getusersettings = mysql_query("SELECT `user` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
 if (mysql_num_rows($getusersettings) == 0) {
     session_destroy();
     header("Location: login.php");
