@@ -56,7 +56,7 @@ body {
 }
 .form-signin {
     max-width: 300px;
-    padding: 19px 29px 60px;
+    padding: 10px 30px 50px;
     margin: 0 auto 20px;
     background-color: #fff;
     border: 1px solid #e5e5e5;
@@ -74,7 +74,7 @@ body {
     font-size: 16px;
     height: auto;
     margin-bottom: 5px;
-    padding: 7px 9px;
+    padding: 5px 10px;
 }
 </style>
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -85,7 +85,7 @@ body {
 <body>
 <div class="container">
 <form role="form" class="form-signin" method="post">
-<h2 class="form-signin-heading text-center">Burden</h2>
+<div class="text-center"><img src="assets/icon.png" width="75" height="75" alt="Burden Logo"></div>
 <?php 
 if (isset($_GET["login_error"])) {
     echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Incorrect username or password.</div>";
