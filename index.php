@@ -60,8 +60,9 @@ a.close.pull-right {
     padding-left: 10px;
 }
 /* Slim down the actions column */
-th.sorting_disabled {
-    width: 75px;
+tr td:last-child {
+    width: 94px;
+    white-space: nowrap;
 }
 </style>
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -189,7 +190,7 @@ echo "<table id=\"tasks\" class=\"table table-bordered table-hover table-condens
 <th>Task</th>
 <th class=\"hidden-xs\">Category</th>";
 if ($filter == "completed") {
-    echo "<th>Date Completed</th>"; 
+    echo "<th>Completed</th>"; 
 } else {
     echo "<th>Due</th>"; 
 }
