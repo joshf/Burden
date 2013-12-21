@@ -10,7 +10,7 @@ require_once("config.php");
 
 session_start();
 
-session_unset("burden_user");
+unset($_SESSION["burden_user"]);
 
 header("Location: login.php?logged_out=true");
 
