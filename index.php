@@ -2,7 +2,7 @@
 
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
-$version = "2.0dev";
+require_once("assets/version.php");
 
 if (!file_exists("config.php")) {
     die("Error: Config file not found! Please reinstall Burden.");
@@ -166,7 +166,7 @@ echo "<noscript><div class=\"alert alert-info\"><h4 class=\"alert-heading\">Info
 
 //Update checking
 if (!isset($_COOKIE["burdenhascheckedforupdates"])) {
-    $remoteversion = file_get_contents("https://raw.github.com/joshf/Burden/master/version.txt");
+    $remoteversion = file_get_contents("https://raw.github.com/joshf/Burden/master/assets/version.php");
     if (preg_match("/^[0-9.-]{1,}$/", $remoteversion)) {
         if ($version < $remoteversion) {
             echo "<div class=\"alert alert-warning\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button><h4 class=\"alert-heading\">Update</h4><p>Burden <a href=\"https://github.com/joshf/Burden/releases/$remoteversion\" class=\"alert-link\" target=\"_blank\">$remoteversion</a> is available. <a href=\"https://github.com/joshf/Burden#updating\" class=\"alert-link\" target=\"_blank\">Click here for instructions on how to update</a>.</p></div>";
