@@ -130,7 +130,7 @@ $getidinforesult = mysql_fetch_assoc($getidinfo);
 
 echo "<div class=\"form-group\"><label for=\"task\">Task</label><input type=\"text\" class=\"form-control\" id=\"task\" name=\"task\" value=\"" . $getidinforesult["task"] . "\" placeholder=\"Type a task...\" required></div>";
 echo "<div class=\"form-group\"><label for=\"details\">Details</label><textarea rows=\"2\" class=\"form-control\" id=\"details\" name=\"details\" placeholder=\"Type any extra details..\">" . $getidinforesult["details"] . "</textarea></div>";
-echo "<div class=\"form-group\"><label for=\"due\">Due</label><input type=\"date\" class=\"form-control\" id=\"due\" name=\"due\" value=\"" . $getidinforesult["due"] . "\" placeholder=\"Type a due date...\" required></div>";
+echo "<div class=\"form-group\"><label for=\"due\">Due</label><input type=\"date\" class=\"form-control\" id=\"due\" name=\"due\" value=\"" . $getidinforesult["due"] . "\" required></div>";
 echo "<div class=\"form-group\"><label for=\"category\">Category</label><select class=\"form-control\" id=\"category\" name=\"category\">";
 
 //Don't duplicate none entry
@@ -150,7 +150,7 @@ while($row = mysql_fetch_assoc($getcategories)) {
     }
 }
 
-echo "</select><span class=\"help-block\"><a id=\"addcategory\">&#43; Add new category</a></span></div>";
+echo "</select><span class=\"help-block\"><button type=\"button\" class=\"btn btn-default btn-xs\" id=\"addcategory\">Add Category</button></span></div>";
 
 echo "<div class=\"checkbox\"><label>";
     

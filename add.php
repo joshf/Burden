@@ -109,7 +109,7 @@ if (isset($_GET["error"])) {
 </div>
 <div class="form-group">
 <label for="due">Due</label>
-<input type="date" class="form-control" id="due" name="due" placeholder="Type a due date..." required>
+<input type="date" class="form-control" id="due" name="due" required>
 </div>
 <div class="form-group">
 <label for="category">Category</label>
@@ -133,7 +133,7 @@ mysql_close($con);
 
 ?>
 </select>
-<span class="help-block"><a id="addcategory">&#43; Add new category</a></span>
+<span class="help-block"><button type="button" class="btn btn-default btn-xs" id="addcategory">Add Category</button></span>
 </div>
 <div class="checkbox">
 <label>
