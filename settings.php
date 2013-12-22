@@ -74,9 +74,6 @@ body {
 a.close.pull-right {
     padding-left: 10px;
 }
-/*.form-control {
-    width: 30%;
-}*/
 </style>
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -133,7 +130,7 @@ a.close.pull-right {
 <label class="control-label" for="password">Password</label>
 <input type="password" class="form-control" id="password" name="password" value="<?php echo $resultgetusersettings["password"]; ?>" placeholder="Enter a password..." required>
 </div>
-<button type="submit" name="save" class="btn btn-default">Save Changes</button>
+<button type="submit" name="save" class="btn btn-default">Save</button>
 </form>
 </div>
 <script src="assets/jquery.min.js"></script>

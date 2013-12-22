@@ -88,7 +88,7 @@ body {
 <div class="text-center"><img src="assets/icon.png" width="75" height="75" alt="Burden Logo"></div>
 <?php 
 if (isset($_GET["login_error"])) {
-    echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Incorrect username or password.</div>";
+    echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Incorrect login.</div>";
 } elseif (isset($_GET["logged_out"])) {
     echo "<div class=\"alert alert-success\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Successfully logged out.</div>";
 }

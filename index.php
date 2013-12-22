@@ -17,7 +17,7 @@ if (!isset($_SESSION["burden_user"])) {
 }
 
 //Set cookie so we dont constantly check for updates
-setcookie("burdenhascheckedforupdates", "checkedsuccessfully", time()+604800);
+setcookie("burdenupdatecheck", time(), time()+604800);
 
 @$con = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
 if (!$con) {
@@ -165,7 +165,7 @@ echo "</div><div class=\"notifications top-right\"></div>";
 echo "<noscript><div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>Please enable JavaScript to use Burden. For instructions on how to do this, see <a href=\"http://www.activatejavascript.org\" class=\"alert-link\" target=\"_blank\">here</a>.</p></div></noscript>";
 
 //Update checking
-if (!isset($_COOKIE["burdenhascheckedforupdates"])) {
+if (!isset($_COOKIE["burdenupdatecheck"])) {
     $remoteversion = file_get_contents("https://raw.github.com/joshf/Burden/master/version.txt");
     if (preg_match("/^[0-9.-]{1,}$/", $remoteversion)) {
         if ($version < $remoteversion) {
