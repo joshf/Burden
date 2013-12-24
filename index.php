@@ -168,7 +168,7 @@ echo "<noscript><div class=\"alert alert-info\"><h4 class=\"alert-heading\">Info
 if (!isset($_COOKIE["burdenupdatecheck"])) {
     $remoteversion = file_get_contents("https://raw.github.com/joshf/Burden/master/version.txt");
     if (preg_match("/^[0-9.-]{1,}$/", $remoteversion)) {
-        if ($version < $remoteversion) {
+        if (version_compare($version, $remoteversion) < 0) {            
             echo "<div class=\"alert alert-warning\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button><h4 class=\"alert-heading\">Update</h4><p>Burden <a href=\"https://github.com/joshf/Burden/releases/$remoteversion\" class=\"alert-link\" target=\"_blank\">$remoteversion</a> is available. <a href=\"https://github.com/joshf/Burden#updating\" class=\"alert-link\" target=\"_blank\">Click here for instructions on how to update</a>.</p></div>";
         }
     }
