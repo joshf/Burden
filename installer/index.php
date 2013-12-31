@@ -160,10 +160,8 @@ if (!isset($_POST["install"])) {
 <input type="password" class="form-control" id="passwordconfirm" name="passwordconfirm" placeholder="Type your password again..." required>
 <span class="help-block">It is recommended that your password be at least 6 characters long</span>
 </div>
-<div class="form-actions">
 <input type="hidden" name="install">
 <input type="submit" class="btn btn-default" value="Install">
-</div>
 </form>
 <?php
 } else {

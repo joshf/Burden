@@ -4,6 +4,7 @@
 
 if (!file_exists("../config.php")) {
     header("Location: index.php");
+    exit;
 }
 
 require_once("../assets/version.php");
