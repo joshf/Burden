@@ -31,7 +31,7 @@ if (mysql_num_rows($getusersettings) == 0) {
 }
 $resultgetusersettings = mysql_fetch_assoc($getusersettings);
 
-if (isset($_POST["save"])) {
+if (!empty($_POST)) {
     //Get new settings from POST
     $user = $_POST["user"];
     $password = $_POST["password"];
@@ -131,7 +131,7 @@ a.close.pull-right {
 <label class="control-label" for="password">Password</label>
 <input type="password" class="form-control" id="password" name="password" value="<?php echo $resultgetusersettings["password"]; ?>" placeholder="Enter a password..." required>
 </div>
-<button type="submit" name="save" class="btn btn-default">Save</button>
+<button type="submit" class="btn btn-default">Save</button>
 </form>
 </div>
 <script src="assets/jquery.min.js"></script>
