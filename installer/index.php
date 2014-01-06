@@ -66,7 +66,6 @@ if (isset($_POST["install"])) {
     `salt` varchar(3) NOT NULL,
     `email` varchar(100) NOT NULL,
     `admin` tinyint(1) NOT NULL,
-    `theme` varchar(20) NOT NULL,
     PRIMARY KEY (`id`)
     ) ENGINE=MyISAM;";
     
