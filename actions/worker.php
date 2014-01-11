@@ -30,7 +30,11 @@ mysql_select_db(DB_NAME, $con);
 
 $id = mysql_real_escape_string($_POST["id"]);
 
-$action = $_POST["action"];
+if (isset($_POST["action"])) {
+	$action = $_POST["action"];
+} else {
+	die("Error: No action passed");
+}
 
 if ($action == "complete") {
     $todaysdate = date("d/m/Y");
