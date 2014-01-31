@@ -3,6 +3,6 @@
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
 //Define version across the script
-$version = "2.0.2-dev"
+$version = "3.0-dev"
 
 ?>
