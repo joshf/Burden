@@ -191,6 +191,11 @@ $(document).ready(function() {
             autoclose: "true",
             clearBtn: "true"
         });
+    } else {
+        var due = "<?php echo $getidinforesult["due"]; ?>"
+        var arr = due.split("/");
+        var date = "" + arr[2] + "-" + arr[1] + "-" + arr[0] + "";
+        $("#due").val(date);
     }
     $("#addcategory").click(function () {
         bootbox.prompt("Add a category", function(newcategory) {
