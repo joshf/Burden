@@ -192,7 +192,7 @@ $(document).ready(function() {
             clearBtn: "true"
         });
     } else {
-        var due = "<?php echo $getidinforesult["due"]; ?>"
+        var due = "<?php echo $getidinforesult["due"]; ?>";
         var arr = due.split("/");
         var date = "" + arr[2] + "-" + arr[1] + "-" + arr[0] + "";
         $("#due").val(date);
