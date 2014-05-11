@@ -102,6 +102,7 @@ if (!isset($_GET["id"])) {
     } else {
         echo "<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>No tasks available to edit.</p><p><a class=\"btn btn-info\" href=\"javascript:history.go(-1)\">Go Back</a></p></div>";
     }
+    $due = "0";
 } else {
 
 ?>
@@ -164,6 +165,8 @@ if ($checkifhighpriorityresult["highpriority"] == "1") {
     echo "<input type=\"checkbox\" id=\"highpriority\" name=\"highpriority\"> High priority";
 }
 
+$due = $getidinforesult["due"];
+
 mysql_close($con);
 
 ?>
@@ -192,7 +195,7 @@ $(document).ready(function() {
             clearBtn: "true"
         });
     } else {
-        var due = "<?php echo $getidinforesult["due"]; ?>";
+        var due = "<?php echo $due; ?>";
         var arr = due.split("/");
         var date = "" + arr[2] + "-" + arr[1] + "-" + arr[0] + "";
         $("#due").val(date);
