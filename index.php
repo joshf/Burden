@@ -44,7 +44,7 @@ $resultgetusersettings = mysql_fetch_assoc($getusersettings);
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimal-ui">
 <title>Burden</title>
 <link rel="apple-touch-icon" href="assets/icon.png">
 <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
