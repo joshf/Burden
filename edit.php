@@ -16,20 +16,19 @@ if (!isset($_SESSION["burden_user"])) {
 }
 
 //Connect to database
-@$con = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
-if (!$con) {
-    die("Error: Could not connect to database (" . mysql_error() . "). Check your database settings are correct.");
+@$con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+if (mysqli_connect_errno()) {
+    echo "Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.";
+    exit();
 }
 
-mysql_select_db(DB_NAME, $con);
-
-$getusersettings = mysql_query("SELECT `user` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
-if (mysql_num_rows($getusersettings) == 0) {
+$getusersettings = mysqli_query($con, "SELECT `user` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
+if (mysqli_num_rows($getusersettings) == 0) {
     session_destroy();
     header("Location: login.php");
     exit;
 }
-$resultgetusersettings = mysql_fetch_assoc($getusersettings);
+$resultgetusersettings = mysqli_fetch_assoc($getusersettings);
 
 ?>
 <!DOCTYPE html>
@@ -92,10 +91,10 @@ body {
 
 //Quick edit selector
 if (!isset($_GET["id"])) {
-	$getids = mysql_query("SELECT `id`, `task` FROM `Data` WHERE `completed` = \"0\"");
-    if (mysql_num_rows($getids) != 0) {
+	$getids = mysqli_query($con, "SELECT `id`, `task` FROM `Data` WHERE `completed` = \"0\"");
+    if (mysqli_num_rows($getids) != 0) {
         echo "<form role=\"form\" method=\"get\"><div class=\"form-group\"><label for=\"id\">Select a task to edit</label><select class=\"form-control\" id=\"id\" name=\"id\">";
-        while($row = mysql_fetch_assoc($getids)) {
+        while($row = mysqli_fetch_assoc($getids)) {
             echo "<option value=\"" . $row["id"] . "\">" . ucfirst($row["task"]) . "</option>";
         }
         echo "</select></div><button type=\"submit\" class=\"btn btn-default\">Select</button></form>";
@@ -108,11 +107,11 @@ if (!isset($_GET["id"])) {
 ?>
 <?php
 
-$idtoedit = mysql_real_escape_string($_GET["id"]);
+$idtoedit = mysqli_real_escape_string($con, $_GET["id"]);
 
 //Check if ID exists
-$doesidexist = mysql_query("SELECT `id` FROM `Data` WHERE `id` = $idtoedit");
-if (mysql_num_rows($doesidexist) == 0) {
+$doesidexist = mysqli_query($con, "SELECT `id` FROM `Data` WHERE `id` = $idtoedit");
+if (mysqli_num_rows($doesidexist) == 0) {
     echo "<div class=\"alert alert-danger\"><h4 class=\"alert-heading\">Error</h4><p>ID does not exist.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div>";
 } else {
 
@@ -127,8 +126,8 @@ if (isset($_GET["error"])) {
 <form role="form" action="actions/edit.php" method="post" autocomplete="off">
 <?php
 
-$getidinfo = mysql_query("SELECT * FROM `Data` WHERE `id` = $idtoedit");
-$getidinforesult = mysql_fetch_assoc($getidinfo);
+$getidinfo = mysqli_query($con, "SELECT * FROM `Data` WHERE `id` = $idtoedit");
+$getidinforesult = mysqli_fetch_assoc($getidinfo);
 
 echo "<div class=\"form-group\"><label for=\"task\">Task</label><input type=\"text\" class=\"form-control\" id=\"task\" name=\"task\" value=\"" . $getidinforesult["task"] . "\" placeholder=\"Type a task...\" required></div>";
 echo "<div class=\"form-group\"><label for=\"details\">Details</label><textarea rows=\"2\" class=\"form-control\" id=\"details\" name=\"details\" placeholder=\"Type any extra details..\">" . $getidinforesult["details"] . "</textarea></div>";
@@ -136,15 +135,15 @@ echo "<div class=\"form-group\"><label for=\"due\">Due</label><input type=\"date
 echo "<div class=\"form-group\"><label for=\"category\">Category</label><select class=\"form-control\" id=\"category\" name=\"category\">";
 
 //Don't duplicate none entry
-$doesnoneexist = mysql_query("SELECT `category` FROM `Data` WHERE `category` = \"none\"");
-if (mysql_num_rows($doesnoneexist) == 0) {
+$doesnoneexist = mysqli_query($con, "SELECT `category` FROM `Data` WHERE `category` = \"none\"");
+if (mysqli_num_rows($doesnoneexist) == 0) {
     echo "<option value=\"none\">None</option>";
 }
 
 //Get categories
-$getcategories = mysql_query("SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\"");
+$getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\"");
 
-while($row = mysql_fetch_assoc($getcategories)) {    
+while($row = mysqli_fetch_assoc($getcategories)) {    
     if ($row["category"] == $getidinforesult["category"]) {
         echo "<option value=\"" . $row["category"] . "\" selected=\"selected\">" . ucfirst($row["category"]) . "</option>";
     } else {    
@@ -157,8 +156,8 @@ echo "</select><span class=\"help-block\"><button type=\"button\" class=\"btn bt
 echo "<div class=\"checkbox\"><label>";
     
 //Check if task is high priority
-$checkifhighpriority = mysql_query("SELECT `highpriority` FROM `Data` WHERE `id` = \"$idtoedit\"");
-$checkifhighpriorityresult = mysql_fetch_assoc($checkifhighpriority); 
+$checkifhighpriority = mysqli_query($con, "SELECT `highpriority` FROM `Data` WHERE `id` = \"$idtoedit\"");
+$checkifhighpriorityresult = mysqli_fetch_assoc($checkifhighpriority); 
 if ($checkifhighpriorityresult["highpriority"] == "1") { 
     echo "<input type=\"checkbox\" id=\"highpriority\" name=\"highpriority\" checked=\"checked\"> High priority";
 } else {
@@ -167,7 +166,7 @@ if ($checkifhighpriorityresult["highpriority"] == "1") {
 
 $due = $getidinforesult["due"];
 
-mysql_close($con);
+mysqli_close($con);
 
 ?>
 </label>

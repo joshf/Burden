@@ -16,21 +16,20 @@ if (!isset($_SESSION["burden_user"])) {
 }
 
 //Connect to database
-@$con = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
-if (!$con) {
-    die("Error: Could not connect to database (" . mysql_error() . "). Check your database settings are correct.");
+@$con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+if (mysqli_connect_errno()) {
+    echo "Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.";
+    exit();
 }
-
-mysql_select_db(DB_NAME, $con);
 
 //Set variables
-$task = mysql_real_escape_string($_POST["task"]);
-$details = mysql_real_escape_string($_POST["details"]);
-$category = mysql_real_escape_string($_POST["category"]);
+$task = mysqli_real_escape_string($con, $_POST["task"]);
+$details = mysqli_real_escape_string($con, $_POST["details"]);
+$category = mysqli_real_escape_string($con, $_POST["category"]);
 if (isset($_POST["priority"])) {
-    $priority = mysql_real_escape_string($_POST["priority"]);
+    $priority = mysqli_real_escape_string($con, $_POST["priority"]);
 }
-$due = mysql_real_escape_string($_POST["due"]);
+$due = mysqli_real_escape_string($con, $_POST["due"]);
 
 //Failsafes
 if (empty($task) || empty($due)) {
@@ -55,10 +54,10 @@ if (isset($_POST["highpriority"])) {
 
 $created = date("d/m/Y");
 
-mysql_query("INSERT INTO `Data` (`category`, `highpriority`, `task`, `details`, `created`, `due`, `completed`)
+mysqli_query($con, "INSERT INTO `Data` (`category`, `highpriority`, `task`, `details`, `created`, `due`, `completed`)
 VALUES (\"$category\",\"$highpriority\",\"$task\",\"$details\",\"$created\",\"$due\",\"0\")");
 
-mysql_close($con);
+mysqli_close($con);
 
 header("Location: ../index.php");
 

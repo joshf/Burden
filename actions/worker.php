@@ -21,14 +21,13 @@ if (!isset($_POST["id"])) {
 }
 
 //Connect to database
-@$con = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
-if (!$con) {
-    die("Error: Could not connect to database (" . mysql_error() . "). Check your database settings are correct.");
+@$con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+if (mysqli_connect_errno()) {
+    echo "Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.";
+    exit();
 }
 
-mysql_select_db(DB_NAME, $con);
-
-$id = mysql_real_escape_string($_POST["id"]);
+$id = mysqli_real_escape_string($con, $_POST["id"]);
 
 if (isset($_POST["action"])) {
 	$action = $_POST["action"];
@@ -38,14 +37,14 @@ if (isset($_POST["action"])) {
 
 if ($action == "complete") {
     $todaysdate = date("d/m/Y");
-    mysql_query("UPDATE `Data` SET `completed` = \"1\", `datecompleted` = \"$todaysdate\" WHERE `id` = \"$id\"");
+    mysqli_query($con, "UPDATE `Data` SET `completed` = \"1\", `datecompleted` = \"$todaysdate\" WHERE `id` = \"$id\"");
 } elseif ($action == "restore") {
-    mysql_query("UPDATE `Data` SET `completed` = \"0\", `datecompleted` = \"\" WHERE `id` = \"$id\"");
+    mysqli_query($con, "UPDATE `Data` SET `completed` = \"0\", `datecompleted` = \"\" WHERE `id` = \"$id\"");
 } elseif ($action == "delete") {
-    mysql_query("DELETE FROM `Data` WHERE `id` = \"$id\"");
+    mysqli_query($con, "DELETE FROM `Data` WHERE `id` = \"$id\"");
 } elseif ($action == "details") {
-    $getdetails = mysql_query("SELECT `created`, `due`, `details` FROM `Data` WHERE `id` = \"$id\"");
-    $resultgetdetails = mysql_fetch_assoc($getdetails);
+    $getdetails = mysqli_query($con, "SELECT `created`, `due`, `details` FROM `Data` WHERE `id` = \"$id\"");
+    $resultgetdetails = mysqli_fetch_assoc($getdetails);
     
     list($day, $month, $year) = explode("/", $resultgetdetails["due"]);
     $dueflipped = "$year-$month-$day";
@@ -67,6 +66,6 @@ if ($action == "complete") {
     echo $message;
 }
 
-mysql_close($con);
+mysqli_close($con);
 
 ?>

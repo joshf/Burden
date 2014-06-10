@@ -16,20 +16,19 @@ if (!isset($_SESSION["burden_user"])) {
 }
 
 //Connect to database
-@$con = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
-if (!$con) {
-    die("Error: Could not connect to database (" . mysql_error() . "). Check your database settings are correct.");
+@$con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+if (mysqli_connect_errno()) {
+    echo "Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.";
+    exit();
 }
 
-mysql_select_db(DB_NAME, $con);
-
-$getusersettings = mysql_query("SELECT `user` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
-if (mysql_num_rows($getusersettings) == 0) {
+$getusersettings = mysqli_query($con, "SELECT `user` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
+if (mysqli_num_rows($getusersettings) == 0) {
     session_destroy();
     header("Location: login.php");
     exit;
 }
-$resultgetusersettings = mysql_fetch_assoc($getusersettings);
+$resultgetusersettings = mysqli_fetch_assoc($getusersettings);
 
 ?>
 <!DOCTYPE html>
@@ -118,19 +117,19 @@ if (isset($_GET["error"])) {
 <?php
 
 //Don't duplicate none entry
-$doesnoneexist = mysql_query("SELECT `category` FROM `Data` WHERE `category` = \"none\"");
-if (mysql_num_rows($doesnoneexist) == 0) {
+$doesnoneexist = mysqli_query($con, "SELECT `category` FROM `Data` WHERE `category` = \"none\"");
+if (mysqli_num_rows($doesnoneexist) == 0) {
     echo "<option value=\"none\">None</option>";
 }
 
 //Get categories
-$getcategories = mysql_query("SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\"");
+$getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\"");
 
-while($row = mysql_fetch_assoc($getcategories)) {    
+while($row = mysqli_fetch_assoc($getcategories)) {    
     echo "<option value=\"" . $row["category"] . "\">" . ucfirst($row["category"]) . "</option>";
 }
 
-mysql_close($con);
+mysqli_close($con);
 
 ?>
 </select>

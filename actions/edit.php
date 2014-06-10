@@ -21,23 +21,22 @@ if (!isset($_POST["idtoedit"])) {
 }	
 
 //Connect to database
-@$con = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
-if (!$con) {
-    die("Error: Could not connect to database (" . mysql_error() . "). Check your database settings are correct.");
+@$con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+if (mysqli_connect_errno()) {
+    echo "Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.";
+    exit();
 }
 
-mysql_select_db(DB_NAME, $con);
-
-$idtoedit = mysql_real_escape_string($_POST["idtoedit"]);
+$idtoedit = mysqli_real_escape_string($con, $_POST["idtoedit"]);
 
 //Set variables
-$newtask = mysql_real_escape_string($_POST["task"]);
-$newdetails = mysql_real_escape_string($_POST["details"]);
-$newcategory = mysql_real_escape_string($_POST["category"]);
+$newtask = mysqli_real_escape_string($con, $_POST["task"]);
+$newdetails = mysqli_real_escape_string($con, $_POST["details"]);
+$newcategory = mysqli_real_escape_string($con, $_POST["category"]);
 if (isset($_POST["priority"])) {
-    $newpriority = mysql_real_escape_string($_POST["priority"]);
+    $newpriority = mysqli_real_escape_string($con, $_POST["priority"]);
 }
-$newdue = mysql_real_escape_string($_POST["due"]);
+$newdue = mysqli_real_escape_string($con, $_POST["due"]);
 
 //Failsafes
 if (empty($newtask) || empty($newdue)) {
@@ -60,9 +59,9 @@ if (isset($_POST["highpriority"])) {
     $newhighpriority = "0";
 }
 
-mysql_query("UPDATE `Data` SET `category` = \"$newcategory\", `highpriority` = \"$newhighpriority\", `task` = \"$newtask\", `details` = \"$newdetails\", `due` = \"$newdue\" WHERE `id` = \"$idtoedit\"");
+mysqli_query($con, "UPDATE `Data` SET `category` = \"$newcategory\", `highpriority` = \"$newhighpriority\", `task` = \"$newtask\", `details` = \"$newdetails\", `due` = \"$newdue\" WHERE `id` = \"$idtoedit\"");
 
-mysql_close($con);
+mysqli_close($con);
 
 header("Location: ../index.php");
 

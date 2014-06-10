@@ -20,23 +20,20 @@ if (!isset($_SESSION["burden_user"])) {
 //Set cookie so we dont constantly check for updates
 setcookie("burdenupdatecheck", time(), time()+604800);
 
-@$con = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
-if (!$con) {
-    die("Error: Could not connect to database (" . mysql_error() . "). Check your database settings are correct.");
-} else {
-    $does_db_exist = mysql_select_db(DB_NAME, $con);
-    if (!$does_db_exist) {
-        die("Error: Database does not exist (" . mysql_error() . "). Check your database settings are correct.");
-    }
+//Connect to database
+@$con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+if (mysqli_connect_errno()) {
+    echo "Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.";
+    exit();
 }
 
-$getusersettings = mysql_query("SELECT `user` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
-if (mysql_num_rows($getusersettings) == 0) {
+$getusersettings = mysqli_query($con, "SELECT `user` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
+if (mysqli_num_rows($getusersettings) == 0) {
     session_destroy();
     header("Location: login.php");
     exit;
 }
-$resultgetusersettings = mysql_fetch_assoc($getusersettings);
+$resultgetusersettings = mysqli_fetch_assoc($getusersettings);
 
 ?>
 <!DOCTYPE html>
@@ -103,9 +100,9 @@ tr td:last-child {
 echo "<li><a href=\"index.php?filter=categories&amp;cat=none\">None</a></li>";
 
 //Get categories
-$getcategories = mysql_query("SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"none\" OR \"\" AND `completed` != \"1\"");
+$getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"none\" OR \"\" AND `completed` != \"1\"");
 
-while($row = mysql_fetch_assoc($getcategories)) {
+while($row = mysqli_fetch_assoc($getcategories)) {
     echo "<li><a href=\"index.php?filter=categories&amp;cat=" . $row["category"] . "\">" . ucfirst($row["category"]) . "</a></li>";
 }    
 
@@ -139,9 +136,9 @@ if (isset($_GET["filter"])) {
     //Make sure cat exists
 	if ($filter == "categories") {
 		if (isset($_GET["cat"])) {
-		    $cat = mysql_real_escape_string($_GET["cat"]);
-		    $checkcatexists = mysql_query("SELECT `category` FROM `Data` WHERE `category` = \"$cat\"");
-		    if (mysql_num_rows($checkcatexists) == 0) {
+		    $cat = mysqli_real_escape_string($con, $_GET["cat"]);
+		    $checkcatexists = mysqli_query($con, "SELECT `category` FROM `Data` WHERE `category` = \"$cat\"");
+		    if (mysqli_num_rows($checkcatexists) == 0) {
 		        $filter = "normal";
 		    }
 		} else {
@@ -174,13 +171,13 @@ if (!isset($_COOKIE["burdenupdatecheck"])) {
 } 
 
 if ($filter == "completed") {
-    $gettasks = mysql_query("SELECT * FROM `Data` WHERE `completed` = \"1\"");
+    $gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"1\"");
 } elseif ($filter == "highpriority") {
-    $gettasks = mysql_query("SELECT * FROM `Data` WHERE `highpriority` = \"1\" AND `completed` = \"0\"");
+    $gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `highpriority` = \"1\" AND `completed` = \"0\"");
 } elseif ($filter == "categories") {
-	$gettasks = mysql_query("SELECT * FROM `Data` WHERE `completed` = \"0\" AND `category` = \"$cat\"");
+	$gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\" AND `category` = \"$cat\"");
 } else {
-    $gettasks = mysql_query("SELECT * FROM `Data` WHERE `completed` = \"0\"");
+    $gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\"");
 }
 
 echo "<table id=\"tasks\" class=\"table table-bordered table-hover table-condensed\">
@@ -201,7 +198,7 @@ $numberoftasks = "0";
 $numberoftasksoverdue = "0"; 
 $numberoftasksduetoday = "0";
 
-while($row = mysql_fetch_assoc($gettasks)) {
+while($row = mysqli_fetch_assoc($gettasks)) {
     //Count tasks
     $numberoftasks++;
     //Logic for due date
@@ -286,7 +283,7 @@ echo "</tbody></table>";
 
 echo "<i class=\"glyphicon glyphicon-tasks\"></i> <b>$numberoftasks</b> tasks<br><i class=\"glyphicon glyphicon-warning-sign\"></i> <b>$numberoftasksduetoday</b> due today<br><i class=\"glyphicon glyphicon-exclamation-sign\"></i> <b>$numberoftasksoverdue</b> overdue";
 
-mysql_close($con);
+mysqli_close($con);
 
 ?>
 </div>
