@@ -86,6 +86,9 @@ $configfile = fopen("../config.php", "w");
 fwrite($configfile, $updatestring);
 fclose($configfile);
 
+//Add to table
+mysql_query("ALTER TABLE `Users` ADD `rememberme` VARCHAR(100) NOT NULL;");
+
 mysql_close($con);
 
 ?>	

@@ -19,6 +19,18 @@ if (!$con) {
 
 mysql_select_db(DB_NAME, $con);
 
+
+if (isset($_COOKIE["burden_user_rememberme"])) {
+    $rememberme = $_COOKIE["burden_user_rememberme"];
+    $getuser = mysql_query("SELECT `id`, `rememberme` FROM `Users` WHERE `rememberme` = \"$rememberme\"");
+    if (mysql_num_rows($getuser) == 0) {
+        header("Location: logout.php");
+        exit;
+    }
+    $userinforesult = mysql_fetch_assoc($getuser); 
+    $_SESSION["burden_user"] = $userinforesult["id"];
+}
+
 if (isset($_POST["password"]) && isset($_POST["username"])) {
     $username = mysql_real_escape_string($_POST["username"]);
     $password = $_POST["password"];
@@ -32,6 +44,11 @@ if (isset($_POST["password"]) && isset($_POST["username"])) {
     $hashedpassword = hash("sha256", $salt . hash("sha256", $password));
     if ($hashedpassword == $userinforesult["password"]) {
         $_SESSION["burden_user"] = $userinforesult["id"];
+        if (isset($_POST["rememberme"])) {
+            $remembermehash = substr(str_shuffle(MD5(microtime())), 0, 50);
+            mysql_query("UPDATE `Users` SET rememberme = \"$remembermehash\" WHERE `id` = \"" . $userinforesult["id"] . "\"");
+            setcookie("burden_user_rememberme", $remembermehash, time()+3600*24);
+        }
     } else {
         header("Location: login.php?login_error=true");
         exit;
@@ -101,6 +118,11 @@ if (isset($_GET["login_error"])) {
 <div class="form-group">
 <label for="password">Password</label>
 <input type="password" class="form-control" id="password" name="password" placeholder="Password...">
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" id="rememberme" name="rememberme"> Remember me
+</label>
 </div>
 <button type="submit" class="btn btn-default pull-right">Login</button>
 </form>
