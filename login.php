@@ -20,7 +20,7 @@ if (mysqli_connect_errno()) {
 
 if (isset($_COOKIE["burden_user_rememberme"])) {
     $rememberme = $_COOKIE["burden_user_rememberme"];
-    $getuser = mysqli_query($con, "SELECT `id`, `rememberme` FROM `Users` WHERE `rememberme` = \"$rememberme\"");
+    $getuser = mysqli_query($con, "SELECT `id`, `hash` FROM `Users` WHERE `hash` = \"$rememberme\"");
     if (mysqli_num_rows($getuser) == 0) {
         header("Location: logout.php");
         exit;
@@ -45,7 +45,7 @@ if (isset($_POST["password"]) && isset($_POST["username"])) {
         $_SESSION["burden_user"] = $userinforesult["id"];
         if (isset($_POST["rememberme"])) {
             $remembermehash = substr(str_shuffle(MD5(microtime())), 0, 50);
-            mysqli_query($con, "UPDATE `Users` SET rememberme = \"$remembermehash\" WHERE `id` = \"" . $userinforesult["id"] . "\"");
+            mysqli_query($con, "UPDATE `Users` SET `hash` = \"$remembermehash\" WHERE `id` = \"" . $userinforesult["id"] . "\"");
             setcookie("burden_user_rememberme", $remembermehash, time()+3600*24);
         }
         mysqli_free_result($userinforesult);
