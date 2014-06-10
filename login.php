@@ -14,20 +14,18 @@ session_start();
 //Connect to database
 @$con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 if (mysqli_connect_errno()) {
-    echo "Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.";
-    exit();
+    die("Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.");
 }
 
 if (isset($_COOKIE["burden_user_rememberme"])) {
-    $rememberme = $_COOKIE["burden_user_rememberme"];
-    $getuser = mysqli_query($con, "SELECT `id`, `hash` FROM `Users` WHERE `hash` = \"$rememberme\"");
+    $hash = $_COOKIE["burden_user_rememberme"];
+    $getuser = mysqli_query($con, "SELECT `id`, `hash` FROM `Users` WHERE `hash` = \"$hash\"");
     if (mysqli_num_rows($getuser) == 0) {
         header("Location: logout.php");
         exit;
     }
     $userinforesult = mysqli_fetch_assoc($getuser);
     $_SESSION["burden_user"] = $userinforesult["id"];
-    mysqli_free_result($getuser);
 }
 
 if (isset($_POST["password"]) && isset($_POST["username"])) {
@@ -44,11 +42,10 @@ if (isset($_POST["password"]) && isset($_POST["username"])) {
     if ($hashedpassword == $userinforesult["password"]) {
         $_SESSION["burden_user"] = $userinforesult["id"];
         if (isset($_POST["rememberme"])) {
-            $remembermehash = substr(str_shuffle(MD5(microtime())), 0, 50);
-            mysqli_query($con, "UPDATE `Users` SET `hash` = \"$remembermehash\" WHERE `id` = \"" . $userinforesult["id"] . "\"");
-            setcookie("burden_user_rememberme", $remembermehash, time()+3600*24);
+            $hash = substr(str_shuffle(MD5(microtime())), 0, 50);
+            mysqli_query($con, "UPDATE `Users` SET `hash` = \"$hash\" WHERE `id` = \"" . $userinforesult["id"] . "\"");
+            setcookie("burden_user_rememberme", $hash, time()+3600*24);
         }
-        mysqli_free_result($userinforesult);
     } else {
         header("Location: login.php?login_error=true");
         exit;
@@ -124,6 +121,7 @@ if (isset($_GET["login_error"])) {
 <input type="checkbox" id="rememberme" name="rememberme"> Remember me
 </label>
 </div>
+<a href="reset.php">Forgotten password</a>
 <button type="submit" class="btn btn-default pull-right">Login</button>
 </form>
 </div>

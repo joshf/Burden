@@ -18,8 +18,7 @@ if (!isset($_SESSION["burden_user"])) {
 //Connect to database
 @$con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 if (mysqli_connect_errno()) {
-    echo "Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.";
-    exit();
+    die("Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.");
 }
 
 $getusersettings = mysqli_query($con, "SELECT `user`, `password`, `email`, `salt` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
@@ -32,9 +31,9 @@ $resultgetusersettings = mysqli_fetch_assoc($getusersettings);
 
 if (!empty($_POST)) {
     //Get new settings from POST
-    $user = $_POST["user"];
-    $password = $_POST["password"];
-    $email = $_POST["email"];
+    $user = mysqli_real_escape_string($con, $_POST["user"]);
+    $password = mysqli_real_escape_string($con, $_POST["password"]);
+    $email = mysqli_real_escape_string($con, $_POST["email"]);
     $salt = $resultgetusersettings["salt"];
     if ($password != $resultgetusersettings["password"]) {
         //Salt and hash passwords

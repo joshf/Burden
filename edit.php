@@ -18,8 +18,7 @@ if (!isset($_SESSION["burden_user"])) {
 //Connect to database
 @$con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 if (mysqli_connect_errno()) {
-    echo "Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.";
-    exit();
+    die("Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.");
 }
 
 $getusersettings = mysqli_query($con, "SELECT `user` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
