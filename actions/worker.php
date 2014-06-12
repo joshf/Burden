@@ -37,7 +37,7 @@ if (isset($_POST["action"])) {
 
 if ($action == "complete") {
     $todaysdate = date("d/m/Y");
-    mysqli_query($con, "UPDATE `Data` SET `completed` = \"1\", `datecompleted` = \"$todaysdate\" WHERE `id` = \"$id\"");
+    mysqli_query($con, "UPDATE `Data` SET `completed` = \"1\", `datecompleted` =  CURDATE() WHERE `id` = \"$id\"");
 } elseif ($action == "restore") {
     mysqli_query($con, "UPDATE `Data` SET `completed` = \"0\", `datecompleted` = \"\" WHERE `id` = \"$id\"");
 } elseif ($action == "delete") {
@@ -46,10 +46,8 @@ if ($action == "complete") {
     $getdetails = mysqli_query($con, "SELECT `created`, `due`, `details` FROM `Data` WHERE `id` = \"$id\"");
     $resultgetdetails = mysqli_fetch_assoc($getdetails);
     
-    list($day, $month, $year) = explode("/", $resultgetdetails["due"]);
-    $dueflipped = "$year-$month-$day";
     $today = strtotime(date("Y-m-d")); 
-    $due = strtotime($dueflipped);
+    $due = strtotime($resultgetdetails["due"]);
     $datediff = abs($today - $due);
     $duein = floor($datediff/(60*60*24));
     

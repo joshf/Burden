@@ -199,15 +199,10 @@ $numberoftasksduetoday = "0";
 
 while($row = mysqli_fetch_assoc($gettasks)) {
     //Count tasks
-    $numberoftasks++;
-    //Logic for due date
-    $segments = explode("/", $row["due"]);
-    if (count($segments) == 3) {
-        list($day, $month, $year) = $segments;
-    }
-    $dueflipped = "$year-$month-$day";
-    $today = strtotime(date("Y-m-d")); 
-    $due = strtotime($dueflipped);
+    $numberoftasks++;  
+    //Logic
+    $today = strtotime(date("Y-m-d"));
+    $due = strtotime($row["due"]);
     //Counters
     if ($today > $due) { 
         $numberoftasksoverdue++; 
@@ -259,7 +254,12 @@ while($row = mysqli_fetch_assoc($gettasks)) {
     if ($filter == "completed") {
         echo "<td>" . $row["datecompleted"] . "</td>";
     } else {
-        echo "<td>" . $row["due"] . "</td>";
+        $segments = explode("-", $row["due"]);
+        if (count($segments) == 3) {
+            list($year, $month, $day) = $segments;
+        }
+        $rowdue = "$day-$month-$year";
+        echo "<td>" . $rowdue . "</td>";
     }
     echo "<td><div class=\"btn-toolbar\" role=\"toolbar\"><div class=\"btn-group\"><a href=\"edit.php?id=" . $row["id"] . "\" class=\"btn btn-default btn-xs\" role=\"button\"><span class=\"glyphicon glyphicon-edit\"></span></a><button type=\"button\" class=\"details btn btn-default btn-xs\" data-id=\"" . $row["id"] . "\"><span class=\"glyphicon glyphicon-question-sign\"></span></button>";
     if ($filter == "completed") {
@@ -327,7 +327,7 @@ $(document).ready(function() {
     });
     $.extend($.fn.dataTableExt.oSort, {
         "date-uk-pre": function (a) {
-            var ukDatea = a.split("/");
+            var ukDatea = a.split("-");
             return (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
         },
         "date-uk-asc": function (a, b) {

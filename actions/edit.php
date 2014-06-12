@@ -44,14 +44,12 @@ if (empty($newtask) || empty($newdue)) {
     exit;
 }
 
-//Flip dates back for consistency, work around #5
-if (strpos($newdue, "-") !== false) {
-    $segments = explode("-", $newdue);
-    if (count($segments) == 3) {
-        list($year, $month, $day) = $segments;
-    }
-    $newdue = "$day/$month/$year";
+//Store dates in correct format
+$segments = explode("-", $newdue);
+if (count($segments) == 3) {
+    list($day, $month, $year) = $segments;
 }
+$due = "$year-$month-$day";
 
 if (isset($_POST["highpriority"])) {
     $newhighpriority = "1";

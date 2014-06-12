@@ -35,16 +35,7 @@ $due = mysqli_real_escape_string($con, $_POST["due"]);
 if (empty($task) || empty($due)) {
     header("Location: ../add.php?error=emptyfields");
     exit;
-}
-
-//Flip dates back for consistency, work around #5
-if (strpos($due, "-") !== false) {
-    $segments = explode("-", $due);
-    if (count($segments) == 3) {
-        list($year, $month, $day) = $segments;
-    }
-    $due = "$day/$month/$year";
-}
+} 
 
 if (isset($_POST["highpriority"])) {
     $highpriority = "1";
@@ -52,10 +43,15 @@ if (isset($_POST["highpriority"])) {
     $highpriority = "0";
 }
 
-$created = date("d/m/Y");
+//Store dates in correct format
+$segments = explode("-", $due);
+if (count($segments) == 3) {
+    list($day, $month, $year) = $segments;
+}
+$due = "$year-$month-$day";
 
 mysqli_query($con, "INSERT INTO `Data` (`category`, `highpriority`, `task`, `details`, `created`, `due`, `completed`)
-VALUES (\"$category\",\"$highpriority\",\"$task\",\"$details\",\"$created\",\"$due\",\"0\")");
+VALUES (\"$category\",\"$highpriority\",\"$task\",\"$details\",CURDATE(),\"$due\",\"0\")");
 
 mysqli_close($con);
 

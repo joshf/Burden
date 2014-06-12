@@ -100,7 +100,6 @@ if (!isset($_GET["id"])) {
     } else {
         echo "<div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>No tasks available to edit.</p><p><a class=\"btn btn-info\" href=\"javascript:history.go(-1)\">Go Back</a></p></div>";
     }
-    $due = "0";
 } else {
 
 ?>
@@ -130,7 +129,7 @@ $getidinforesult = mysqli_fetch_assoc($getidinfo);
 
 echo "<div class=\"form-group\"><label for=\"task\">Task</label><input type=\"text\" class=\"form-control\" id=\"task\" name=\"task\" value=\"" . $getidinforesult["task"] . "\" placeholder=\"Type a task...\" required></div>";
 echo "<div class=\"form-group\"><label for=\"details\">Details</label><textarea rows=\"2\" class=\"form-control\" id=\"details\" name=\"details\" placeholder=\"Type any extra details..\">" . $getidinforesult["details"] . "</textarea></div>";
-echo "<div class=\"form-group\"><label for=\"due\">Due</label><input type=\"date\" class=\"form-control\" id=\"due\" name=\"due\" value=\"" . $getidinforesult["due"] . "\" required></div>";
+echo "<div class=\"form-group\"><label for=\"due\">Due</label><input type=\"text\" class=\"form-control\" id=\"due\" name=\"due\" value=\"" . $getidinforesult["due"] . "\" required></div>";
 echo "<div class=\"form-group\"><label for=\"category\">Category</label><select class=\"form-control\" id=\"category\" name=\"category\">";
 
 //Don't duplicate none entry
@@ -163,8 +162,6 @@ if ($checkifhighpriorityresult["highpriority"] == "1") {
     echo "<input type=\"checkbox\" id=\"highpriority\" name=\"highpriority\"> High priority";
 }
 
-$due = $getidinforesult["due"];
-
 mysqli_close($con);
 
 ?>
@@ -184,20 +181,14 @@ mysqli_close($con);
 <script src="assets/bootbox.min.js"></script>
 <script src="assets/bootstrap-select/js/bootstrap-select.min.js"></script>
 <script src="assets/nod.min.js"></script>
+<?php if (isset($_GET["id"])) { ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|Chrome/i.test(navigator.userAgent)) {
-        $("#due").datepicker({
-            format: "dd/mm/yyyy",
-            autoclose: "true",
-            clearBtn: "true"
-        });
-    } else {
-        var due = "<?php echo $due; ?>";
-        var arr = due.split("/");
-        var date = "" + arr[2] + "-" + arr[1] + "-" + arr[0] + "";
-        $("#due").val(date);
-    }
+    $("#due").datepicker({
+        format: "dd-mm-yyyy",
+        autoclose: "true",
+        clearBtn: "true"
+    });
     $("#addcategory").click(function () {
         bootbox.prompt("Add a category", function(newcategory) {
             if (newcategory != null && newcategory != "") {
@@ -217,5 +208,6 @@ $(document).ready(function() {
     $("form").nod(metrics);
 });
 </script>
+<?php } ?>
 </body>
 </html>

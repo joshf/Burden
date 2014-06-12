@@ -108,7 +108,7 @@ if (isset($_GET["error"])) {
 </div>
 <div class="form-group">
 <label for="due">Due</label>
-<input type="date" class="form-control" id="due" name="due" required>
+<input type="text" class="form-control" id="due" name="due" required>
 </div>
 <div class="form-group">
 <label for="category">Category</label>
@@ -150,13 +150,11 @@ mysqli_close($con);
 <script src="assets/nod.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|Chrome/i.test(navigator.userAgent) ) {
-        $("#due").datepicker({
-            format: "dd/mm/yyyy",
-            autoclose: "true",
-            clearBtn: "true"
-        });
-    }
+    $("#due").datepicker({
+        format: "dd/mm/yyyy",
+        autoclose: "true",
+        clearBtn: "true"
+    });
     $("#addcategory").click(function () {
         bootbox.prompt("Add a category", function(newcategory) {
             if (newcategory != null && newcategory != "") {
