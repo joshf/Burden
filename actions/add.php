@@ -43,12 +43,15 @@ if (isset($_POST["highpriority"])) {
     $highpriority = "0";
 }
 
-//Store dates in correct format
-$segments = explode("-", $due);
-if (count($segments) == 3) {
-    list($day, $month, $year) = $segments;
+//Bypass if date picker is active
+if (!isset($_POST["bypass"])) {
+    //Store dates in correct format
+    $segments = explode("-", $due);
+    if (count($segments) == 3) {
+        list($day, $month, $year) = $segments;
+    }
+    $due = "$year-$month-$day";
 }
-$due = "$year-$month-$day";
 
 mysqli_query($con, "INSERT INTO `Data` (`category`, `highpriority`, `task`, `details`, `created`, `due`, `completed`)
 VALUES (\"$category\",\"$highpriority\",\"$task\",\"$details\",CURDATE(),\"$due\",\"0\")");

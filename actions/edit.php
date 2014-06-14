@@ -44,12 +44,15 @@ if (empty($newtask) || empty($newdue)) {
     exit;
 }
 
-//Store dates in correct format
-$segments = explode("-", $newdue);
-if (count($segments) == 3) {
-    list($day, $month, $year) = $segments;
+//Bypass if date picker is active
+if (!isset($_POST["bypass"])) {
+    //Store dates in correct format
+    $segments = explode("-", $newdue);
+    if (count($segments) == 3) {
+        list($day, $month, $year) = $segments;
+    }
+    $newdue = "$year-$month-$day";
 }
-$due = "$year-$month-$day";
 
 if (isset($_POST["highpriority"])) {
     $newhighpriority = "1";

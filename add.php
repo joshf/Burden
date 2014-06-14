@@ -150,11 +150,21 @@ mysqli_close($con);
 <script src="assets/nod.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    $("#due").datepicker({
-        format: "dd/mm/yyyy",
-        autoclose: "true",
-        clearBtn: "true"
-    });
+    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|Chrome/i.test(navigator.userAgent)) {
+        $("#due").datepicker({
+            format: "dd/mm/yyyy",
+            autoclose: "true",
+            clearBtn: "true"
+        });
+    } else {
+        $("input#due").removeAttr("type");
+        $("input#due").prop("type", "date");
+        $("<input>").attr({
+            type: "hidden",
+            id: "bypass",
+            name: "bypass"
+        }).appendTo("form");
+    }
     $("#addcategory").click(function () {
         bootbox.prompt("Add a category", function(newcategory) {
             if (newcategory != null && newcategory != "") {
