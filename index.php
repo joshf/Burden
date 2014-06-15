@@ -14,7 +14,7 @@ require_once("config.php");
 session_start();
 if (!isset($_SESSION["burden_user"])) {
     header("Location: login.php");
-    exit; 
+    exit;
 }
 
 //Set cookie so we dont constantly check for updates

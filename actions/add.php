@@ -12,14 +12,13 @@ require_once("../config.php");
 session_start();
 if (!isset($_SESSION["burden_user"])) {
     header("Location: ../login.php");
-    exit; 
+    exit;
 }
 
 //Connect to database
 @$con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 if (mysqli_connect_errno()) {
-    echo "Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.";
-    exit();
+    die("Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.");
 }
 
 //Set variables
