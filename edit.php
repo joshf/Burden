@@ -129,7 +129,7 @@ $getidinforesult = mysqli_fetch_assoc($getidinfo);
 
 echo "<div class=\"form-group\"><label for=\"task\">Task</label><input type=\"text\" class=\"form-control\" id=\"task\" name=\"task\" value=\"" . $getidinforesult["task"] . "\" placeholder=\"Type a task...\" required></div>";
 echo "<div class=\"form-group\"><label for=\"details\">Details</label><textarea rows=\"2\" class=\"form-control\" id=\"details\" name=\"details\" placeholder=\"Type any extra details..\">" . $getidinforesult["details"] . "</textarea></div>";
-echo "<div class=\"form-group\"><label for=\"due\">Due</label><input type=\"text\" class=\"form-control\" id=\"due\" name=\"due\" value=\"" . $getidinforesult["due"] . "\" required></div>";
+echo "<div class=\"form-group\"><label for=\"due\">Due</label><input type=\"date\" class=\"form-control\" id=\"due\" name=\"due\" value=\"" . $getidinforesult["due"] . "\" required></div>";
 echo "<div class=\"form-group\"><label for=\"category\">Category</label><select class=\"form-control\" id=\"category\" name=\"category\">";
 
 //Don't duplicate none entry
@@ -181,23 +181,18 @@ mysqli_close($con);
 <script src="assets/bootbox.min.js"></script>
 <script src="assets/bootstrap-select/js/bootstrap-select.min.js"></script>
 <script src="assets/nod.min.js"></script>
+<script src="assets/modernizr.min.js"></script>
 <?php if (isset($_GET["id"])) { ?>
 <script type="text/javascript">
 $(document).ready(function() {
-    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|Chrome/i.test(navigator.userAgent)) {
+    if (!Modernizr.inputtypes.date) {
         $("#due").datepicker({
-            format: "dd/mm/yyyy",
+            format: "dd-mm-yyyy",
             autoclose: "true",
             clearBtn: "true"
         });
     } else {
-        $("input#due").removeAttr("type");
-        $("input#due").prop("type", "date");
-        $("<input>").attr({
-            type: "hidden",
-            id: "bypass",
-            name: "bypass"
-        }).appendTo("form");
+        $("<input>").attr({type: "hidden", id: "ignoredate", name: "ignoredate"}).appendTo("form");
     }
     $("#addcategory").click(function () {
         bootbox.prompt("Add a category", function(newcategory) {
@@ -213,7 +208,7 @@ $(document).ready(function() {
     });
     var metrics = [
         ["#task", "presence", "Task cannot be empty"],
-        ["#due", "presence", "A due date is required (DD/MM/YYYY)"]
+        ["#due", "presence", "A due date is required (DD-MM-YYYY)"]
     ];
     $("form").nod(metrics);
 });

@@ -43,9 +43,8 @@ if (isset($_POST["highpriority"])) {
     $highpriority = "0";
 }
 
-//Bypass if date picker is active
-if (!isset($_POST["bypass"])) {
-    //Store dates in correct format
+//Store dates in correct format
+if (!isset($_POST["ignoredate"])) {
     $segments = explode("-", $due);
     if (count($segments) == 3) {
         list($day, $month, $year) = $segments;

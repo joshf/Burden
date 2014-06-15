@@ -43,10 +43,10 @@ if (isset($_POST["install"])) {
     `highpriority` tinyint(1) NOT NULL,
     `task` varchar(300) NOT NULL,
     `details` varchar(300) NOT NULL,
-    `created` varchar(10) NOT NULL,
-    `due` varchar(10) NOT NULL,
+    `created` date NOT NULL,
+    `due` date NOT NULL,
     `completed` tinyint(1) NOT NULL DEFAULT \"0\",
-    `datecompleted` varchar(12) NOT NULL,
+    `datecompleted` date NOT NULL,
     `user` varchar(20) NOT NULL,
     PRIMARY KEY (`id`)
     ) ENGINE=MyISAM;";

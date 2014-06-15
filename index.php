@@ -252,7 +252,12 @@ while($row = mysqli_fetch_assoc($gettasks)) {
     echo "<td>" . $row["task"] . "</td>";
     echo "<td class=\"hidden-xs\">" . ucfirst($row["category"]) . "</td>";
     if ($filter == "completed") {
-        echo "<td>" . $row["datecompleted"] . "</td>";
+        $segments = explode("-", $row["datecompleted"]);
+        if (count($segments) == 3) {
+            list($year, $month, $day) = $segments;
+        }
+        $rowcompleted = "$day-$month-$year";
+        echo "<td>" . $rowcompleted . "</td>";
     } else {
         $segments = explode("-", $row["due"]);
         if (count($segments) == 3) {

@@ -44,20 +44,19 @@ if (empty($newtask) || empty($newdue)) {
     exit;
 }
 
-//Bypass if date picker is active
-if (!isset($_POST["bypass"])) {
-    //Store dates in correct format
-    $segments = explode("-", $newdue);
-    if (count($segments) == 3) {
-        list($day, $month, $year) = $segments;
-    }
-    $newdue = "$year-$month-$day";
-}
-
 if (isset($_POST["highpriority"])) {
     $newhighpriority = "1";
 } else {
     $newhighpriority = "0";
+}
+
+//Store dates in correct format
+if (!isset($_POST["ignoredate"])) {
+    $segments = explode("-", $due);
+    if (count($segments) == 3) {
+        list($day, $month, $year) = $segments;
+    }
+    $due = "$year-$month-$day";
 }
 
 mysqli_query($con, "UPDATE `Data` SET `category` = \"$newcategory\", `highpriority` = \"$newhighpriority\", `task` = \"$newtask\", `details` = \"$newdetails\", `due` = \"$newdue\" WHERE `id` = \"$idtoedit\"");

@@ -108,7 +108,7 @@ if (isset($_GET["error"])) {
 </div>
 <div class="form-group">
 <label for="due">Due</label>
-<input type="text" class="form-control" id="due" name="due" required>
+<input type="date" class="form-control" id="due" name="due" required>
 </div>
 <div class="form-group">
 <label for="category">Category</label>
@@ -148,22 +148,17 @@ mysqli_close($con);
 <script src="assets/datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="assets/bootstrap-select/js/bootstrap-select.min.js"></script>
 <script src="assets/nod.min.js"></script>
+<script src="assets/modernizr.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|Chrome/i.test(navigator.userAgent)) {
+    if (!Modernizr.inputtypes.date) {
         $("#due").datepicker({
-            format: "dd/mm/yyyy",
+            format: "dd-mm-yyyy",
             autoclose: "true",
             clearBtn: "true"
         });
     } else {
-        $("input#due").removeAttr("type");
-        $("input#due").prop("type", "date");
-        $("<input>").attr({
-            type: "hidden",
-            id: "bypass",
-            name: "bypass"
-        }).appendTo("form");
+        $("<input>").attr({type: "hidden", id: "ignoredate", name: "ignoredate"}).appendTo("form");
     }
     $("#addcategory").click(function () {
         bootbox.prompt("Add a category", function(newcategory) {
@@ -179,7 +174,7 @@ $(document).ready(function() {
     });
     var metrics = [
         ["#task", "presence", "Task cannot be empty"],
-        ["#due", "presence", "A due date is required (DD/MM/YYYY)"]
+        ["#due", "presence", "A due date is required (DD-MM-YYYY)"]
     ];
     $("form").nod(metrics);
 });

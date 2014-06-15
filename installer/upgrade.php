@@ -82,7 +82,7 @@ fwrite($configfile, $updatestring);
 fclose($configfile);
 
 //Add to table
-mysqli_query($con, "ALTER TABLE `Users` ADD `hash` VARCHAR(200) NOT NULL;");
+mysqli_query($con, "ALTER TABLE `Users` ADD `hash` VARCHAR(200) NOT NULL; ALTER TABLE `Data` CHANGE `datecompleted` `datecompleted` DATE NOT NULL; ALTER TABLE `Data` CHANGE `created` `created` DATE NOT NULL; ALTER TABLE `Data` CHANGE `due` `due` DATE NOT NULL;");
 
 mysqli_close($con);
 
