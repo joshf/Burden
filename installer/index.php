@@ -32,8 +32,7 @@ if (isset($_POST["install"])) {
     //Check if we can connect
     $con = mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname);
     if (mysqli_connect_errno()) {
-        echo "Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.";
-        exit();
+        die("Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.");
     }
 
     //Create Data table
