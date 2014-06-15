@@ -109,7 +109,7 @@ $idtoedit = mysqli_real_escape_string($con, $_GET["id"]);
 
 //Check if ID exists
 $doesidexist = mysqli_query($con, "SELECT `id` FROM `Data` WHERE `id` = $idtoedit");
-if (mysqli_num_rows($doesidexist) == 0) {
+if ($doesidexist === FALSE) {
     echo "<div class=\"alert alert-danger\"><h4 class=\"alert-heading\">Error</h4><p>ID does not exist.</p><p><a class=\"btn btn-danger\" href=\"javascript:history.go(-1)\">Go Back</a></p></div>";
 } else {
 
