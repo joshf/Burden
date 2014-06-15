@@ -126,7 +126,7 @@ while($row = mysqli_fetch_assoc($getcategories)) {
 <?php
 
 if (isset($_GET["filter"])) {
-    $filter = $_GET["filter"];
+    $filter = mysqli_real_escape_string($con, $_GET["filter"]);
     //Prevent bad strings from messing with sorting
     $filters = array("categories", "normal", "highpriority", "completed");
     if (!in_array($filter, $filters)) {
