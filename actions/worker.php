@@ -50,6 +50,12 @@ if ($action == "complete") {
     $datediff = abs($today - $due);
     $duein = floor($datediff/(60*60*24));
     
+    $segments = explode("-", $resultgetdetails["created"]);
+    if (count($segments) == 3) {
+        list($year, $month, $day) = $segments;
+    }
+    $created = "$day-$month-$year";
+    
     if ($today > $due) {
         $suffix = "day(s) ago";
     } else {
@@ -57,7 +63,7 @@ if ($action == "complete") {
     }
     
     $message = "<p><b>Details: </b> " . $resultgetdetails["details"] . "</p>";
-    $message .= "<p><b>Created on:</b> " . $resultgetdetails["created"] . "</p>";
+    $message .= "<p><b>Created on:</b> $created</p>";
     $message .= "<p><b>Due:</b> $duein $suffix</p>";
     
     echo $message;
