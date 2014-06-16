@@ -121,8 +121,10 @@ if (isset($_GET["login_error"])) {
 <input type="checkbox" id="rememberme" name="rememberme"> Remember me
 </label>
 </div>
-<a href="reset.php">Forgotten password</a>
-<button type="submit" class="btn btn-default pull-right">Login</button>
+<div class="btn-group pull-right">
+<a href="reset.php" class="btn btn-default" role="button">Forgotten</a>
+<button type="submit" class="btn btn-primary">Login</button>
+</div>
 </form>
 </div>
 <script src="assets/jquery.min.js"></script>
