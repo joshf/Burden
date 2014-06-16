@@ -47,7 +47,7 @@ if (isset($_GET["email"]) && isset($_GET["hash"])) {
 	$headers = "MIME-Version: 1.0\r\n";
     $headers .= "From: burden@" . $_SERVER["SERVER_NAME"] . "\r\n";
 	$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-    $message = "<html><body><h2>New Password from Burden ($pathtoscript)</h2><p>Hi " . $checkinforesult["user"] . ",</p><p>Your new password is <b>$rawpassword</b>.</p><p>Click <a href=\"$pathtoscript/login.php\">here</a> to go to the login page.</p><p>Your welcome!<br>- The Admin</p></html></body>";
+    $message = "<html><body><p>Hi " . $checkinforesult["user"] . ",</p><p>Your new password is <b>$rawpassword</b>.</p><p>Click <a href=\"$pathtoscript/login.php\">here</a> to go to the login page.</p><p>Your welcome!<br>- The Admin</p></html></body>";
     if (mail($to, $subject, $message, $headers)) {
         header("Location: reset.php?sent_pass_confirm=true");
     } else {
@@ -76,7 +76,7 @@ if (isset($_POST["email"])) {
 	$headers = "MIME-Version: 1.0\r\n";
     $headers .= "From: burden@" . $_SERVER["SERVER_NAME"] . "\r\n";
 	$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-    $message = "<html><body><h2>Password reset request from Burden ($pathtoscript)</h2><p>Hi " . $userinforesult["user"] . ",</p><p>You have requested to reset your Burden password, to do so click <a href=\"$pathtoscript/reset.php?email=$to&hash=$hash\">here</a> and a new password will be emailed to you.</p><p>If you did not initiate this request, simply ignore this email.</p><p>Your welcome!<br>- The Admin</p></html></body>";
+    $message = "<html><body><p>Hi " . $userinforesult["user"] . ",</p><p>You have requested to reset your Burden password, to do so click <a href=\"$pathtoscript/reset.php?email=$to&hash=$hash\">here</a> and a new password will be emailed to you.</p><p>If you did not initiate this request, simply ignore this email.</p><p>Your welcome!<br>- The Admin</p></html></body>";
     if (mail($to, $subject, $message, $headers)) {
         header("Location: reset.php?sent_reset_confirm=true");
     } else {
