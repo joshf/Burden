@@ -11,7 +11,7 @@ require_once("../assets/version.php");
 
 require_once("../config.php");
 
-//Check if we can connect
+//Connect to database
 @$con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 if (mysqli_connect_errno()) {
     die("Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.");
