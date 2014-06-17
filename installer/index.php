@@ -30,7 +30,7 @@ if (isset($_POST["install"])) {
     $installstring = "<?php\n\n//Database Settings\ndefine('DB_HOST', " . var_export($dbhost, true) . ");\ndefine('DB_USER', " . var_export($dbuser, true) . ");\ndefine('DB_PASSWORD', " . var_export($dbpassword, true) . ");\ndefine('DB_NAME', " . var_export($dbname, true) . ");\n\n//Other Settings\ndefine('VERSION', " . var_export($version, true) . ");\n\n?>";
 
     //Check if we can connect
-    $con = mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname);
+    @$con = mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname);
     if (mysqli_connect_errno()) {
         die("Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.");
     }
