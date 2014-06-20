@@ -46,7 +46,6 @@ if (isset($_POST["install"])) {
     `due` date NOT NULL,
     `completed` tinyint(1) NOT NULL DEFAULT \"0\",
     `datecompleted` date NOT NULL,
-    `user` varchar(20) NOT NULL,
     PRIMARY KEY (`id`)
     ) ENGINE=MyISAM;";
     
@@ -59,7 +58,6 @@ if (isset($_POST["install"])) {
     `password` varchar(200) NOT NULL,
     `salt` varchar(3) NOT NULL,
     `email` varchar(100) NOT NULL,
-    `admin` tinyint(1) NOT NULL,
     `hash` varchar(200) NOT NULl,
     PRIMARY KEY (`id`)
     ) ENGINE=MyISAM;";
@@ -67,8 +65,8 @@ if (isset($_POST["install"])) {
     mysqli_query($con, $createuserstable);
     
     //Add user
-    mysqli_query($con, "INSERT INTO Users (user, password, salt, email, admin, hash)
-    VALUES (\"$user\",\"$password\",\"$salt\",\"$email\",\"1\",\"\")");
+    mysqli_query($con, "INSERT INTO Users (user, password, salt, email, hash)
+    VALUES (\"$user\",\"$password\",\"$salt\",\"$email\",\"\")");
 
     //Write Config
     $configfile = fopen("../config.php", "w");
@@ -156,7 +154,7 @@ if (!isset($_POST["install"])) {
 </form>
 <?php
 } else {
-    echo "<div class=\"alert alert-success\"><h4 class=\"alert-heading\">Install Complete</h4><p>Burden has been successfully installed. Please delete the \"installer\" folder from your server, as it poses a potential security risk!</p><p>Your login details are shown below, please make a note of them.</p><ul><li>User: $user</li><li>Password: <i>Password you set during install</i></li></ul><p><a href=\"../login.php\" class=\"btn btn-success\">Go To Login</a></p></div>";
+    echo "<div class=\"alert alert-success\"><h4 class=\"alert-heading\">Install Complete</h4><p>Burden has been successfully installed. Please delete the \"installer\" folder from your server, as it poses a potential security risk!</p><p>Your login details are shown below, please make a note of them.</p><ul><li>User: $user</li><li>Password: <i>Password you set during install</i></li></ul><br><p><a href=\"../login.php\" class=\"btn btn-success\">Go To Login</a></p></div>";
 }
 ?>
 </div>
