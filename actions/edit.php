@@ -51,11 +51,11 @@ if (isset($_POST["highpriority"])) {
 
 //Store dates in correct format
 if (!isset($_POST["ignoredate"])) {
-    $segments = explode("-", $due);
+    $segments = explode("-", $newdue);
     if (count($segments) == 3) {
         list($day, $month, $year) = $segments;
     }
-    $due = "$year-$month-$day";
+    $newdue = "$year-$month-$day";
 }
 
 mysqli_query($con, "UPDATE `Data` SET `category` = \"$newcategory\", `highpriority` = \"$newhighpriority\", `task` = \"$newtask\", `details` = \"$newdetails\", `due` = \"$newdue\" WHERE `id` = \"$idtoedit\"");
