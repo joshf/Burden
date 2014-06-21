@@ -102,9 +102,6 @@ if (!isset($_GET["id"])) {
     }
 } else {
 
-?>
-<?php
-
 $idtoedit = mysqli_real_escape_string($con, $_GET["id"]);
 
 //Check if ID exists
@@ -127,9 +124,16 @@ if (isset($_GET["error"])) {
 $getidinfo = mysqli_query($con, "SELECT * FROM `Data` WHERE `id` = $idtoedit");
 $getidinforesult = mysqli_fetch_assoc($getidinfo);
 
+//Flip date backs to UK
+$segments = explode("-", $getidinforesult["due"]);
+if (count($segments) == 3) {
+    list($year, $month, $day) = $segments;
+}
+$due = "$day-$month-$year";
+
 echo "<div class=\"form-group\"><label for=\"task\">Task</label><input type=\"text\" class=\"form-control\" id=\"task\" name=\"task\" value=\"" . $getidinforesult["task"] . "\" placeholder=\"Type a task...\" required></div>";
 echo "<div class=\"form-group\"><label for=\"details\">Details</label><textarea rows=\"2\" class=\"form-control\" id=\"details\" name=\"details\" placeholder=\"Type any extra details..\">" . $getidinforesult["details"] . "</textarea></div>";
-echo "<div class=\"form-group\"><label for=\"due\">Due</label><input type=\"date\" class=\"form-control\" id=\"due\" name=\"due\" value=\"" . $getidinforesult["due"] . "\" required></div>";
+echo "<div class=\"form-group\"><label for=\"due\">Due</label><input type=\"date\" class=\"form-control\" id=\"due\" name=\"due\" value=\"" . $due. "\" required></div>";
 echo "<div class=\"form-group\"><label for=\"category\">Category</label><select class=\"form-control\" id=\"category\" name=\"category\">";
 
 //Don't duplicate none entry
@@ -188,6 +192,12 @@ $(document).ready(function() {
         liveSearch: "true"
     });
     <?php if (isset($_GET["id"])) { ?>
+    if (/Chrome/i.test(navigator.userAgent)) {
+        var due = "<?php echo $due; ?>";
+        var arr = due.split("-");
+        var date = "" + arr[2] + "-" + arr[1] + "-" + arr[0] + "";
+        $("#due").val(date);
+    }
     if (!Modernizr.inputtypes.date) {
         $("#due").datepicker({
             format: "dd-mm-yyyy",
