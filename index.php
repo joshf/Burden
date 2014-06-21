@@ -18,7 +18,7 @@ if (!isset($_SESSION["burden_user"])) {
 }
 
 //Set cookie so we dont constantly check for updates
-setcookie("burdenupdatecheck", time(), time()+604800);
+setcookie("burdenupdatecheck", time(), time()+3600*24*7);
 
 //Connect to database
 @$con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);

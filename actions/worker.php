@@ -35,7 +35,6 @@ if (isset($_POST["action"])) {
 }
 
 if ($action == "complete") {
-    $todaysdate = date("d/m/Y");
     mysqli_query($con, "UPDATE `Data` SET `completed` = \"1\", `datecompleted` =  CURDATE() WHERE `id` = \"$id\"");
 } elseif ($action == "restore") {
     mysqli_query($con, "UPDATE `Data` SET `completed` = \"0\", `datecompleted` = \"\" WHERE `id` = \"$id\"");

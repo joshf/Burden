@@ -44,7 +44,7 @@ if (isset($_POST["password"]) && isset($_POST["username"])) {
         if (isset($_POST["rememberme"])) {
             $hash = substr(str_shuffle(MD5(microtime())), 0, 50);
             mysqli_query($con, "UPDATE `Users` SET `hash` = \"$hash\" WHERE `id` = \"" . $userinforesult["id"] . "\"");
-            setcookie("burden_user_rememberme", $hash, time()+3600*24);
+            setcookie("burden_user_rememberme", $hash, time()+3600*24*7);
         }
     } else {
         header("Location: login.php?login_error=true");
