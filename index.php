@@ -211,7 +211,7 @@ while($row = mysqli_fetch_assoc($gettasks)) {
         $numberoftasksduetoday++; 
     }
     //Set cases
-    if ($row["highpriority"] == "0" && $row["completed"] != "1" && $today < $due) {
+    if ($row["highpriority"] == "0" && $row["completed"] != "1" && $today < $due || $today == $due) {
         $case = "normal";
     }
     if ($row["highpriority"] == "1") {
