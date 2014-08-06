@@ -66,6 +66,8 @@ if ($action == "complete") {
     $message .= "<p><b>Due:</b> $duein $suffix</p>";
     
     echo $message;
+} else {
+    die("Error: Action not recognised!");
 }
 
 mysqli_close($con);
