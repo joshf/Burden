@@ -25,9 +25,6 @@ if (mysqli_connect_errno()) {
 $task = mysqli_real_escape_string($con, $_POST["task"]);
 $details = mysqli_real_escape_string($con, $_POST["details"]);
 $category = mysqli_real_escape_string($con, $_POST["category"]);
-if (isset($_POST["priority"])) {
-    $priority = mysqli_real_escape_string($con, $_POST["priority"]);
-}
 $due = mysqli_real_escape_string($con, $_POST["due"]);
 
 //Failsafes
