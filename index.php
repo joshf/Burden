@@ -44,10 +44,12 @@ $resultgetusersettings = mysqli_fetch_assoc($getusersettings);
 <title>Burden</title>
 <link rel="apple-touch-icon" href="assets/icon.png">
 <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="assets/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
-<link href="assets/datatables/css/dataTables.bootstrap.min.css" rel="stylesheet">
+<link href="assets/datepicker/css/datepicker3.min.css" rel="stylesheet">
 <link href="assets/bootstrap-notify/css/bootstrap-notify.min.css" rel="stylesheet">
 <style type="text/css">
+.datepicker {
+    z-index:1151 !important;
+}
 body {
     padding-top: 30px;
     padding-bottom: 30px;
@@ -56,10 +58,8 @@ body {
 a.close.pull-right {
     padding-left: 10px;
 }
-/* Slim down the actions column */
-tr td:last-child {
-    width: 94px;
-    white-space: nowrap;
+.complete, .edit, #doaddcategoryforaddform, #doaddcategoryforeditform, .restore, .delete {
+    cursor: pointer;
 }
 </style>
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -78,14 +78,9 @@ tr td:last-child {
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 </button>
-<a class="navbar-brand" href="#">Burden</a>
+<a class="navbar-brand" href="index.php">Burden</a>
 </div>
 <div class="navbar-collapse collapse">
-<ul class="nav navbar-nav">
-<li class="active"><a href="index.php">Home</a></li>
-<li><a href="add.php">Add</a></li>
-<li><a href="edit.php">Edit</a></li>
-</ul>
 <ul class="nav navbar-nav navbar-right">
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Filters <b class="caret"></b></a>
@@ -103,9 +98,12 @@ $getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `Data` WHERE
 
 while($row = mysqli_fetch_assoc($getcategories)) {
     echo "<li><a href=\"index.php?filter=categories&amp;cat=" . $row["category"] . "\">" . ucfirst($row["category"]) . "</a></li>";
-}    
+}
 
 ?>
+<li class="divider"></li>
+<li class="dropdown-header">Sort</li>
+<li><a href="index.php?filter=date">Date</a></li>
 <li class="divider"></li>
 <li><a href="index.php">Clear Filters</a></li>
 </ul>
@@ -128,7 +126,7 @@ while($row = mysqli_fetch_assoc($getcategories)) {
 if (isset($_GET["filter"])) {
     $filter = mysqli_real_escape_string($con, $_GET["filter"]);
     //Prevent bad strings from messing with sorting
-    $filters = array("categories", "normal", "highpriority", "completed");
+    $filters = array("categories", "normal", "highpriority", "completed", "date");
     if (!in_array($filter, $filters)) {
         $filter = "normal";
     }
@@ -153,21 +151,27 @@ if ($filter == "completed") {
 } elseif ($filter == "highpriority") {
     echo "<h1>High Priority Tasks</h1>";
 } elseif ($filter == "categories") {
-    echo "<h1>Tasks in \"$cat\" category</h1>";
+    if ($cat != "none") {
+        echo "<h1>Tasks in \"$cat\" category</h1>";
+    } else {
+        echo "<h1>Tasks without a category</h1>";
+    }
+} elseif ($filter == "date") {
+    echo "<h1>Tasks Sorted By Date</h1>";
 } elseif ($filter == "normal") {
     echo "<h1>Current Tasks</h1>";
 }
-echo "</div><div class=\"notifications top-right\"></div>";		
+echo "</div><div class=\"notifications top-right\"></div>";
 
 echo "<noscript><div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>Please enable JavaScript to use Burden. For instructions on how to do this, see <a href=\"http://www.activatejavascript.org\" class=\"alert-link\" target=\"_blank\">here</a>.</p></div></noscript>";
 
 //Update checking
 if (!isset($_COOKIE["burdenupdatecheck"])) {
     $remoteversion = file_get_contents("https://raw.github.com/joshf/Burden/master/version.txt");
-    if (version_compare($version, $remoteversion) < 0) {            
+    if (version_compare($version, $remoteversion) < 0) {
         echo "<div class=\"alert alert-warning\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button><h4 class=\"alert-heading\">Update</h4><p>Burden <a href=\"https://github.com/joshf/Burden/releases/$remoteversion\" class=\"alert-link\" target=\"_blank\">$remoteversion</a> is available. <a href=\"https://github.com/joshf/Burden#updating\" class=\"alert-link\" target=\"_blank\">Click here for instructions on how to update</a>.</p></div>";
     }
-} 
+}
 
 if ($filter == "completed") {
     $gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"1\"");
@@ -175,122 +179,239 @@ if ($filter == "completed") {
     $gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `highpriority` = \"1\" AND `completed` = \"0\"");
 } elseif ($filter == "categories") {
 	$gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\" AND `category` = \"$cat\"");
+} elseif ($filter == "date") {
+	$gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\" ORDER BY `due` ASC");
 } else {
     $gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\"");
 }
 
-echo "<table id=\"tasks\" class=\"table table-bordered table-hover table-condensed\">
-<thead>
-<tr>
-<th>Task</th>
-<th class=\"hidden-xs\">Category</th>";
-if ($filter == "completed") {
-    echo "<th>Completed</th>"; 
-} else {
-    echo "<th>Due</th>"; 
-}
-echo "<th>Actions</th>"; 
-echo "</tr></thead><tbody>";
-
 //Set counters to zero
-$numberoftasks = "0"; 
-$numberoftasksoverdue = "0"; 
+$numberoftasks = "0";
+$numberoftasksoverdue = "0";
 $numberoftasksduetoday = "0";
 
-while($row = mysqli_fetch_assoc($gettasks)) {
-    //Count tasks
-    $numberoftasks++;  
-    //Logic
-    $today = strtotime(date("Y-m-d"));
-    $due = strtotime($row["due"]);
-    //Counters
-    if ($today > $due) { 
-        $numberoftasksoverdue++; 
-    }
-    if ($today == $due) { 
-        $numberoftasksduetoday++; 
-    }
-    //Set cases
-    if ($row["highpriority"] == "0" && $row["completed"] != "1" && $today < $due || $today == $due) {
-        $case = "normal";
-    }
-    if ($row["highpriority"] == "1") {
+echo "<ul class=\"list-group\">";
+if (mysqli_num_rows($gettasks) != 0) {
+    while($row = mysqli_fetch_assoc($gettasks)) {
+        //Count tasks
+        $numberoftasks++;
+        //Logic
+        $today = strtotime(date("Y-m-d"));
+        $due = strtotime($row["due"]);
+        //Counters
         if ($today > $due) {
-            $case = "overdue";
-        } else {
-            $case = "highpriority";
+            $numberoftasksoverdue++;
         }
-    } 
-    if ($today > $due) {
-        if ($row["due"] == "") {
-            if ($row["highpriority"] == "1") {
-                $case = "highpriority";
+        if ($today == $due) {
+            $numberoftasksduetoday++;
+        }
+        //Set cases
+        if ($row["highpriority"] == "0" && $row["completed"] != "1" && $today < $due || $today == $due) {
+            $case = "normal";
+        }
+        if ($row["highpriority"] == "1") {
+            if ($today > $due) {
+                $case = "overdue";
             } else {
-                $case = "normal";
+                $case = "highpriority";
             }
+        }
+        if ($today > $due) {
+            if ($row["due"] == "") {
+                if ($row["highpriority"] == "1") {
+                    $case = "highpriority";
+                } else {
+                    $case = "normal";
+                }
+            } else {
+                $case = "overdue";
+            }
+        }
+        if ($row["completed"] == "1") {
+            $case = "completed";
+        }
+        switch ($case) {
+            case "highpriority":
+                $label = "warning";
+                break;
+            case "overdue":
+            $label = "danger";
+                break;
+            case "completed":
+            $label = "success";
+                break;
+            case "normal":
+            $label = "default";
+                break;
+        }
+        if ($filter == "completed") {
+            $segments = explode("-", $row["datecompleted"]);
+            if (count($segments) == 3) {
+                list($year, $month, $day) = $segments;
+            }
+            $date = "$day-$month-$year";
         } else {
-            $case = "overdue";
+            $segments = explode("-", $row["due"]);
+            if (count($segments) == 3) {
+                list($year, $month, $day) = $segments;
+            }
+            $date = "$day-$month-$year";
         }
-    }
-    if ($row["completed"] == "1") {
-        $case = "completed";
-    }
-    switch ($case) {
-        case "highpriority":
-            echo "<tr class=\"warning\">";
-            break;
-        case "overdue":
-            echo "<tr class=\"danger\">";
-            break;
-        case "completed":
-            echo "<tr class=\"success\">";
-            break;
-        case "normal":
-            echo "<tr>";
-            break;
-    } 
-    echo "<td>" . $row["task"] . "</td>";
-    echo "<td class=\"hidden-xs\">" . ucfirst($row["category"]) . "</td>";
-    if ($filter == "completed") {
-        $segments = explode("-", $row["datecompleted"]);
-        if (count($segments) == 3) {
-            list($year, $month, $day) = $segments;
+        echo "<li class=\"list-group-item\">" . $row["task"] . "<div class=\"pull-right\">";
+        if ($row["category"] != "none") {
+            echo "<span class=\"hidden-xs label label-primary\" data-id=\"" . $row["category"] . "\">" . $row["category"] . "</span> ";
+        } 
+        echo "<span class=\"label label-$label\" data-id=\"" . $row["id"] . "\">" . $date . "</span> ";
+        
+        if ($filter == "completed") {
+            echo "<span class=\"delete glyphicon glyphicon-trash\" data-id=\"" . $row["id"] . "\"></span> ";
+        } else {
+            echo "<span class=\"edit glyphicon glyphicon-edit\" data-id=\"" . $row["id"] . "\"></span> ";
         }
-        $rowcompleted = "$day-$month-$year";
-        echo "<td>" . $rowcompleted . "</td>";
-    } else {
-        $segments = explode("-", $row["due"]);
-        if (count($segments) == 3) {
-            list($year, $month, $day) = $segments;
+        
+        if ($filter == "completed") {
+            echo "<span class=\"restore glyphicon glyphicon-repeat\" data-id=\"" . $row["id"] . "\"></span>";
+        } else {
+            echo "<span class=\"complete glyphicon glyphicon-ok\" data-id=\"" . $row["id"] . "\"></span>";
         }
-        $rowdue = "$day-$month-$year";
-        echo "<td>" . $rowdue . "</td>";
+        echo "</div></li>";
     }
-    echo "<td><div class=\"btn-toolbar\" role=\"toolbar\"><div class=\"btn-group\"><a href=\"edit.php?id=" . $row["id"] . "\" class=\"btn btn-default btn-xs\" role=\"button\"><span class=\"glyphicon glyphicon-edit\"></span></a><button type=\"button\" class=\"details btn btn-default btn-xs\" data-id=\"" . $row["id"] . "\"><span class=\"glyphicon glyphicon-question-sign\"></span></button>";
-    if ($filter == "completed") {
-        echo "<button type=\"button\" class=\"restore btn btn-default btn-xs\" data-id=\"" . $row["id"] . "\"><span class=\"glyphicon glyphicon-repeat\"></span></button>";
-    } else {
-        echo "<button type=\"button\" class=\"complete btn btn-default btn-xs\" data-id=\"" . $row["id"] . "\"><span class=\"glyphicon glyphicon-ok\"></span></button>";
-    }
-    echo "<button type=\"button\" class=\"delete btn btn-default btn-xs\" data-id=\"" . $row["id"] . "\"><span class=\"glyphicon glyphicon-trash\"></span></button></div></div></td>";
-    echo "</tr>";
+} else {
+    echo "<li class=\"list-group-item\">No tasks to show</li>";
 }
-echo "</tbody></table>";
+echo "</ul>";
 
 ?>
+<button type="button" id="launchaddmodal" class="btn btn-default">Add</button><br><br>
 <div class="alert alert-info">
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>   
-<strong>Info:</strong> High priority tasks are highlighted yellow, completed tasks green and overdue tasks red.  
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+<strong>Info:</strong> High priority tasks are highlighted yellow, completed tasks green and overdue tasks red.
 </div>
 <div class="well">
 <?php
 
 echo "<i class=\"glyphicon glyphicon-tasks\"></i> <b>$numberoftasks</b> tasks<br><i class=\"glyphicon glyphicon-warning-sign\"></i> <b>$numberoftasksduetoday</b> due today<br><i class=\"glyphicon glyphicon-exclamation-sign\"></i> <b>$numberoftasksoverdue</b> overdue";
 
+?>
+</div>
+<!-- Add form -->
+<div class="modal fade" id="addformmodal" tabindex="-1" role="dialog" aria-labelledby="addformmodal" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<h4 class="modal-title" id="addformmodaltitle">Add Task</h4>
+</div>
+<div class="modal-body">
+<form id="addform" role="form" autocomplete="off">
+<div class="form-group">
+<input type="text" class="form-control" id="task" name="task" placeholder="Type a task..." required>
+</div>
+<div class="form-group">
+<textarea rows="2" class="form-control" id="details" name="details" placeholder="Type any extra details.."></textarea>
+</div>
+<div class="form-group">
+<input type="date" class="due form-control" id="due" name="due" required>
+</div>
+<div id="categoryselectforaddform" class="form-group">
+<select class="form-control" id="category" name="category">
+<option value="none">None</option>
+<?php
+
+//Get categories
+$getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\"");
+
+while($row = mysqli_fetch_assoc($getcategories)) {
+        echo "<option value=\"" . $row["category"] . "\">" . ucfirst($row["category"]) . "</option>";
+}
+
+?>
+</select>
+<span class="help-block"><button type="button" id="addcategoryforaddform" class="btn btn-default btn-xs">Add Category</button></span>
+</div>
+<div id="showcategoryforaddform" style="display: none;" class="form-group ">
+<div class="input-group">
+<input type="text" class="form-control" id="newcategoryforaddform" name="newcategoryforaddform" placeholder="Type a new category...">
+<span id="doaddcategoryforaddform" class="input-group-addon">
+<i class="glyphicon glyphicon-plus"></i>
+</span>
+</div>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" id="highpriority" name="highpriority"> High priority</label>
+</div>
+<input type="hidden" id="action" name="action" value="add">
+</form>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+<button type="button" id="add" class="btn btn-primary">Add</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Add form end -->
+<!-- Edit form -->
+<div class="modal fade" id="editformmodal" tabindex="-1" role="dialog" aria-labelledby="editformmodal" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<h4 class="modal-title" id="editformmodaltitle">Edit Task</h4>
+</div>
+<div class="modal-body">
+<form id="editform" role="form" autocomplete="off">
+<div class="form-group">
+<input type="text" class="form-control" id="edittask" name="task" value="+ data[0] +" placeholder="Type a task..." required>
+</div>
+<div class="form-group">
+<textarea rows="2" class="form-control" id="editdetails" name="details" placeholder="Type any extra details.."> + data[1] + </textarea>
+</div>
+<div class="form-group">
+<input type="date" class="due form-control" id="editdue" name="due" value=" + data[2] + " required>
+</div>
+<div id="categoryselectforeditform" class="form-group">
+<select class="form-control" id="editcategory" name="category">
+<option value="none">None</option>
+<?php
+
+//Get categories
+$getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\"");
+
+while($row = mysqli_fetch_assoc($getcategories)) {
+        echo "<option value=\"" . $row["category"] . "\">" . ucfirst($row["category"]) . "</option>";
+}
+
 mysqli_close($con);
 
 ?>
+</select>
+<span class="help-block"><button type="button" id="addcategoryforeditform" class="btn btn-default btn-xs">Add Category</button></span>
 </div>
+<div id="showcategoryforeditform" style="display: none;" class="form-group ">
+<div class="input-group">
+<input type="text" class="form-control" id="newcategoryforeditform" name="newcategoryforeditform" placeholder="Type a new category...">
+<span id="doaddcategoryforeditform" class="input-group-addon">
+<i class="glyphicon glyphicon-plus"></i>
+</span>
+</div>
+</div>
+<div class="checkbox">
+<label>
+<input type="checkbox" id="edithighpriority" name="highpriority"> High priority</label>
+</div>
+<input type="hidden" id="editaction" name="action" value="edit">
+<input type="hidden" id="editid" name="id"></form>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+<button type="button" id="edit" class="btn btn-primary">Save Changes</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Edit form end -->
 <hr>
 <div class="footer">
 Burden <?php echo $version; ?> &copy; <a href="http://joshf.co.uk" target="_blank">Josh Fradley</a> <?php echo date("Y"); ?>. Themed by <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>.
@@ -298,10 +419,9 @@ Burden <?php echo $version; ?> &copy; <a href="http://joshf.co.uk" target="_blan
 </div>
 <script src="assets/jquery.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/datatables/js/jquery.dataTables.min.js"></script>
-<script src="assets/datatables/js/dataTables.bootstrap.min.js"></script>
-<script src="assets/bootbox.min.js"></script>
 <script src="assets/bootstrap-notify/js/bootstrap-notify.min.js"></script>
+<script src="assets/datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="assets/modernizr.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     /* Set Up Notifications */
@@ -321,70 +441,169 @@ $(document).ready(function() {
         }).show();
     };
     /* End */
-    /* Datatables */
-    $("#tasks").dataTable({
-        "aoColumns": [
-            null,
-            null,
-            {"sType": "date-uk"},
-            {"bSortable": false}
-        ]
+    /* Form Overrides */
+    $("#addformmodal").on("keypress", function(e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $("#add").trigger("click");
+        }
     });
-    $.extend($.fn.dataTableExt.oSort, {
-        "date-uk-pre": function (a) {
-            var ukDatea = a.split("-");
-            return (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
-        },
-        "date-uk-asc": function (a, b) {
-            return ((a < b) ? -1 : ((a > b) ? 1 : 0));
-        },
-        "date-uk-desc": function (a, b) {
-            return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+    $("#editformmodal").on("keypress", function(e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $("#edit").trigger("click");
         }
     });
     /* End */
-    /* Delete */
-    $("table").on("click", ".delete", function() {
-        var id = $(this).data("id");
-        bootbox.confirm("Are you sure you want to delete this task?", function(result) {
-            if (result == true) {
-                $.ajax({
-                    type: "POST",
-                    url: "actions/worker.php",
-                    data: "action=delete&id="+ id +"",
-                    error: function() {
-                        show_notification("danger", "warning-sign", "Ajax query failed!");
-                    },
-                    success: function() {
-                        show_notification("success", "ok", "Task deleted!", true);
-                    }
-                });
+    /* Datepicker */
+    if (!Modernizr.inputtypes.date) {
+        $(".due").datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: "true",
+            clearBtn: "true"
+        });
+    }
+    /* End */
+    /* Add Category */
+    /* Add */
+    $("#addcategoryforaddform").click(function() {
+        $("#categoryselectforaddform").hide("fast");
+        $("#showcategoryforaddform").show("fast");
+    });
+    $("#doaddcategoryforaddform").click(function() {
+        newcategory=$("#newcategoryforaddform").val()
+        if (newcategory != null && newcategory != "") {
+            $("#addform select").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
+        }
+        $("#newcategoryforaddform").val("")
+        $("#categoryselectforaddform").show("fast");
+        $("#showcategoryforaddform").hide("fast");
+    });
+    /* Edit */
+    $("#addcategoryforeditform").click(function() {
+        $("#categoryselectforeditform").hide("fast");
+        $("#showcategoryforeditform").show("fast");
+    });
+    $("#doaddcategoryforeditform").click(function() {
+        newcategory=$("#newcategoryforeditform").val()
+        if (newcategory != null && newcategory != "") {
+            $("#editform select").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
+        }
+        $("#newcategoryforeditform").val("")
+        $("#categoryselectforeditform").show("fast");
+        $("#showcategoryforeditform").hide("fast");
+    });
+    /* End */
+    /* Add */
+    $("#launchaddmodal").click(function() {
+        $("#addformmodal").modal();
+    });
+    $("#add").click(function() {
+        var haserrors = false;
+        if ($("#task").val() == "") {
+            if (!$(".form-group:eq(0)").hasClass("has-error")) {
+                $(".form-group:eq(0)").addClass("has-error");
+                $(".form-group:eq(0)").append("<span class=\"help-block\">Task cannot be empty</span>");
+            }
+            haserrors = true;
+        }
+        if ($("#due").val() == "") {
+            if (!$(".form-group:eq(2)").hasClass("has-error")) {
+                $(".form-group:eq(2)").addClass("has-error");
+                $(".form-group:eq(2)").append("<span class=\"help-block\">A due date is required (DD-MM-YYYY)</span>");
+            }
+            haserrors = true;
+        }
+        if (haserrors == true) {
+            return false;
+        }
+        $(".form-group:eq(0)").removeClass("has-error");
+        $(".form-group:eq(2)").removeClass("has-error");
+        $(".help-block").remove();
+        $.ajax({
+            type: "POST",
+            url: "worker.php",
+            data: $("#addform").serialize(),
+            error: function() {
+                show_notification("danger", "warning-sign", "Ajax query failed!");
+            },
+            success: function() {
+                show_notification("success", "ok", "Task added!", true);
+                $("#addformmodal").modal("hide");
             }
         });
     });
     /* End */
-    /* Details */
-    $("table").on("click", ".details", function() {
+    /* Edit */
+    $("li").on("click", ".edit", function() {
         var id = $(this).data("id");
         $.ajax({
             type: "POST",
-            url: "actions/worker.php",
+            dataType: "json",
+            url: "worker.php",
             data: "action=details&id="+ id +"",
             error: function() {
                 show_notification("danger", "warning-sign", "Ajax query failed!");
             },
-            success: function(message) {
-                bootbox.alert(message);
+            success: function(data) {
+                $("#edittask").val(data[0]);
+                $("#editdetails").val(data[1]);
+                $("#editdue").val(data[2]);
+                if (data[3] != "") {
+                    $("#editcategory").val(data[3]);
+                } else {
+                    $("#editcategory").val("none"); 
+                }
+                if (data[4] == "1") {
+                    $("#edithighpriority").prop('checked', true);
+                }
+                $("#editid").val(id);
+            }
+        });
+        $("#editformmodal").modal();
+    });
+    $("#edit").click(function() {
+        var haserrors = false;
+        if ($("#edittask").val() == "") {
+            if (!$(".form-group:eq(4)").hasClass("has-error")) {
+                $(".form-group:eq(4)").addClass("has-error");
+                $(".form-group:eq(4)").append("<span class=\"help-block\">Task cannot be empty</span>");
+            }
+            haserrors = true;
+        }
+        if ($("#editdue").val() == "") {
+            if (!$(".form-group:eq(6)").hasClass("has-error")) {
+                $(".form-group:eq(6)").addClass("has-error");
+                $(".form-group:eq(6)").append("<span class=\"help-block\">A due date is required (DD-MM-YYYY)</span>");
+            }
+            haserrors = true;
+        }
+        if (haserrors == true) {
+            return false;
+        }
+        $(".form-group:eq(4)").removeClass("has-error");
+        $(".form-group:eq(6)").removeClass("has-error");
+        $(".help-block").remove();
+        $.ajax({
+            type: "POST",
+            url: "worker.php",
+            data: $("#editform").serialize(),
+            error: function() {
+                show_notification("danger", "warning-sign", "Ajax query failed!");
+            },
+            success: function() {
+                show_notification("success", "ok", "Task edited!", true);
+                $("#editformmodal").modal("hide");
             }
         });
     });
     /* End */
     /* Complete */
-    $("table").on("click", ".complete", function() {
+    $("li").on("click", ".complete", function() {
         var id = $(this).data("id");
         $.ajax({
             type: "POST",
-            url: "actions/worker.php",
+            url: "worker.php",
             data: "action=complete&id="+ id +"",
             error: function() {
                 show_notification("danger", "warning-sign", "Ajax query failed!");
@@ -396,17 +615,33 @@ $(document).ready(function() {
     });
     /* End */
     /* Restore */
-    $("table").on("click", ".restore", function() {
+    $("li").on("click", ".restore", function() {
         var id = $(this).data("id");
         $.ajax({
             type: "POST",
-            url: "actions/worker.php",
+            url: "worker.php",
             data: "action=restore&id="+ id +"",
             error: function() {
                 show_notification("danger", "warning-sign", "Ajax query failed!");
             },
             success: function() {
                 show_notification("success", "ok", "Task restored!", true);
+            }
+        });
+    });
+    /* End */
+    /* Delete */
+    $("li").on("click", ".delete", function() {
+        var id = $(this).data("id");
+        $.ajax({
+            type: "POST",
+            url: "worker.php",
+            data: "action=delete&id="+ id +"",
+            error: function() {
+                show_notification("danger", "warning-sign", "Ajax query failed!");
+            },
+            success: function() {
+                show_notification("success", "ok", "Task deleted!", true);
             }
         });
     });

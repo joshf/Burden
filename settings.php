@@ -21,7 +21,7 @@ if (mysqli_connect_errno()) {
     die("Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.");
 }
 
-$getusersettings = mysqli_query($con, "SELECT `user`, `password`, `email`, `salt` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
+$getusersettings = mysqli_query($con, "SELECT `user`, `password`, `email`, `salt`, `api_key` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
 if (mysqli_num_rows($getusersettings) == 0) {
     session_destroy();
     header("Location: login.php");
@@ -90,14 +90,9 @@ a.close.pull-right {
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 </button>
-<a class="navbar-brand" href="#">Burden</a>
+<a class="navbar-brand" href="index.php">Burden</a>
 </div>
 <div class="navbar-collapse collapse">
-<ul class="nav navbar-nav">
-<li><a href="index.php">Home</a></li>
-<li><a href="add.php">Add</a></li>
-<li><a href="edit.php">Edit</a></li>
-</ul>
 <ul class="nav navbar-nav navbar-right">
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $resultgetusersettings["user"]; ?> <b class="caret"></b></a>
@@ -131,6 +126,10 @@ a.close.pull-right {
 </div>
 <button type="submit" class="btn btn-default">Save</button>
 </form>
+<br>
+<h5>API key</h5>
+<p>Your API key is: <div id="api_key"><b><?php echo $resultgetusersettings["api_key"]; ?></b></div></p>
+<button id="generateapikey" class="btn btn-default">Generate New Key</button>
 </div>
 <script src="assets/jquery.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
@@ -159,6 +158,19 @@ $(document).ready(function() {
         ["#password", "presence", "Passwords should be more than 6 characters"]
     ];
     $("form").nod(metrics);
+    $("#generateapikey").click(function() {
+        $.ajax({
+            type: "POST",
+            url: "worker.php",
+            data: "action=generateapikey",
+            error: function() {
+                $("#api_key").html("<b>Could not generate key. Failed to connect to worker.</b>");
+            },
+            success: function(api_key) {
+                $("#api_key").html("<b>"  + api_key +  "</b>");
+            }
+        });
+    });
 });
 </script>
 </body>

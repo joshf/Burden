@@ -26,6 +26,7 @@ if (isset($_POST["install"])) {
         $hashedpassword = hash("sha256", $_POST["password"]);
         $password = hash("sha256", $salt . $hashedpassword);
     }
+    $api_key = substr(str_shuffle(MD5(microtime())), 0, 50);
     
     $installstring = "<?php\n\n//Database Settings\ndefine('DB_HOST', " . var_export($dbhost, true) . ");\ndefine('DB_USER', " . var_export($dbuser, true) . ");\ndefine('DB_PASSWORD', " . var_export($dbpassword, true) . ");\ndefine('DB_NAME', " . var_export($dbname, true) . ");\n\n//Other Settings\ndefine('VERSION', " . var_export($version, true) . ");\n\n?>";
 
@@ -59,14 +60,15 @@ if (isset($_POST["install"])) {
     `salt` varchar(3) NOT NULL,
     `email` varchar(100) NOT NULL,
     `hash` varchar(200) NOT NULl,
+    `api_key` varchar(200) NOT NULl,
     PRIMARY KEY (`id`)
     ) ENGINE=MyISAM;";
     
     mysqli_query($con, $createuserstable);
     
     //Add user
-    mysqli_query($con, "INSERT INTO Users (user, password, salt, email, hash)
-    VALUES (\"$user\",\"$password\",\"$salt\",\"$email\",\"\")");
+    mysqli_query($con, "INSERT INTO Users (user, password, salt, email, hash, api_key)
+    VALUES (\"$user\",\"$password\",\"$salt\",\"$email\",\"\",\"$api_key\")");
 
     //Write Config
     $configfile = fopen("../config.php", "w");

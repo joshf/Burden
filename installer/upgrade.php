@@ -80,8 +80,11 @@ $configfile = fopen("../config.php", "w");
 fwrite($configfile, $updatestring);
 fclose($configfile);
 
+//Generate an api_key
+$api_key = substr(str_shuffle(MD5(microtime())), 0, 50);
+
 //Add to table
-mysqli_query($con, "ALTER TABLE `Users` ADD `hash` VARCHAR(200) NOT NULL; ALTER TABLE `Data` CHANGE `datecompleted` `datecompleted` DATE NOT NULL; ALTER TABLE `Data` CHANGE `created` `created` DATE NOT NULL; ALTER TABLE `Data` CHANGE `due` `due` DATE NOT NULL;");
+mysqli_query($con, "ALTER TABLE `Users` ADD `api_key` VARCHAR(200) NOT NULL; UPDATE `Users` SET `api_key` = \"$api_key\";");
 
 mysqli_close($con);
 
