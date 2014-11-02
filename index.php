@@ -315,8 +315,13 @@ echo "<i class=\"glyphicon glyphicon-tasks\"></i> <b>$numberoftasks</b> tasks<br
 </div>
 <div id="categoryselectforaddform" class="form-group">
 <select class="form-control" id="category" name="category">
-<option value="none">None</option>
 <?php
+
+//Don't duplicate none entry
+$doesnoneexist = mysqli_query($con, "SELECT `category` FROM `Data` WHERE `category` = \"none\"");
+if (mysqli_num_rows($doesnoneexist) == 0) {
+    echo "<option value=\"none\">None</option>";
+}
 
 //Get categories
 $getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\"");
@@ -373,8 +378,13 @@ while($row = mysqli_fetch_assoc($getcategories)) {
 </div>
 <div id="categoryselectforeditform" class="form-group">
 <select class="form-control" id="editcategory" name="category">
-<option value="none">None</option>
 <?php
+
+//Don't duplicate none entry
+$doesnoneexist = mysqli_query($con, "SELECT `category` FROM `Data` WHERE `category` = \"none\"");
+if (mysqli_num_rows($doesnoneexist) == 0) {
+    echo "<option value=\"none\">None</option>";
+}
 
 //Get categories
 $getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\"");
