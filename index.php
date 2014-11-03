@@ -103,7 +103,7 @@ while($row = mysqli_fetch_assoc($getcategories)) {
 ?>
 <li class="divider"></li>
 <li class="dropdown-header">Sort</li>
-<li><a href="index.php?filter=date">Date</a></li>
+<li><a href="index.php?filter=date">Due Date</a></li>
 <li class="divider"></li>
 <li><a href="index.php">Clear Filters</a></li>
 </ul>
@@ -121,6 +121,7 @@ while($row = mysqli_fetch_assoc($getcategories)) {
 </div>
 <div class="container">
 <div class="page-header">
+<h1>Tasks
 <?php
 
 if (isset($_GET["filter"])) {
@@ -147,21 +148,21 @@ if (isset($_GET["filter"])) {
 }
 
 if ($filter == "completed") {
-    echo "<h1>Completed Tasks</h1>";
+    echo "<small>Completed</small>";
 } elseif ($filter == "highpriority") {
-    echo "<h1>High Priority Tasks</h1>";
+    echo "<small>High Priority</small>";
 } elseif ($filter == "categories") {
     if ($cat != "none") {
-        echo "<h1>Tasks in \"$cat\" category</h1>";
+        echo "<small>$cat</small>";
     } else {
-        echo "<h1>Tasks without a category</h1>";
+        echo "<small>No category</small>";
     }
 } elseif ($filter == "date") {
-    echo "<h1>Tasks Sorted By Date</h1>";
+    echo "<small>Sorted By Date</small>";
 } elseif ($filter == "normal") {
-    echo "<h1>Current Tasks</h1>";
+    echo "<small>Current</small>";
 }
-echo "</div><div class=\"notifications top-right\"></div>";
+echo "</h1></div><div class=\"notifications top-right\"></div>";
 
 echo "<noscript><div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>Please enable JavaScript to use Burden. For instructions on how to do this, see <a href=\"http://www.activatejavascript.org\" class=\"alert-link\" target=\"_blank\">here</a>.</p></div></noscript>";
 
@@ -434,6 +435,7 @@ Burden <?php echo $version; ?> &copy; <a href="http://joshf.co.uk" target="_blan
 <script src="assets/modernizr.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+    jQuery.fx.off = true;
     /* Set Up Notifications */
     var show_notification = function(type, icon, text, reload) {
         $(".top-right").notify({
