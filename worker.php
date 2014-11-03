@@ -68,7 +68,6 @@ if (isset($_POST["due"])) {
 }
 
 if ($action == "add") {
-    echo $due;
     if (empty($task) || empty($due)) {
         die("Error: Data was empty!");
     }
