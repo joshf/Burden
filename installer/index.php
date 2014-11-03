@@ -66,9 +66,14 @@ if (isset($_POST["install"])) {
     
     mysqli_query($con, $createuserstable);
     
-    //Add user
-    mysqli_query($con, "INSERT INTO Users (user, password, salt, email, hash, api_key)
-    VALUES (\"$user\",\"$password\",\"$salt\",\"$email\",\"\",\"$api_key\")");
+    //Check if a user already exists
+    $checkifuserexists = "SELECT user FROM `Users`;";
+    $resultcheckifuserexists = mysqli_query($con, $checkifuserexists);
+    if (mysqli_num_rows($resultcheckifuserexists) == 0) {
+        //Add user
+        mysqli_query($con, "INSERT INTO Users (user, password, salt, email, hash, api_key)
+        VALUES (\"$user\",\"$password\",\"$salt\",\"$email\",\"\",\"$api_key\")");
+    } 
 
     //Write Config
     $configfile = fopen("../config.php", "w");
