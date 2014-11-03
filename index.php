@@ -562,7 +562,13 @@ $(document).ready(function() {
                 $("#edithighpriority").prop("checked", false);
                 $("#edittask").val(data[0]);
                 $("#editdetails").val(data[1]);
-                $("#editdue").val(data[2]);
+                if (!Modernizr.inputtypes.date) {
+                    raw = data[2].split("-");
+                    date = raw[2]+"-"+raw[1]+"-"+raw[0];
+                    $("#editdue").val(date);
+                } else {
+                    $("#editdue").val(data[2]);
+                }
                 if (data[3] != "") {
                     $("#editcategory").val(data[3]);
                 } else {
