@@ -259,7 +259,7 @@ if (mysqli_num_rows($gettasks) != 0) {
         }
         echo "<li class=\"list-group-item\">" . $row["task"] . "<div class=\"pull-right\">";
         if ($row["category"] != "none") {
-            echo "<span class=\"hidden-xs label label-primary\" data-id=\"" . $row["category"] . "\">" . $row["category"] . "</span> ";
+            echo "<a href=\"?filter=categories&amp;cat=" . $row["category"] . "\"><span class=\"hidden-xs label label-primary\" data-id=\"" . $row["category"] . "\">" . $row["category"] . "</span></a> ";
         } 
         echo "<span class=\"label label-$label\" data-id=\"" . $row["id"] . "\">" . $date . "</span> ";
         
