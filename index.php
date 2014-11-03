@@ -556,6 +556,8 @@ $(document).ready(function() {
                 show_notification("danger", "warning-sign", "Ajax query failed!");
             },
             success: function(data) {
+                /* Stop auto checked */
+                $("#edithighpriority").prop("checked", false);
                 $("#edittask").val(data[0]);
                 $("#editdetails").val(data[1]);
                 $("#editdue").val(data[2]);
