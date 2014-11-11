@@ -114,10 +114,7 @@ body {
     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
     box-shadow: 0 1px 2px rgba(0,0,0,.05);
 }
-.form-signin .form-signin-heading {
-    margin-bottom: 10px;
-}
-.form-signin input[type="text"], .form-signin input[type="password"] {
+.form-signin input[type="email"] {
     font-size: 16px;
     height: auto;
     margin-bottom: 5px;
