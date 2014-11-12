@@ -37,7 +37,7 @@ if (isset($_POST["step_1"])) {
     fclose($configfile);
     
     //Generate nonce
-    $nonce = md5($_SERVER["SERVER_NAME"]);
+    $nonce = md5(date("i"));
     header("Location: index.php?step=2&nonce=$nonce");
     exit;
 
@@ -109,8 +109,8 @@ if (isset($_POST["step_2"])) {
     mysqli_close($con);
     
     //Generate nonce
-    $nonce = md5($_SERVER["SERVER_NAME"]);
-    header("Location: index.php?step=3&nonce=$nonce");
+    $nonce = md5(date("i"));
+    header("Location: index.php?step=3&nonce=$nonce&user=$user");
     exit;
 }
 
@@ -169,7 +169,7 @@ if (!in_array($step, $steps)) {
 }
 
 //Nonce to check against
-$nonce = md5($_SERVER["SERVER_NAME"]);
+$nonce = md5(date("i"));
 
 if ($step == "0") {    
 ?>
@@ -181,7 +181,7 @@ if ($step == "0") {
 <li>Database host</li>
 </ul>
 <p>You will then be asked to create an admin user.</p>
-<p>Click Install to get started</p>
+<p>Click "Install" to get started!</p>
 <a href="?step=1&amp;nonce=<?php echo $nonce; ?>" class="btn btn-primary pull-right" role="button">Install</a>
 <?php   
 } elseif (($step == "1") && ($_GET["nonce"] == $nonce)) {
@@ -240,20 +240,19 @@ if ($step == "0") {
 <p>Burden has been successfully installed. Please delete the "install" folder from your server, as it poses a potential security risk!</p>
 <p>Your login details are shown below, please make a note of them.</p>
 <ul>
-<li>User: <i>Your </i></li>
+<li>User: <i><?php echo strip_tags($_GET["user"]); ?></i></li>
 <li>Password: <i>Password you set during install</i></li></ul>
 </div>
 <a href="../login.php" class="btn btn-default pull-right" role="button">Login</a>
 <?php
 } else {
-    $newstep = $step - 1;
 ?>
 <div class="alert alert-danger">
 <h4 class="alert-heading">Install Error</h4>
 <p>An error occured. Nonce was not set!</p>
 <p>Please go back and try again.</p>
 </div>
-<a href="?step=<?php echo $newstep; ?>" class="btn btn-default pull-right" role="button">Go Back</a>
+<a href="?step=0&amp;nonce=<?php echo $nonce; ?>" class="btn btn-default pull-right" role="button">Start Over</a>
 <?php
     }
 ?>

@@ -17,9 +17,9 @@ if (mysqli_connect_errno()) {
     die("Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.");
 }
 
-// if ($version == VERSION) {
-//     die("Information: The latest version of Burden is already installed and an upgrade is not required.");
-// }
+if ($version == VERSION) {
+    die("Information: The latest version of Burden is already installed and an upgrade is not required.");
+}
 
 //Make sure we start at step 0
 if (!isset($_GET["step"])) {
@@ -69,7 +69,7 @@ if ($step == "1") {
     mysqli_close($con);
 
     //Generate nonce
-    $nonce = md5($_SERVER["SERVER_NAME"]);
+    $nonce = md5(date("i"));
     header("Location: upgrade.php?step=2&nonce=$nonce");
     exit;
 
@@ -122,7 +122,7 @@ body {
 <div class="text-center"><img src="../assets/icon.png" width="75" height="75" alt="Burden Logo"></div>
 <?php
 //Nonce to check against
-$nonce = md5($_SERVER["SERVER_NAME"]);
+$nonce = md5(date("i"));
 
 if ($step == "0") {    
 ?>
@@ -139,14 +139,13 @@ if ($step == "0") {
 <a href="../login.php" class="btn btn-default pull-right" role="button">Login</a>
 <?php
 } else {
-    $newstep = $step - 1;
 ?>
 <div class="alert alert-danger">
 <h4 class="alert-heading">Upgrade Error</h4>
 <p>An error occured. Nonce was not set!</p>
 <p>Please go back and try again.</p>
 </div>
-<a href="?step=<?php echo $newstep; ?>" class="btn btn-default pull-right" role="button">Go Back</a>
+<a href="?step=0&amp;nonce=<?php echo $nonce; ?>" class="btn btn-default pull-right" role="button">Start Over</a>
 <?php
     }
 ?>
