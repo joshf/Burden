@@ -15,6 +15,24 @@ if (!isset($_GET["step"])) {
     exit;
 }
 
+//Stop bad things from happening
+$step = $_GET["step"];
+$steps = array("0", "1", "2", "3");
+if (!in_array($step, $steps)) {
+    $step = "0";
+}
+
+//Nonce to check against
+$nonce = md5(date("h"));
+
+//Check nonce if step 0
+if (($step == "0") && (isset($_GET["nonce"]))) {
+    if ($nonce != $_GET["nonce"]) {
+        header("Location: ?step=0");
+        exit;
+    }
+}
+
 //Create config.php
 if (isset($_POST["step_1"])) {
     
@@ -37,7 +55,7 @@ if (isset($_POST["step_1"])) {
     fclose($configfile);
     
     //Generate nonce
-    $nonce = md5(date("i"));
+    $nonce = md5(date("i") * 5);
     header("Location: index.php?step=2&nonce=$nonce");
     exit;
 
@@ -109,7 +127,7 @@ if (isset($_POST["step_2"])) {
     mysqli_close($con);
     
     //Generate nonce
-    $nonce = md5(date("i"));
+    $nonce = md5(date("h"));
     header("Location: index.php?step=3&nonce=$nonce&user=$user");
     exit;
 }
@@ -160,17 +178,6 @@ body {
 <div class="install-content">
 <div class="text-center"><img src="../assets/icon.png" width="75" height="75" alt="Burden Logo"></div>
 <?php
-
-//Stop bad things from happening
-$step = $_GET["step"];
-$steps = array("0", "1", "2", "3");
-if (!in_array($step, $steps)) {
-    $step = "0";
-}
-
-//Nonce to check against
-$nonce = md5(date("i"));
-
 if ($step == "0") {    
 ?>
 <p>Welcome to Burden <?php echo $version ?>. Before getting started, we need some information on your database. You will need to know the following items before proceeding.</p>

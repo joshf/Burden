@@ -69,7 +69,7 @@ if ($step == "1") {
     mysqli_close($con);
 
     //Generate nonce
-    $nonce = md5(date("i"));
+    $nonce = md5(date("h"));
     header("Location: upgrade.php?step=2&nonce=$nonce");
     exit;
 
@@ -122,7 +122,7 @@ body {
 <div class="text-center"><img src="../assets/icon.png" width="75" height="75" alt="Burden Logo"></div>
 <?php
 //Nonce to check against
-$nonce = md5(date("i"));
+$nonce = md5(date("h"));
 
 if ($step == "0") {    
 ?>
