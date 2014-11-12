@@ -68,8 +68,9 @@ if ($step == "1") {
 
     mysqli_close($con);
 
-    
-    header("Location: upgrade.php?step=2");
+    //Generate nonce
+    $nonce = md5($_SERVER["SERVER_NAME"]);
+    header("Location: upgrade.php?step=2&nonce=$nonce");
     exit;
 
 }
@@ -81,7 +82,7 @@ if ($step == "1") {
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Burden &middot; Install</title>
+<title>Burden &middot; Upgrade</title>
 <meta name="robots" content="noindex, nofollow">
 <link href="../assets/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
 <style type="text/css">
@@ -120,13 +121,16 @@ body {
 <div class="install-content">
 <div class="text-center"><img src="../assets/icon.png" width="75" height="75" alt="Burden Logo"></div>
 <?php
+//Nonce to check against
+$nonce = md5($_SERVER["SERVER_NAME"]);
+
 if ($step == "0") {    
 ?>
 <p>Welcome to Burden. You have just downloaded the newest version and your config file and database may need an unpgrade.</p>
 <p>Click Upgrade to start the upgrade process</p>
 <a href="?step=1" class="btn btn-primary pull-right" role="button">Upgrade</a>
 <?php   
-} elseif ($step == "2") {
+} elseif (($step == "2") && ($_GET["nonce"] == $nonce)) {
 ?>
 <div class="alert alert-success">
 <h4 class="alert-heading">Upgrade Complete</h4>
@@ -134,7 +138,17 @@ if ($step == "0") {
 </div>
 <a href="../login.php" class="btn btn-default pull-right" role="button">Login</a>
 <?php
-}
+} else {
+    $newstep = $step - 1;
+?>
+<div class="alert alert-danger">
+<h4 class="alert-heading">Upgrade Error</h4>
+<p>An error occured. Nonce was not set!</p>
+<p>Please go back and try again.</p>
+</div>
+<a href="?step=<?php echo $newstep; ?>" class="btn btn-default pull-right" role="button">Go Back</a>
+<?php
+    }
 ?>
 </div>
 </div>

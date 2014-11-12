@@ -2,8 +2,10 @@
 
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden
 
+require_once("../assets/version.php");
+
 //Check if Burden has been installed
-if (file_exists("../config.php") && (!isset($_GET["step"]))) {
+if (file_exists("../config.php") && (!isset($_GET["nonce"]))) {
     die("Information: Burden has already been installed! To reinstall the app please delete your config file and run this installer again.");
 }
 
@@ -16,8 +18,6 @@ if (!isset($_GET["step"])) {
 //Create config.php
 if (isset($_POST["step_1"])) {
     
-    require_once("../assets/version.php");
-
     $dbhost = $_POST["dbhost"];
     $dbuser = $_POST["dbuser"];
     $dbpassword = $_POST["dbpassword"];
@@ -36,7 +36,9 @@ if (isset($_POST["step_1"])) {
     fwrite($configfile, $installstring);
     fclose($configfile);
     
-    header("Location: index.php?step=2");
+    //Generate nonce
+    $nonce = md5($_SERVER["SERVER_NAME"]);
+    header("Location: index.php?step=2&nonce=$nonce");
     exit;
 
 }
@@ -106,7 +108,9 @@ if (isset($_POST["step_2"])) {
         
     mysqli_close($con);
     
-    header("Location: index.php?step=3");
+    //Generate nonce
+    $nonce = md5($_SERVER["SERVER_NAME"]);
+    header("Location: index.php?step=3&nonce=$nonce");
     exit;
 }
 
@@ -164,9 +168,12 @@ if (!in_array($step, $steps)) {
     $step = "0";
 }
 
+//Nonce to check against
+$nonce = md5($_SERVER["SERVER_NAME"]);
+
 if ($step == "0") {    
 ?>
-<p>Welcome to Burden. Before getting started, we need some information on the database. You will need to know the following items before proceeding.</p>
+<p>Welcome to Burden <?php echo $version ?>. Before getting started, we need some information on your database. You will need to know the following items before proceeding.</p>
 <ul>
 <li>Database name</li>
 <li>Database username</li>
@@ -175,9 +182,9 @@ if ($step == "0") {
 </ul>
 <p>You will then be asked to create an admin user.</p>
 <p>Click Install to get started</p>
-<a href="?step=1" class="btn btn-primary pull-right" role="button">Install</a>
+<a href="?step=1&amp;nonce=<?php echo $nonce; ?>" class="btn btn-primary pull-right" role="button">Install</a>
 <?php   
-} elseif ($step == "1") {
+} elseif (($step == "1") && ($_GET["nonce"] == $nonce)) {
 ?>
 <form role="form" method="post" autocomplete="off">
 <h4>Database Settings</h4>
@@ -201,8 +208,7 @@ if ($step == "0") {
 <input type="submit" class="btn btn-default pull-right" value="Next">
 </form>
 <?php
-} elseif ($step == "2") {
-
+} elseif (($step == "2") && ($_GET["nonce"] == $nonce)) {
 ?>
 <form role="form" method="post" autocomplete="off">
 <h4>User Details</h4>
@@ -227,19 +233,27 @@ if ($step == "0") {
 <input type="submit" class="btn btn-default pull-right" value="Finish">
 </form>
 <?php
-
-} elseif ($step == "3") {
-
+} elseif (($step == "3") && ($_GET["nonce"] == $nonce)) {   
 ?>
 <div class="alert alert-success">
 <h4 class="alert-heading">Install Complete</h4>
-<p>Burden has been successfully installed. Please delete the "installer" folder from your server, as it poses a potential security risk!</p>
+<p>Burden has been successfully installed. Please delete the "install" folder from your server, as it poses a potential security risk!</p>
 <p>Your login details are shown below, please make a note of them.</p>
 <ul>
-<li>User: <i>Your chosen username</i></li>
+<li>User: <i>Your </i></li>
 <li>Password: <i>Password you set during install</i></li></ul>
-<br></div>
+</div>
 <a href="../login.php" class="btn btn-default pull-right" role="button">Login</a>
+<?php
+} else {
+    $newstep = $step - 1;
+?>
+<div class="alert alert-danger">
+<h4 class="alert-heading">Install Error</h4>
+<p>An error occured. Nonce was not set!</p>
+<p>Please go back and try again.</p>
+</div>
+<a href="?step=<?php echo $newstep; ?>" class="btn btn-default pull-right" role="button">Go Back</a>
 <?php
     }
 ?>

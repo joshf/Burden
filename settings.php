@@ -3,7 +3,7 @@
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
 if (!file_exists("config.php")) {
-    header("Location: installer");
+    header("Location: install");
     exit;
 }
 
