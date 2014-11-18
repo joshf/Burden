@@ -55,7 +55,7 @@ if (isset($_POST["step_1"])) {
     fclose($configfile);
     
     //Generate nonce
-    $nonce = md5(date("i") * 5);
+    $nonce = md5(date("h"));
     header("Location: index.php?step=2&nonce=$nonce");
     exit;
 
@@ -256,7 +256,7 @@ if ($step == "0") {
 ?>
 <div class="alert alert-danger">
 <h4 class="alert-heading">Install Error</h4>
-<p>An error occured. Nonce was not set!</p>
+<p>An error occured and the installation could not continue.</p>
 <p>Please go back and try again.</p>
 </div>
 <a href="?step=0&amp;nonce=<?php echo $nonce; ?>" class="btn btn-default pull-right" role="button">Start Over</a>

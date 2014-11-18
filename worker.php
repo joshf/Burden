@@ -111,7 +111,7 @@ if ($action == "add") {
 
     mysqli_query($con, "UPDATE `Data` SET `category` = \"$category\", `highpriority` = \"$highpriority\", `task` = \"$task\", `details` = \"$details\", `due` = \"$due\" WHERE `id` = \"$id\"");
 } elseif ($action == "complete") {
-    mysqli_query($con, "UPDATE `Data` SET `completed` = \"1\", `datecompleted` =  CURDATE() WHERE `id` = \"$id\"");
+    mysqli_query($con, "UPDATE `Data` SET `completed` = \"1\", `datecompleted` = CURDATE() WHERE `id` = \"$id\"");
 } elseif ($action == "restore") {
     mysqli_query($con, "UPDATE `Data` SET `completed` = \"0\", `datecompleted` = \"\" WHERE `id` = \"$id\"");
 } elseif ($action == "delete") {

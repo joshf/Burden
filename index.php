@@ -575,7 +575,7 @@ $(document).ready(function() {
                     $("#editcategory").val("none"); 
                 }
                 if (data[4] == "1") {
-                    $("#edithighpriority").prop('checked', true);
+                    $("#edithighpriority").prop("checked", true);
                 }
                 $("#editid").val(id);
             }
