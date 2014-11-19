@@ -585,16 +585,16 @@ $(document).ready(function() {
     $("#edit").click(function() {
         var haserrors = false;
         if ($("#edittask").val() == "") {
-            if (!$(".form-group:eq(4)").hasClass("has-error")) {
-                $(".form-group:eq(4)").addClass("has-error");
-                $(".form-group:eq(4)").append("<span class=\"help-block\">Task cannot be empty</span>");
+            if (!$(".form-group:eq(5)").hasClass("has-error")) {
+                $(".form-group:eq(5)").addClass("has-error");
+                $(".form-group:eq(5)").append("<span class=\"help-block\">Task cannot be empty</span>");
             }
             haserrors = true;
         }
         if ($("#editdue").val() == "") {
-            if (!$(".form-group:eq(6)").hasClass("has-error")) {
-                $(".form-group:eq(6)").addClass("has-error");
-                $(".form-group:eq(6)").append("<span class=\"help-block\">A due date is required (DD-MM-YYYY)</span>");
+            if (!$(".form-group:eq(7)").hasClass("has-error")) {
+                $(".form-group:eq(7)").addClass("has-error");
+                $(".form-group:eq(7)").append("<span class=\"help-block\">A due date is required (DD-MM-YYYY)</span>");
             }
             haserrors = true;
         }
