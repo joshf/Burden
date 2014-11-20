@@ -120,12 +120,32 @@ if ($action == "add") {
     $getdetails = mysqli_query($con, "SELECT `task`, `created`, `due`, `details`, `category`, `highpriority` FROM `Data` WHERE `id` = \"$id\"");
     $resultgetdetails = mysqli_fetch_assoc($getdetails);
     
+    $today = strtotime(date("Y-m-d"));
+    $due = strtotime($resultgetdetails["due"]);
+    $datediff = abs($today - $due);
+    $duein = floor($datediff/(60*60*24));
+    
+    $segments = explode("-", $resultgetdetails["created"]);
+    if (count($segments) == 3) {
+        list($year, $month, $day) = $segments;
+    }
+    $created = "$day-$month-$year";
+    
+    if ($today > $due) {
+        $duein .= " day(s) ago";
+    } else {
+        $duein .= " day(s)";
+    }
+    
     $arr = array();
     $arr[0] = $resultgetdetails["task"];
     $arr[1] = $resultgetdetails["details"];
     $arr[2] = $resultgetdetails["due"];
     $arr[3] = $resultgetdetails["category"];
     $arr[4] = $resultgetdetails["highpriority"];
+    $arr[5] = $duein;
+    $arr[6] = $created;
+    
     echo json_encode($arr);
 } elseif ($action == "generateapikey") {
     $api = substr(str_shuffle(MD5(microtime())), 0, 50);

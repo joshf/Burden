@@ -262,7 +262,7 @@ if (mysqli_num_rows($gettasks) != 0) {
         if ($row["category"] != "none") {
             echo "<a href=\"?filter=categories&amp;cat=" . $row["category"] . "\"><span class=\"hidden-xs label label-primary\" data-id=\"" . $row["category"] . "\">" . $row["category"] . "</span></a> ";
         } 
-        echo "<span class=\"label label-$label\" data-id=\"" . $row["id"] . "\">" . $date . "</span> ";
+        echo "<span class=\"details label label-$label\" data-id=\"" . $row["id"] . "\">" . $date . "</span> ";
         
         if ($filter == "completed") {
             echo "<span class=\"delete glyphicon glyphicon-trash\" data-id=\"" . $row["id"] . "\"></span> ";
@@ -630,6 +630,26 @@ $(document).ready(function() {
             },
             success: function() {
                 show_notification("success", "ok", "Task marked as completed!", true);
+            }
+        });
+    });
+    /* End */
+    /* Details */
+    $("li").on("click", ".details", function() {
+        if ($("#detailsitem").length) {
+            $("#detailsitem").remove();
+        }
+        var id = $(this).data("id");
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "worker.php",
+            data: "action=details&id="+ id +"",
+            error: function() {
+                show_notification("danger", "warning-sign", "Ajax query failed!");
+            },
+            success: function(data) {
+                $(".list-group").prepend("<li id=\"detailsitem\" class=\"list-group-item list-group-item-info\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>" + data[1] +  "<br>Due: " + data[5] +  "<br>Created: " + data[6] +  "</li>");
             }
         });
     });
