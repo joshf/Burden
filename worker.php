@@ -43,14 +43,25 @@ if (mysqli_num_rows($getusersettings) == 0) {
 }
 $resultgetusersettings = mysqli_fetch_assoc($getusersettings);
 
-if (isset($_POST["id"])) {
-    $id = mysqli_real_escape_string($con, $_POST["id"]);
-}
 
 if (isset($_POST["action"])) {
     $action = $_POST["action"];
 } else {
 	die("Error: No action passed!");
+}
+
+//Check if ID exists
+$actions = array("edit", "delete", "restore", "complete", "details");
+if (in_array($action, $actions)) {
+    if (isset($_POST["id"])) {
+        $id = mysqli_real_escape_string($con, $_POST["id"]);
+        $checkid = mysqli_query($con, "SELECT `id` FROM `Data` WHERE `id` = \"$id\"");
+        if (mysqli_num_rows($checkid) == 0) {
+        	die("Error: ID does not exist!");
+        }
+    } else {
+    	die("Error: ID not set!");
+    }
 }
 
 //Define variables

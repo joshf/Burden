@@ -58,7 +58,7 @@ body {
 a.close.pull-right {
     padding-left: 10px;
 }
-.complete, .edit, #doaddcategoryforaddform, #doaddcategoryforeditform, .restore, .delete {
+.complete, .edit, #doaddcategoryforaddform, #doaddcategoryforeditform, .restore, .delete, .details {
     cursor: pointer;
 }
 </style>
@@ -649,6 +649,9 @@ $(document).ready(function() {
                 show_notification("danger", "warning-sign", "Ajax query failed!");
             },
             success: function(data) {
+                if (data[1] == "") {
+                    data[1] = "No details available";
+                }
                 $(".list-group").prepend("<li id=\"detailsitem\" class=\"list-group-item list-group-item-info\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>" + data[1] +  "<br>Due: " + data[5] +  "<br>Created: " + data[6] +  "</li>");
             }
         });
