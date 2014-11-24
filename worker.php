@@ -43,7 +43,6 @@ if (mysqli_num_rows($getusersettings) == 0) {
 }
 $resultgetusersettings = mysqli_fetch_assoc($getusersettings);
 
-
 if (isset($_POST["action"])) {
     $action = $_POST["action"];
 } else {

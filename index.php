@@ -650,7 +650,7 @@ $(document).ready(function() {
             },
             success: function(data) {
                 if (data[1] == "") {
-                    data[1] = "No details available";
+                    data[1] = "<i>No details available</i>";
                 }
                 $(".list-group").prepend("<li id=\"detailsitem\" class=\"list-group-item list-group-item-info\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>" + data[1] +  "<br>Due: " + data[5] +  "<br>Created: " + data[6] +  "</li>");
             }
