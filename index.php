@@ -258,7 +258,7 @@ if (mysqli_num_rows($gettasks) != 0) {
             }
             $date = "$day-$month-$year";
         }
-        echo "<li class=\"list-group-item\">" . $row["task"] . "<div class=\"pull-right\">";
+        echo "<li class=\"list-group-item\" id=\"" . $row["id"] . "\" >" . $row["task"] . "<div class=\"pull-right\">";
         if ($row["category"] != "none") {
             echo "<a href=\"?filter=categories&amp;cat=" . $row["category"] . "\"><span class=\"hidden-xs label label-primary\" data-id=\"" . $row["category"] . "\">" . $row["category"] . "</span></a> ";
         } 
@@ -652,7 +652,7 @@ $(document).ready(function() {
                 if (data[1] == "") {
                     data[1] = "<i>No details available</i>";
                 }
-                $(".list-group").prepend("<li id=\"detailsitem\" class=\"list-group-item list-group-item-info\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>" + data[1] +  "<br>Due: " + data[5] +  "<br>Created: " + data[6] +  "</li>");
+                $("#"+id).append("<div id=\"detailsitem\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button><p><dl><dt>Details</dt><dd>" + data[1] +  "</dd><dt>Due</dt><dd>" + data[5] +  "</dd><dt>Created</dt><dd>" + data[6] +  "</dd></dl></p></div>");
             }
         });
     });
