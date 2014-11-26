@@ -435,7 +435,6 @@ Burden <?php echo $version; ?> &copy; <a href="http://joshf.co.uk" target="_blan
 <script src="assets/modernizr.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    jQuery.fx.off = true;
     /* Set Up Notifications */
     var show_notification = function(type, icon, text, reload) {
         $(".top-right").notify({
@@ -479,8 +478,8 @@ $(document).ready(function() {
     /* Add Category */
     /* Add */
     $("#addcategoryforaddform").click(function() {
-        $("#categoryselectforaddform").hide("fast");
-        $("#showcategoryforaddform").show("fast");
+        $("#categoryselectforaddform").hide();
+        $("#showcategoryforaddform").show();
     });
     $("#doaddcategoryforaddform").click(function() {
         newcategory=$("#newcategoryforaddform").val()
@@ -488,13 +487,13 @@ $(document).ready(function() {
             $("#addform select").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
         }
         $("#newcategoryforaddform").val("")
-        $("#categoryselectforaddform").show("fast");
-        $("#showcategoryforaddform").hide("fast");
+        $("#categoryselectforaddform").show();
+        $("#showcategoryforaddform").hide();
     });
     /* Edit */
     $("#addcategoryforeditform").click(function() {
-        $("#categoryselectforeditform").hide("fast");
-        $("#showcategoryforeditform").show("fast");
+        $("#categoryselectforeditform").hide();
+        $("#showcategoryforeditform").show();
     });
     $("#doaddcategoryforeditform").click(function() {
         newcategory=$("#newcategoryforeditform").val()
@@ -502,8 +501,8 @@ $(document).ready(function() {
             $("#editform select").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
         }
         $("#newcategoryforeditform").val("")
-        $("#categoryselectforeditform").show("fast");
-        $("#showcategoryforeditform").hide("fast");
+        $("#categoryselectforeditform").show();
+        $("#showcategoryforeditform").hide();
     });
     /* End */
     /* Add */
@@ -637,6 +636,7 @@ $(document).ready(function() {
     /* Details */
     $("li").on("click", ".details", function() {
         if ($("#detailsitem").length) {
+            $("#detailsitem").hide("fast");
             $("#detailsitem").remove();
         }
         var id = $(this).data("id");
@@ -652,7 +652,8 @@ $(document).ready(function() {
                 if (data[1] == "") {
                     data[1] = "<i>No details available</i>";
                 }
-                $("#"+id).append("<div id=\"detailsitem\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button><p><dl><dt>Details</dt><dd>" + data[1] +  "</dd><dt>Due</dt><dd>" + data[5] +  "</dd><dt>Created</dt><dd>" + data[6] +  "</dd></dl></p></div>");
+                $("#"+id).append("<div id=\"detailsitem\" style=\"display: none;\"><p><dl><dt>Details</dt><dd>" + data[1] +  "</dd><dt>Due</dt><dd>" + data[5] +  "</dd><dt>Created</dt><dd>" + data[6] +  "</dd></dl></p></div>");
+                $("#detailsitem").show("fast");
             }
         });
     });
