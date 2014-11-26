@@ -369,13 +369,13 @@ while($row = mysqli_fetch_assoc($getcategories)) {
 <div class="modal-body">
 <form id="editform" role="form" autocomplete="off">
 <div class="form-group">
-<input type="text" class="form-control" id="edittask" name="task" value="+ data[0] +" placeholder="Type a task..." required>
+<input type="text" class="form-control" id="edittask" name="task" placeholder="Type a task..." required>
 </div>
 <div class="form-group">
-<textarea rows="2" class="form-control" id="editdetails" name="details" placeholder="Type any extra details.."> + data[1] + </textarea>
+<textarea rows="2" class="form-control" id="editdetails" name="details" placeholder="Type any extra details.."></textarea>
 </div>
 <div class="form-group">
-<input type="date" class="due form-control" id="editdue" name="due" value=" + data[2] + " required>
+<input type="date" class="due form-control" id="editdue" name="due" required>
 </div>
 <div id="categoryselectforeditform" class="form-group">
 <select class="form-control" id="editcategory" name="category">
@@ -417,7 +417,7 @@ mysqli_close($con);
 </div>
 <div class="modal-footer">
 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-<button type="button" id="edit" class="btn btn-primary">Save Changes</button>
+<button type="button" id="edit" class="btn btn-primary">Edit</button>
 </div>
 </div>
 </div>
