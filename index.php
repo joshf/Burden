@@ -637,7 +637,10 @@ $(document).ready(function() {
     $("li").on("click", ".details", function() {
         if ($("#detailsitem").length) {
             $("#detailsitem").hide("fast");
-            $("#detailsitem").remove();
+            setTimeout(function() {
+                $("#detailsitem").remove();
+            }, 400);            
+            return false;
         }
         var id = $(this).data("id");
         $.ajax({
