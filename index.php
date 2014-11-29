@@ -91,10 +91,8 @@ a.close.pull-right {
 <li class="dropdown-header">Categories</li>
 <?php
 
-echo "<li><a href=\"index.php?filter=categories&amp;cat=none\">None</a></li>";
-
 //Get categories
-$getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"none\" OR \"\" AND `completed` != \"1\"");
+$getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\" AND `completed` != \"1\"");
 
 while($row = mysqli_fetch_assoc($getcategories)) {
     echo "<li><a href=\"index.php?filter=categories&amp;cat=" . $row["category"] . "\">" . ucfirst($row["category"]) . "</a></li>";
