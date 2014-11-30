@@ -633,14 +633,14 @@ $(document).ready(function() {
     /* End */
     /* Details */
     $("li").on("click", ".details", function() {
-        if ($("#detailsitem").length) {
-            $("#detailsitem").hide("fast");
+        var id = $(this).data("id");
+        if ($("#detailsitem"+id).length) {
+            $("#detailsitem"+id).hide("fast");
             setTimeout(function() {
-                $("#detailsitem").remove();
+                $("#detailsitem"+id).remove();
             }, 400);            
             return false;
         }
-        var id = $(this).data("id");
         $.ajax({
             type: "POST",
             dataType: "json",
@@ -653,8 +653,8 @@ $(document).ready(function() {
                 if (data[1] == "") {
                     data[1] = "<i>No details available</i>";
                 }
-                $("#"+id).append("<div id=\"detailsitem\" style=\"display: none;\"><p><dl><dt>Details</dt><dd>" + data[1] +  "</dd><dt>Due</dt><dd>" + data[5] +  "</dd><dt>Created</dt><dd>" + data[6] +  "</dd></dl></p></div>");
-                $("#detailsitem").show("fast");
+                $("#"+id).append("<div id=\"detailsitem"+ id +"\" style=\"display: none;\"><p><dl><dt>Details</dt><dd>" + data[1] +  "</dd><dt>Due</dt><dd>" + data[5] +  "</dd><dt>Created</dt><dd>" + data[6] +  "</dd></dl></p></div>");
+                $("#detailsitem"+id).show("fast");
             }
         });
     });
