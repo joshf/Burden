@@ -87,6 +87,7 @@ a.close.pull-right {
 <ul class="dropdown-menu">
 <li><a href="index.php?filter=highpriority">High Priority Tasks</a></li>
 <li><a href="index.php?filter=completed">Completed Tasks</a></li>
+<li><a href="index.php?filter=duetoday">Due Today</a></li>
 <li class="divider"></li>
 <li class="dropdown-header">Categories</li>
 <?php
@@ -125,7 +126,7 @@ while($row = mysqli_fetch_assoc($getcategories)) {
 if (isset($_GET["filter"])) {
     $filter = mysqli_real_escape_string($con, $_GET["filter"]);
     //Prevent bad strings from messing with sorting
-    $filters = array("categories", "normal", "highpriority", "completed", "date");
+    $filters = array("categories", "normal", "highpriority", "completed", "date", "duetoday");
     if (!in_array($filter, $filters)) {
         $filter = "normal";
     }
@@ -159,6 +160,8 @@ if ($filter == "completed") {
     echo "<small>Sorted By Date</small>";
 } elseif ($filter == "normal") {
     echo "<small>Current</small>";
+} elseif ($filter == "duetoday") {
+    echo "<small>Due Today</small>";
 }
 echo "</h1></div><div class=\"notifications top-right\"></div>";
 
@@ -180,6 +183,8 @@ if ($filter == "completed") {
 	$gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\" AND `category` = \"$cat\"");
 } elseif ($filter == "date") {
 	$gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\" ORDER BY `due` ASC");
+} elseif ($filter == "duetoday") {
+    $gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\" AND `due` = \"" . date("Y-m-d") . "\"");
 } else {
     $gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\"");
 }
@@ -226,6 +231,9 @@ if (mysqli_num_rows($gettasks) != 0) {
                 $case = "overdue";
             }
         }
+        if ($today == $due) {
+            $case = "duetoday";
+        }
         if ($row["completed"] == "1") {
             $case = "completed";
         }
@@ -241,6 +249,9 @@ if (mysqli_num_rows($gettasks) != 0) {
                 break;
             case "normal":
             $label = "default";
+                break;
+            case "duetoday":
+            $label = "info";
                 break;
         }
         if ($filter == "completed") {
@@ -284,7 +295,7 @@ echo "</ul>";
 <button type="button" id="launchaddmodal" class="btn btn-default">Add</button><br><br>
 <div class="alert alert-info">
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-<strong>Info:</strong> High priority tasks are highlighted yellow, completed tasks green and overdue tasks red.
+<strong>Info:</strong> High priority tasks are highlighted yellow, completed tasks green, tasks due today in blue and overdue tasks red.
 </div>
 <div class="well">
 <?php
