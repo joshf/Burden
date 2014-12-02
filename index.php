@@ -80,11 +80,11 @@ a.close.pull-right {
 <a class="navbar-brand" href="index.php">Burden</a>
 </div>
 <div class="navbar-collapse collapse" id="navbar-collapse">
-<form class="navbar-form navbar-left" role="search">
+<div class="navbar-form navbar-left" role="search">
 <div class="form-group">
 <input type="text" class="form-control" id="search" placeholder="Search tasks">
 </div>
-</form>
+</div>
 <ul class="nav navbar-nav navbar-right">
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Filters <span class="caret"></span></a>
