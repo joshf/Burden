@@ -12,7 +12,7 @@ Features:
 * Tasks can be marked as important to highlight critical tasks
 * Overdue tasks are highlighted clearly
 * Tasks can be sorted into categories
-* Sort and search tasks using DataTables
+* Variety of sorting options
 * Works well on mobile devices due to a responsive layout
 * Beautiful notifications system thanks to Bootstrap Notify
 
@@ -41,7 +41,7 @@ Installation:
 1. Create a new database using your web hosts control panel (for instructions on how to do this please contact your web host)
 2. Download and unzip Burden-xxxx.zip
 3. Upload the Burden folder to your server via FTP or your hosts control panel
-4. Open up http://yoursite.com/Burden/installer in your browser and enter your database/user details
+4. Open up http://yoursite.com/Burden/install in your browser and enter your database/user details
 5. Delete the "installer" folder from your server
 6. Login to Burden using the username and password you set during the install process
 7. Add your tasks
@@ -64,7 +64,7 @@ Updating:
 5. Unzip the file
 6. Upload the unzipped Burden folder to your server via FTP or your hosts control panel
 7. Upload your config.php file into the Burden folder
-4. Open up http://yoursite.com/Burden/installer/upgrade.php in your browser and the upgrade process will start
+4. Open up http://yoursite.com/Burden/install/upgrade.php in your browser and the upgrade process will start
 9. You should now have the latest version of Burden
 
 N.B: The upgrade will only upgrade from the previous version of Burden (e.g 1.4 to 1.5), it cannot be used to upgrade from a historic version.
