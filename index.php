@@ -450,16 +450,20 @@ Burden <?php echo $version; ?> &copy; <a href="http://joshf.co.uk" target="_blan
 $(document).ready(function() {
     /* Search */
     $("#search").keyup(function() {
-        var filter = $(this).val(), count = 0;
-        $(".list-group li").each(function() {
+        $("#search-error").remove();
+        var filter = $(this).val();
+        var count = 0;
+        $(".list-group .list-group-item").each(function() {
             if ($(this).text().search(new RegExp(filter, "i")) < 0) {
                 $(this).hide();
             } else {
                 $(this).show();
                 count++;
-            }
+            }            
         });
-        var numberItems = count;
+        if (count === 0) {
+            $(".list-group").prepend("<li class=\"list-group-item\" id=\"search-error\">No tasks found</li>");
+        }
     });
     /* End */
     /* Set Up Notifications */
