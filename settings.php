@@ -81,10 +81,10 @@ a.close.pull-right {
 <![endif]-->
 </head>
 <body>
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 <div class="container">
 <div class="navbar-header">
-<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
 <span class="sr-only">Toggle navigation</span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
@@ -92,11 +92,11 @@ a.close.pull-right {
 </button>
 <a class="navbar-brand" href="index.php">Burden</a>
 </div>
-<div class="navbar-collapse collapse">
+<div class="navbar-collapse collapse" id="navbar-collapse">
 <ul class="nav navbar-nav navbar-right">
 <li class="dropdown">
-<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $resultgetusersettings["user"]; ?> <b class="caret"></b></a>
-<ul class="dropdown-menu">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?php echo $resultgetusersettings["user"]; ?> <span class="caret"></span></a>
+<ul class="dropdown-menu" role="menu">
 <li><a href="settings.php">Settings</a></li>
 <li><a href="logout.php">Logout</a></li>
 </ul>
@@ -104,7 +104,7 @@ a.close.pull-right {
 </ul>
 </div>
 </div>
-</div>
+</nav>
 <div class="container">
 <div class="page-header">
 <h1>Settings</h1>
