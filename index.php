@@ -464,6 +464,7 @@ $(document).ready(function() {
         if (count === 0) {
             $(".list-group").prepend("<li class=\"list-group-item\" id=\"search-error\">No tasks found</li>");
         }
+        document.title = "Burden (" + count + ")";
     });
     /* End */
     /* Set Up Notifications */
