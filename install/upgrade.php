@@ -17,10 +17,6 @@ if (mysqli_connect_errno()) {
     die("Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.");
 }
 
-if ($version == VERSION) {
-    die("Information: The latest version of Burden is already installed and an upgrade is not required.");
-}
-
 //Make sure we start at step 0
 if (!isset($_GET["step"])) {
     header("Location: ?step=0");
@@ -36,6 +32,10 @@ if (!in_array($step, $steps)) {
 
 //Run upgrade
 if ($step == "1") {
+    
+    if ($version == VERSION) {
+        die("Information: The latest version of Burden is already installed and an upgrade is not required.");
+    }
     
     $dbhost = DB_HOST;
     $dbuser = DB_USER;
