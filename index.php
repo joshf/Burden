@@ -271,7 +271,7 @@ if (mysqli_num_rows($gettasks) != 0) {
             }
             $date = "$day-$month-$year";
         }
-        echo "<li class=\"list-group-item\" id=\"" . $row["id"] . "\" >" . $row["task"] . "<div class=\"pull-right\">";
+        echo "<li class=\"list-group-item\" id=\"" . $row["id"] . "\">" . $row["task"] . "<div class=\"pull-right\">";
         if ($row["category"] != "none") {
             echo "<a href=\"?filter=categories&amp;cat=" . $row["category"] . "\"><span class=\"hidden-xs label label-primary\" data-id=\"" . $row["category"] . "\">" . $row["category"] . "</span></a> ";
         } 
