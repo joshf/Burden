@@ -80,7 +80,7 @@ if (isset($_POST["email"])) {
     if (mail($to, $subject, $message, $headers)) {
         header("Location: reset.php?sent_reset_confirm=true");
     } else {
-        header("Location: reset.php?sent_fail=true");
+        header("Location: reset.php?send_fail=true");
     }
     exit;
 }
@@ -101,7 +101,7 @@ body {
     padding-bottom: 40px;
     background-color: #eee;
 }
-.form-signin {
+.form-reset {
     max-width: 300px;
     padding: 10px 30px 50px;
     margin: 0 auto 20px;
@@ -114,7 +114,7 @@ body {
     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
     box-shadow: 0 1px 2px rgba(0,0,0,.05);
 }
-.form-signin input[type="email"] {
+.form-reset input[type="email"] {
     font-size: 16px;
     height: auto;
     margin-bottom: 5px;
@@ -128,7 +128,7 @@ body {
 </head>
 <body>
 <div class="container">
-<form role="form" class="form-signin" method="post">
+<form role="form" class="form-reset" method="post">
 <div class="text-center"><img src="assets/icon.png" width="75" height="75" alt="Burden Logo"></div>
 <?php 
 if (isset($_GET["email_error"])) {
@@ -137,7 +137,7 @@ if (isset($_GET["email_error"])) {
     echo "<div class=\"alert alert-success\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>A reset link has been sent to your email.</div>";
 } elseif (isset($_GET["sent_pass_confirm"])) {
     echo "<div class=\"alert alert-success\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>A new password has been sent to your email.</div>";
-} elseif (isset($_GET["sent_fail"])) {
+} elseif (isset($_GET["send_fail"])) {
     echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Message could not be sent.</div>";
 } elseif (isset($_GET["hash_error"])) {
     echo "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Hash error. Link may have already been used.</div>";
@@ -145,12 +145,9 @@ if (isset($_GET["email_error"])) {
 ?>
 <div class="form-group">
 <label for="email">Email</label>
-<input type="email" class="form-control" id="email" name="email" placeholder="Email..." autofocus>
+<input type="email" class="form-control" id="email" name="email" placeholder="Type your email..." autofocus>
 </div>
-<div class="btn-group pull-right">
-<a href="login.php" class="btn btn-default" role="button">Back</a>
-<button type="submit" class="btn btn-primary">Send Reset Link</button>
-</div>
+<button type="submit" class="btn btn-primary pull-right">Send Reset Link</button>
 </form>
 </div>
 <script src="assets/jquery.min.js"></script>
