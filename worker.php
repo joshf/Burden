@@ -135,12 +135,6 @@ if ($action == "add") {
     $datediff = abs($today - $due);
     $duein = floor($datediff/(60*60*24));
     
-    $segments = explode("-", $resultgetdetails["created"]);
-    if (count($segments) == 3) {
-        list($year, $month, $day) = $segments;
-    }
-    $created = "$day-$month-$year";
-    
     if ($today > $due) {
         $duein .= " day(s) ago";
     } else {
@@ -153,8 +147,8 @@ if ($action == "add") {
     $arr[2] = $resultgetdetails["due"];
     $arr[3] = $resultgetdetails["category"];
     $arr[4] = $resultgetdetails["highpriority"];
-    $arr[5] = $duein;
-    $arr[6] = $created;
+    $arr[5] = $resultgetdetails["created"];
+    $arr[6] = $duein;
     
     echo json_encode($arr);
 } elseif ($action == "generateapikey") {

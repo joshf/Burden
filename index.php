@@ -271,11 +271,11 @@ if (mysqli_num_rows($gettasks) != 0) {
             }
             $date = "$day-$month-$year";
         }
-        echo "<li class=\"list-group-item\" id=\"" . $row["id"] . "\">" . $row["task"] . "<div class=\"pull-right\">";
+        echo "<li class=\"list-group-item\" id=\"" . $row["id"] . "\"><span class=\"details\" data-id=\"" . $row["id"] . "\">" . $row["task"] . "</span><div class=\"pull-right\">";
         if ($row["category"] != "none") {
             echo "<a href=\"?filter=categories&amp;cat=" . $row["category"] . "\"><span class=\"hidden-xs label label-primary\" data-id=\"" . $row["category"] . "\">" . $row["category"] . "</span></a> ";
         } 
-        echo "<span class=\"details label label-$label\" data-id=\"" . $row["id"] . "\">" . $date . "</span> ";
+        echo "<span class=\"label label-$label\" data-id=\"" . $row["id"] . "\">" . $date . "</span> ";
         
         if ($filter == "completed") {
             echo "<span class=\"delete glyphicon glyphicon-trash\" data-id=\"" . $row["id"] . "\"></span> ";
@@ -687,7 +687,9 @@ $(document).ready(function() {
                 if (data[1] == "") {
                     data[1] = "<i>No details available</i>";
                 }
-                $("#"+id).append("<div id=\"detailsitem"+ id +"\" style=\"display: none;\"><p><dl><dt>Details</dt><dd>" + data[1] +  "</dd><dt>Due</dt><dd>" + data[5] +  "</dd><dt>Created</dt><dd>" + data[6] +  "</dd></dl></p></div>");
+                raw = data[5].split("-");
+                created = raw[2]+"-"+raw[1]+"-"+raw[0];                
+                $("#"+id).append("<div id=\"detailsitem"+ id +"\" style=\"display: none;\"><p><dl><dt>Details</dt><dd>" + data[1] +  "</dd><dt>Due</dt><dd>" + data[6] +  "</dd><dt>Created</dt><dd>" + created +  "</dd></dl></p></div>");
                 $("#detailsitem"+id).show("fast");
             }
         });
