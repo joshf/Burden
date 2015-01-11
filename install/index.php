@@ -115,14 +115,8 @@ if (isset($_POST["step_2"])) {
     
     mysqli_query($con, $createuserstable);
     
-    //Check if a user already exists
-    $checkifuserexists = "SELECT user FROM `Users`;";
-    $resultcheckifuserexists = mysqli_query($con, $checkifuserexists);
-    if (mysqli_num_rows($resultcheckifuserexists) == 0) {
-        //Add user
-        mysqli_query($con, "INSERT INTO Users (user, password, salt, email, hash, api_key)
-        VALUES (\"$user\",\"$password\",\"$salt\",\"$email\",\"\",\"$api_key\")");
-    }
+    mysqli_query($con, "INSERT INTO Users (user, password, salt, email, hash, api_key)
+    VALUES (\"$user\",\"$password\",\"$salt\",\"$email\",\"\",\"$api_key\")");
         
     mysqli_close($con);
     

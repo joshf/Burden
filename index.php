@@ -188,7 +188,7 @@ if ($filter == "completed") {
 } elseif ($filter == "date") {
 	$gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\" ORDER BY `due` ASC");
 } elseif ($filter == "duetoday") {
-    $gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\" AND `due` = \"" . date("Y-m-d") . "\"");
+    $gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\" AND `due` = CURDATE()");
 } else {
     $gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\"");
 }
@@ -503,7 +503,7 @@ $(document).ready(function() {
         $(".due").datepicker({
             format: "dd-mm-yyyy",
             autoclose: "true",
-            clearBtn: "true"
+            todayHighlight: "true"
         });
     }
     /* End */
@@ -544,24 +544,24 @@ $(document).ready(function() {
     $("#add").click(function() {
         var haserrors = false;
         if ($("#task").val() == "") {
-            if (!$(".form-group:eq(0)").hasClass("has-error")) {
-                $(".form-group:eq(0)").addClass("has-error");
-                $(".form-group:eq(0)").append("<span class=\"help-block\">Task cannot be empty</span>");
+            if (!$(".form-group:eq(1)").hasClass("has-error")) {
+                $(".form-group:eq(1)").addClass("has-error");
+                $(".form-group:eq(1)").append("<span class=\"help-block\">Task cannot be empty</span>");
             }
             haserrors = true;
         }
         if ($("#due").val() == "") {
-            if (!$(".form-group:eq(2)").hasClass("has-error")) {
-                $(".form-group:eq(2)").addClass("has-error");
-                $(".form-group:eq(2)").append("<span class=\"help-block\">A due date is required (DD-MM-YYYY)</span>");
+            if (!$(".form-group:eq(3)").hasClass("has-error")) {
+                $(".form-group:eq(3)").addClass("has-error");
+                $(".form-group:eq(3)").append("<span class=\"help-block\">A due date is required (DD-MM-YYYY)</span>");
             }
             haserrors = true;
         }
         if (haserrors == true) {
             return false;
         }
-        $(".form-group:eq(0)").removeClass("has-error");
-        $(".form-group:eq(2)").removeClass("has-error");
+        $(".form-group:eq(1)").removeClass("has-error");
+        $(".form-group:eq(3)").removeClass("has-error");
         $(".help-block").remove();
         $.ajax({
             type: "POST",
@@ -610,30 +610,30 @@ $(document).ready(function() {
                 }
                 $("#editid").val(id);
             }
-        });
+        });        
         $("#editformmodal").modal();
     });
     $("#edit").click(function() {
         var haserrors = false;
         if ($("#edittask").val() == "") {
-            if (!$(".form-group:eq(5)").hasClass("has-error")) {
-                $(".form-group:eq(5)").addClass("has-error");
-                $(".form-group:eq(5)").append("<span class=\"help-block\">Task cannot be empty</span>");
+            if (!$(".form-group:eq(6)").hasClass("has-error")) {
+                $(".form-group:eq(6)").addClass("has-error");
+                $(".form-group:eq(6)").append("<span class=\"help-block\">Task cannot be empty</span>");
             }
             haserrors = true;
         }
         if ($("#editdue").val() == "") {
-            if (!$(".form-group:eq(7)").hasClass("has-error")) {
-                $(".form-group:eq(7)").addClass("has-error");
-                $(".form-group:eq(7)").append("<span class=\"help-block\">A due date is required (DD-MM-YYYY)</span>");
+            if (!$(".form-group:eq(8)").hasClass("has-error")) {
+                $(".form-group:eq(8)").addClass("has-error");
+                $(".form-group:eq(8)").append("<span class=\"help-block\">A due date is required (DD-MM-YYYY)</span>");
             }
             haserrors = true;
         }
         if (haserrors == true) {
             return false;
         }
-        $(".form-group:eq(4)").removeClass("has-error");
         $(".form-group:eq(6)").removeClass("has-error");
+        $(".form-group:eq(8)").removeClass("has-error");
         $(".help-block").remove();
         $.ajax({
             type: "POST",
