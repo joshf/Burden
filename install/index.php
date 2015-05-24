@@ -190,19 +190,19 @@ if ($step == "0") {
 <form role="form" method="post" autocomplete="off">
 <h4>Database Settings</h4>
 <div class="form-group">
-<label for="dbhost">Database Host</label>
+<label class="control-label" for="dbhost">Database Host</label>
 <input type="text" class="form-control" id="dbhost" name="dbhost" value="localhost" placeholder="Type your database host..." required>
 </div>
 <div class="form-group">
-<label for="dbuser">Database User</label>
+<label class="control-label" for="dbuser">Database User</label>
 <input type="text" class="form-control" id="dbuser" name="dbuser" placeholder="Type your database user..." required>
 </div>
 <div class="form-group">
-<label for="dbpassword">Database Password</label>
+<label class="control-label" for="dbpassword">Database Password</label>
 <input type="password" class="form-control" id="dbpassword" name="dbpassword" placeholder="Type your database password..." required>
 </div>
 <div class="form-group">
-<label for="dbname">Database Name</label>
+<label class="control-label" for="dbname">Database Name</label>
 <input type="text" class="form-control" id="dbname" name="dbname" placeholder="Type your database name..." required>
 </div>
 <input type="hidden" name="step_1">
@@ -214,19 +214,19 @@ if ($step == "0") {
 <form role="form" method="post" autocomplete="off">
 <h4>User Details</h4>
 <div class="form-group">
-<label for="user">User</label>
+<label class="control-label" for="user">User</label>
 <input type="text" class="form-control" id="user" name="user" placeholder="Type a username..." required>
 </div>
 <div class="form-group">
-<label for="email">Email</label>
+<label class="control-label" for="email">Email</label>
 <input type="email" class="form-control" id="email" name="email" placeholder="Type an email..." required>
 </div>
 <div class="form-group">
-<label for="password">Password</label>
+<label class="control-label" for="password">Password</label>
 <input type="password" class="form-control" id="password" name="password" placeholder="Type a password..." required>
 </div>
 <div class="form-group">
-<label for="passwordconfirm">Confirm Password</label>
+<label class="control-label" for="passwordconfirm">Confirm Password</label>
 <input type="password" class="form-control" id="passwordconfirm" name="passwordconfirm" placeholder="Type your password again..." required>
 <span class="help-block">It is recommended that your password be at least 6 characters long</span>
 </div>
@@ -264,17 +264,51 @@ if ($step == "0") {
 <script src="../assets/nod.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    var metrics = [
-        ["#dbhost", "presence", "Database host cannot be empty!"],
-        ["#dbuser", "presence", "Database user cannot be empty!"],
-        ["#dbpassword", "presence", "Database password cannot be empty!"],        
-        ["#dbname", "presence", "Database name cannot be empty!"],
-        ["#user", "presence", "User name cannot be empty!"],
-        ["#email", "email", "Enter a valid email address"],
-        ["#password", "presence", "Passwords should be more than 6 characters"],
-        ["#passwordconfirm", "same-as: #password", "Passwords do not match!"]
-    ];
-    $("form").nod(metrics);
+    var n = nod();  
+    n.configure({
+        submit: "input[type=submit]",
+        disableSubmit: true,
+        parentClass: "form-group",
+        successClass: "has-success",
+        errorClass: "has-error",
+        successMessageClass: "text-success",
+        errorMessageClass: "text-danger"
+    });
+    n.add([{
+        selector: "#dbhost",
+        validate: "presence",
+        errorMessage: "Database host cannot be empty!"
+    }, {
+        selector: "#dbuser",
+        validate: "presence",
+        errorMessage: "Database user cannot be empty!"
+        
+    }, {
+        selector: "#dbpassword",
+        validate: "presence",
+        errorMessage: "Database password cannot be empty!"
+        
+    }, {
+        selector: "#dbname",
+        validate: "presence",
+        errorMessage: "Database name cannot be empty!"
+    }, {
+        selector: "#user",
+        validate: "presence",
+        errorMessage: "User name cannot be empty!"
+    }, {
+        selector: "#email",
+        validate: "email",
+        errorMessage: "Enter a valid email address!"
+    }, {
+        selector: "#password",
+        validate: "min-length:6",
+        errorMessage: "Passwords should be more than 6 characters"
+    }, {
+        selector: "#passwordconfirm",
+        validate: "same-as: #password",
+        errorMessage: "Passwords do not match!"
+    }]);
 });
 </script>
 </body>

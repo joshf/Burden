@@ -44,7 +44,7 @@ $resultgetusersettings = mysqli_fetch_assoc($getusersettings);
 <title>Burden</title>
 <link rel="apple-touch-icon" href="assets/icon.png">
 <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="assets/datepicker/css/datepicker3.min.css" rel="stylesheet">
+<link href="assets/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet">
 <link href="assets/bootstrap-notify/css/bootstrap-notify.min.css" rel="stylesheet">
 <style type="text/css">
 .datepicker {
@@ -444,7 +444,7 @@ Burden <?php echo $version; ?> &copy; <a href="http://joshf.co.uk" target="_blan
 <script src="assets/jquery.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/bootstrap-notify/js/bootstrap-notify.min.js"></script>
-<script src="assets/datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="assets/modernizr.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
