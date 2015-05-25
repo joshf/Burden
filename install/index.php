@@ -206,7 +206,7 @@ if ($step == "0") {
 <input type="text" class="form-control" id="dbname" name="dbname" placeholder="Type your database name..." required>
 </div>
 <input type="hidden" name="step_1">
-<input type="submit" class="btn btn-default pull-right" value="Next">
+<input type="submit" id="submit" class="btn btn-default pull-right" value="Next">
 </form>
 <?php
 } elseif (($step == "2") && ($_GET["nonce"] == $nonce)) {
@@ -231,7 +231,7 @@ if ($step == "0") {
 <span class="help-block">It is recommended that your password be at least 6 characters long</span>
 </div>
 <input type="hidden" name="step_2">
-<input type="submit" class="btn btn-default pull-right" value="Finish">
+<input type="submit" id="submit" class="btn btn-default pull-right" value="Finish">
 </form>
 <?php
 } elseif (($step == "3") && ($_GET["nonce"] == $nonce)) {   
@@ -266,7 +266,7 @@ if ($step == "0") {
 $(document).ready(function() {
     var n = nod();  
     n.configure({
-        submit: "input[type=submit]",
+        submit: "#submit",
         disableSubmit: true,
         parentClass: "form-group",
         successClass: "has-success",

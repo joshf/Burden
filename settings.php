@@ -124,11 +124,11 @@ a.close.pull-right {
 <label class="control-label" for="password">Password</label>
 <input type="password" class="form-control" id="password" name="password" value="<?php echo $resultgetusersettings["password"]; ?>" placeholder="Enter a password..." required>
 </div>
-<button type="submit" class="btn btn-default">Save</button>
+<button type="submit" id="submit" class="btn btn-default">Save</button>
 </form>
 <br>
 <h5>API key</h5>
-<p>Your API key is: <div id="api_key"><b><?php echo $resultgetusersettings["api_key"]; ?></b></div></p>
+<p>Your API key is: <span id="api_key"><b><?php echo $resultgetusersettings["api_key"]; ?></b></span></p>
 <button id="generateapikey" class="btn btn-default">Generate New Key</button>
 </div>
 <script src="assets/jquery.min.js"></script>
@@ -152,12 +152,33 @@ $(document).ready(function() {
     $("form").submit(function() {
         $.cookie("settings_updated", "true");
     });
-    var metrics = [
-        ["#user", "presence", "User name cannot be empty!"],
-        ["#email", "email", "Enter a valid email address"],
-        ["#password", "presence", "Passwords should be more than 6 characters"]
-    ];
-    $("form").nod(metrics);
+    var n = nod();  
+    n.configure({
+        submit: "#submit",
+        disableSubmit: true,
+        delay: 10,
+        parentClass: "form-group",
+        successClass: "has-success",
+        errorClass: "has-error",
+        successMessageClass: "text-success",
+        errorMessageClass: "text-danger"
+    });
+    n.add([{
+        selector: "#user",
+        validate: "presence",
+        errorMessage: "User name cannot be empty!",
+        defaultStatus: "valid"
+    }, {
+        selector: "#email",
+        validate: "email",
+        errorMessage: "Enter a valid email address!",
+        defaultStatus: "valid"
+    }, {
+        selector: "#password",
+        validate: "min-length:6",
+        errorMessage: "Passwords should be more than 6 characters",
+        defaultStatus: "valid"
+    }]);
     $("#generateapikey").click(function() {
         $.ajax({
             type: "POST",

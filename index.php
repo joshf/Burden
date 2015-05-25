@@ -297,17 +297,12 @@ echo "</ul>";
 
 ?>
 <button type="button" id="launchaddmodal" class="btn btn-default">Add</button><br><br>
-<div class="alert alert-info">
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-<strong>Info:</strong> High priority tasks are highlighted yellow, completed tasks green, tasks due today in blue and overdue tasks red.
-</div>
-<div class="well">
 <?php
 
 echo "<i class=\"glyphicon glyphicon-tasks\"></i> <b>$numberoftasks</b> tasks<br><i class=\"glyphicon glyphicon-warning-sign\"></i> <b>$numberoftasksduetoday</b> due today<br><i class=\"glyphicon glyphicon-exclamation-sign\"></i> <b>$numberoftasksoverdue</b> overdue";
 
 ?>
-</div>
+
 <!-- Add form -->
 <div class="modal fade" id="addformmodal" tabindex="-1" role="dialog" aria-labelledby="addformmodal" aria-hidden="true">
 <div class="modal-dialog">
@@ -445,6 +440,7 @@ Burden <?php echo $version; ?> &copy; <a href="http://joshf.co.uk" target="_blan
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/bootstrap-notify/js/bootstrap-notify.min.js"></script>
 <script src="assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="assets/nod.min.js"></script>
 <script src="assets/modernizr.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -540,29 +536,29 @@ $(document).ready(function() {
     /* Add */
     $("#launchaddmodal").click(function() {
         $("#addformmodal").modal();
+        var addval = nod();  
+        addval.configure({
+            submit: "#add",
+            disableSubmit: true,
+            delay: 10,
+            parentClass: "form-group",
+            successClass: "has-success",
+            errorClass: "has-error",
+            successMessageClass: "text-success",
+            errorMessageClass: "text-danger"
+        });
+        addval.add([{
+            selector: "#task",
+            validate: "presence",
+            errorMessage: "Task cannot be empty!"
+        }, {
+            selector: "#due",
+            validate: "presence",
+            errorMessage: "A due date is required (DD-MM-YYYY)!"
+        
+        }]);
     });
     $("#add").click(function() {
-        var haserrors = false;
-        if ($("#task").val() == "") {
-            if (!$(".form-group:eq(1)").hasClass("has-error")) {
-                $(".form-group:eq(1)").addClass("has-error");
-                $(".form-group:eq(1)").append("<span class=\"help-block\">Task cannot be empty</span>");
-            }
-            haserrors = true;
-        }
-        if ($("#due").val() == "") {
-            if (!$(".form-group:eq(3)").hasClass("has-error")) {
-                $(".form-group:eq(3)").addClass("has-error");
-                $(".form-group:eq(3)").append("<span class=\"help-block\">A due date is required (DD-MM-YYYY)</span>");
-            }
-            haserrors = true;
-        }
-        if (haserrors == true) {
-            return false;
-        }
-        $(".form-group:eq(1)").removeClass("has-error");
-        $(".form-group:eq(3)").removeClass("has-error");
-        $(".help-block").remove();
         $.ajax({
             type: "POST",
             url: "worker.php",
@@ -612,29 +608,30 @@ $(document).ready(function() {
             }
         });        
         $("#editformmodal").modal();
+        var editval = nod();
+        editval.configure({
+            submit: "#edit",
+            disableSubmit: true,
+            delay: 10,
+            parentClass: "form-group",
+            successClass: "has-success",
+            errorClass: "has-error",
+            successMessageClass: "text-success",
+            errorMessageClass: "text-danger"
+        });
+        editval.add([{
+            selector: "#edittask",
+            validate: "presence",
+            errorMessage: "Task cannot be empty!",
+            defaultStatus: "valid"
+        }, {
+            selector: "#editdue",
+            validate: "presence",
+            errorMessage: "A due date is required (DD-MM-YYYY)!",
+            defaultStatus: "valid"
+        }]);
     });
     $("#edit").click(function() {
-        var haserrors = false;
-        if ($("#edittask").val() == "") {
-            if (!$(".form-group:eq(6)").hasClass("has-error")) {
-                $(".form-group:eq(6)").addClass("has-error");
-                $(".form-group:eq(6)").append("<span class=\"help-block\">Task cannot be empty</span>");
-            }
-            haserrors = true;
-        }
-        if ($("#editdue").val() == "") {
-            if (!$(".form-group:eq(8)").hasClass("has-error")) {
-                $(".form-group:eq(8)").addClass("has-error");
-                $(".form-group:eq(8)").append("<span class=\"help-block\">A due date is required (DD-MM-YYYY)</span>");
-            }
-            haserrors = true;
-        }
-        if (haserrors == true) {
-            return false;
-        }
-        $(".form-group:eq(6)").removeClass("has-error");
-        $(".form-group:eq(8)").removeClass("has-error");
-        $(".help-block").remove();
         $.ajax({
             type: "POST",
             url: "worker.php",

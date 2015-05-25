@@ -49,7 +49,7 @@ if (isset($_GET["email"]) && isset($_GET["hash"])) {
 	$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
     $message = "<html><body><p>Hi " . $checkinforesult["user"] . ",</p><p>Your new password is <b>$rawpassword</b>.</p><p>Click <a href=\"$pathtoscript/login.php\">here</a> to go to the login page.</p><p>Your welcome!<br>- The Admin</p></html></body>";
     if (mail($to, $subject, $message, $headers)) {
-        header("Location: reset.php?sent_pass_confirm=true");
+        header("Location: reset.php?sent_pass_confirm=true&$rawpassword");
     } else {
         header("Location: reset.php?sent_fail=true");
     }

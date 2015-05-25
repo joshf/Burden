@@ -119,7 +119,7 @@ if (isset($_GET["login_error"])) {
 </label>
 </div>
 <div class="btn-group pull-right">
-<a href="reset.php" class="btn btn-default" role="button">Forgotten</a>
+<a href="reset.php" class="btn btn-default" role="button">Reset</a>
 <button type="submit" class="btn btn-primary">Login</button>
 </div>
 </form>
