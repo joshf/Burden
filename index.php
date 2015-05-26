@@ -314,7 +314,7 @@ echo "<i class=\"glyphicon glyphicon-tasks\"></i> <b>$numberoftasks</b> tasks<br
 <div class="modal-body">
 <form id="addform" role="form" autocomplete="off">
 <div class="form-group">
-<input type="text" class="form-control" id="task" name="task" placeholder="Type a task..." required>
+<input type="text" class="form-control" id="task" name="task" placeholder="Type a task..." required autofocus>
 </div>
 <div class="form-group">
 <textarea rows="2" class="form-control" id="details" name="details" placeholder="Type any extra details.."></textarea>
@@ -540,7 +540,7 @@ $(document).ready(function() {
         addval.configure({
             submit: "#add",
             disableSubmit: true,
-            delay: 10,
+            delay: 1000,
             parentClass: "form-group",
             successClass: "has-success",
             errorClass: "has-error",
@@ -629,7 +629,7 @@ $(document).ready(function() {
             validate: "presence",
             errorMessage: "A due date is required (DD-MM-YYYY)!",
             defaultStatus: "valid"
-        }]);
+        }]);        
     });
     $("#edit").click(function() {
         $.ajax({
