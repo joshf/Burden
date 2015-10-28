@@ -641,7 +641,7 @@ $(document).ready(function () {
             type: "POST",
             dataType: "json",
             url: "worker.php",
-            data: "action=details&id="+ id +"",
+            data: "action=info&id="+ id +"",
             error: function() {
                 $.notify({
                     message: "Ajax query failed!",
@@ -651,13 +651,13 @@ $(document).ready(function () {
                     allow_dismiss: true
                 });
             },
-            success: function(data) {
-                if (data[1] == "") {
-                    data[1] = "<i>No details available</i>";
+            success: function(resp) {
+                if (resp.data[0].details == "") {
+                    resp.data[0].details = "<i>No details available</i>";
                 }
-                raw = data[5].split("-");
+                raw = resp.data[0].created.split("-");
                 created = raw[2]+"-"+raw[1]+"-"+raw[0];                
-                $("#"+id).append("<div id=\"detailsitem"+ id +"\" style=\"display: none;\"><p><dl><dt>Details</dt><dd>" + data[1] +  "</dd><dt>Due</dt><dd>" + data[6] +  "</dd><dt>Created</dt><dd>" + created +  "</dd></dl></p></div>");
+                $("#"+id).append("<div id=\"detailsitem"+ id +"\" style=\"display: none;\"><p><dl><dt>Details</dt><dd>" + resp.data[0].details +  "</dd><dt>Due</dt><dd>" + resp.data[0].due +  "</dd><dt>Created</dt><dd>" + created +  "</dd></dl></p></div>");
                 $("#detailsitem"+id).show("fast");
             }
         });
