@@ -3,8 +3,7 @@
 //Burden, Copyright Josh Fradley (http://github.com/joshf/Burden)
 
 if (!file_exists("config.php")) {
-    header("Location: install");
-    exit;
+    die("Error: Config file not found!");
 }
 
 require_once("config.php");
@@ -16,12 +15,16 @@ if (mysqli_connect_errno()) {
 }
 
 session_start();
-if (isset($_POST["api_key"])) {
-    $api = mysqli_real_escape_string($con, $_POST["api_key"]);
-    if (empty($api)) {
+if (isset($_POST["api_key"]) || isset($_GET["api_key"])) {
+    if (isset($_POST["api_key"])) {
+        $api_key = mysqli_real_escape_string($con, $_POST["api_key"]);
+    } elseif (isset($_GET["api_key"])) {
+        $api_key = mysqli_real_escape_string($con, $_GET["api_key"]);
+    }
+    if (empty($api_key)) {
         die("Error: No API key passed!");
     }
-    $checkkey = mysqli_query($con, "SELECT `id`, `user` FROM `Users` WHERE `api_key` = \"$api\"");
+    $checkkey = mysqli_query($con, "SELECT `id`, `user` FROM `users` WHERE `api_key` = \"$api_key\"");
     $checkkeyresult = mysqli_fetch_assoc($checkkey);
     if (mysqli_num_rows($checkkey) == 0) {
         die("Error: API key is not valid!");
@@ -35,7 +38,7 @@ if (!isset($_SESSION["burden_user"])) {
     exit;
 }
 
-$getusersettings = mysqli_query($con, "SELECT `user` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
+$getusersettings = mysqli_query($con, "SELECT `user` FROM `users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
 if (mysqli_num_rows($getusersettings) == 0) {
     session_destroy();
     header("Location: login.php");
@@ -45,16 +48,22 @@ $resultgetusersettings = mysqli_fetch_assoc($getusersettings);
 
 if (isset($_POST["action"])) {
     $action = $_POST["action"];
+} elseif (isset($_GET["action"])) {
+    $action = $_GET["action"];
 } else {
 	die("Error: No action passed!");
 }
 
 //Check if ID exists
-$actions = array("edit", "delete", "restore", "complete", "details");
+$actions = array("edit", "delete", "restore", "complete", "info");
 if (in_array($action, $actions)) {
-    if (isset($_POST["id"])) {
-        $id = mysqli_real_escape_string($con, $_POST["id"]);
-        $checkid = mysqli_query($con, "SELECT `id` FROM `Data` WHERE `id` = \"$id\"");
+    if (isset($_POST["id"]) || isset($_GET["id"])) {
+        if (isset($_POST["action"])) {
+            $id = mysqli_real_escape_string($con, $_POST["id"]);
+        } elseif (isset($_GET["action"])) {
+            $id = mysqli_real_escape_string($con, $_GET["id"]);
+        }
+        $checkid = mysqli_query($con, "SELECT `id` FROM `data` WHERE `id` = $id");        
         if (mysqli_num_rows($checkid) == 0) {
         	die("Error: ID does not exist!");
         }
@@ -97,8 +106,10 @@ if ($action == "add") {
         $due = "$year-$month-$day";
     }
 
-    mysqli_query($con, "INSERT INTO `Data` (`category`, `highpriority`, `task`, `details`, `created`, `due`, `completed`)
+    mysqli_query($con, "INSERT INTO `data` (`category`, `highpriority`, `task`, `details`, `created`, `due`, `completed`)
     VALUES (\"$category\",\"$highpriority\",\"$task\",\"$details\",CURDATE(),\"$due\",\"0\")");
+    
+    echo "Info: Task added!";
 } elseif ($action == "edit") {
     if (empty($task) || empty($due)) {
         die("Error: Data was empty!");
@@ -119,38 +130,39 @@ if ($action == "add") {
         $due = "$year-$month-$day";
     }
 
-    mysqli_query($con, "UPDATE `Data` SET `category` = \"$category\", `highpriority` = \"$highpriority\", `task` = \"$task\", `details` = \"$details\", `due` = \"$due\" WHERE `id` = \"$id\"");
+    mysqli_query($con, "UPDATE `data` SET `category` = \"$category\", `highpriority` = \"$highpriority\", `task` = \"$task\", `details` = \"$details\", `due` = \"$due\" WHERE `id` = \"$id\"");
+    
+    echo "Info: Task edited!";
 } elseif ($action == "complete") {
-    mysqli_query($con, "UPDATE `Data` SET `completed` = \"1\", `datecompleted` = CURDATE() WHERE `id` = \"$id\"");
+    mysqli_query($con, "UPDATE `data` SET `completed` = \"1\", `datecompleted` = CURDATE() WHERE `id` = \"$id\"");
+    
+    echo "Info: Task completed!";
 } elseif ($action == "restore") {
-    mysqli_query($con, "UPDATE `Data` SET `completed` = \"0\", `datecompleted` = \"\" WHERE `id` = \"$id\"");
+    mysqli_query($con, "UPDATE `data` SET `completed` = \"0\", `datecompleted` = \"\" WHERE `id` = \"$id\"");
+    
+    echo "Info: Task restored!";
 } elseif ($action == "delete") {
-    mysqli_query($con, "DELETE FROM `Data` WHERE `id` = \"$id\"");
-} elseif ($action == "details") {
-    $getdetails = mysqli_query($con, "SELECT `task`, `created`, `due`, `details`, `category`, `highpriority` FROM `Data` WHERE `id` = \"$id\"");
-    $resultgetdetails = mysqli_fetch_assoc($getdetails);
+    mysqli_query($con, "DELETE FROM `data` WHERE `id` = \"$id\"");
     
-    $today = strtotime(date("Y-m-d"));
-    $due = strtotime($resultgetdetails["due"]);
-    $datediff = abs($today - $due);
-    $duein = floor($datediff/(60*60*24));
+    echo "Info: Task deleted!";
+} elseif ($action == "info") {
     
-    if ($today > $due) {
-        $duein .= " day(s) ago";
-    } else {
-        $duein .= " day(s)";
+    $getdata = mysqli_query($con, "SELECT * FROM `data` WHERE `id` = \"$id\"");
+    
+    while($item = mysqli_fetch_assoc($getdata)) {
+    
+        $data[] = array(
+            "task" => $item["task"],
+            "details" => $item["details"],
+            "due" => $item["due"],
+            "category" => $item["category"],
+            "highpriority" => $item["highpriority"],
+            "created" => $item["created"]
+        );
     }
     
-    $arr = array();
-    $arr[0] = $resultgetdetails["task"];
-    $arr[1] = $resultgetdetails["details"];
-    $arr[2] = $resultgetdetails["due"];
-    $arr[3] = $resultgetdetails["category"];
-    $arr[4] = $resultgetdetails["highpriority"];
-    $arr[5] = $resultgetdetails["created"];
-    $arr[6] = $duein;
+    echo json_encode(array("data" => $data));
     
-    echo json_encode($arr);
 } elseif ($action == "generateapikey") {
     $api = substr(str_shuffle(MD5(microtime())), 0, 50);
     mysqli_query($con, "UPDATE `Users` SET `api_key` = \"$api\" WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");

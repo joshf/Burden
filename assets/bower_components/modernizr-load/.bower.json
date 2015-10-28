@@ -1,0 +1,14 @@
+{
+  "name": "modernizr-load",
+  "homepage": "https://github.com/candicom/modernizr-load",
+  "_release": "7f0ab45ead",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "7f0ab45eadbc086caac7e87f901b393fbe036c01"
+  },
+  "_source": "git://github.com/candicom/modernizr-load.git",
+  "_target": "*",
+  "_originalSource": "modernizr-load",
+  "_direct": true
+}

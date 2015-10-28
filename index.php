@@ -5,8 +5,7 @@
 require_once("assets/version.php");
 
 if (!file_exists("config.php")) {
-    header("Location: install");
-    exit;
+    die("Error: Config file not found!");
 }
 
 require_once("config.php");
@@ -17,16 +16,13 @@ if (!isset($_SESSION["burden_user"])) {
     exit;
 }
 
-//Set cookie so we dont constantly check for updates
-setcookie("burdenupdatecheck", time(), time()+3600*24*7);
-
 //Connect to database
 @$con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 if (mysqli_connect_errno()) {
     die("Error: Could not connect to database (" . mysqli_connect_error() . "). Check your database settings are correct.");
 }
 
-$getusersettings = mysqli_query($con, "SELECT `user` FROM `Users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
+$getusersettings = mysqli_query($con, "SELECT `user` FROM `users` WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
 if (mysqli_num_rows($getusersettings) == 0) {
     session_destroy();
     header("Location: login.php");
@@ -40,91 +36,26 @@ $resultgetusersettings = mysqli_fetch_assoc($getusersettings);
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimal-ui">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/favicon.ico">
 <title>Burden</title>
 <link rel="apple-touch-icon" href="assets/icon.png">
-<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="assets/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet">
-<link href="assets/bootstrap-notify/css/bootstrap-notify.min.css" rel="stylesheet">
-<style type="text/css">
-.datepicker {
-    z-index:1151 !important;
-}
-body {
-    padding-top: 30px;
-    padding-bottom: 30px;
-}
-a.close.pull-right {
-    padding-left: 10px;
-}
-.complete, .edit, #doaddcategoryforaddform, #doaddcategoryforeditform, .restore, .delete, .details {
-    cursor: pointer;
-}
-</style>
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<link rel="stylesheet" href="assets/bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css" media="screen">
+<link rel="stylesheet" href="assets/css/burden.css" type="text/css" media="screen">
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body>
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 <div class="container">
-<div class="navbar-header">
-<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-<span class="sr-only">Toggle navigation</span>
-<span class="icon-bar"></span>
-<span class="icon-bar"></span>
-<span class="icon-bar"></span>
-</button>
-<a class="navbar-brand" href="index.php">Burden</a>
-</div>
-<div class="navbar-collapse collapse" id="navbar-collapse">
-<div class="navbar-form navbar-left" role="search">
-<div class="form-group">
-<input type="text" class="form-control" id="search" placeholder="Search tasks">
-</div>
-</div>
-<ul class="nav navbar-nav navbar-right">
-<li class="dropdown">
-<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Filters <span class="caret"></span></a>
-<ul class="dropdown-menu" role="menu">
-<li><a href="index.php?filter=highpriority">High Priority Tasks</a></li>
-<li><a href="index.php?filter=completed">Completed Tasks</a></li>
-<li><a href="index.php?filter=duetoday">Due Today</a></li>
-<li class="divider"></li>
-<li class="dropdown-header">Categories</li>
-<?php
-
-//Get categories
-$getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\" AND `completed` != \"1\"");
-
-while($row = mysqli_fetch_assoc($getcategories)) {
-    echo "<li><a href=\"index.php?filter=categories&amp;cat=" . $row["category"] . "\">" . ucfirst($row["category"]) . "</a></li>";
-}
-
-?>
-<li class="divider"></li>
-<li class="dropdown-header">Sort</li>
-<li><a href="index.php?filter=date">Due Date</a></li>
-<li class="divider"></li>
-<li><a href="index.php">Clear Filters</a></li>
-</ul>
-</li>
-<li class="dropdown">
-<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?php echo $resultgetusersettings["user"]; ?> <span class="caret"></span></a>
-<ul class="dropdown-menu" role="menu">
-<li><a href="settings.php">Settings</a></li>
-<li><a href="logout.php">Logout</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-</nav>
-<div class="container">
-<div class="page-header">
-<h1>Tasks
+<div class="pull-right"><a href="settings.php"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a> <a href="logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></div>
+<h1>Burden</h1>
+<ol class="breadcrumb">
+<li><a href="index.php">Burden</a></li>
+<li>Tasks</li>
+<li class="active">
 <?php
 
 if (isset($_GET["filter"])) {
@@ -138,7 +69,7 @@ if (isset($_GET["filter"])) {
 	if ($filter == "categories") {
 		if (isset($_GET["cat"])) {
 		    $cat = mysqli_real_escape_string($con, $_GET["cat"]);
-		    $checkcatexists = mysqli_query($con, "SELECT `category` FROM `Data` WHERE `category` = \"$cat\"");
+		    $checkcatexists = mysqli_query($con, "SELECT `category` FROM `data` WHERE `category` = \"$cat\"");
 		    if (mysqli_num_rows($checkcatexists) == 0) {
 		        $filter = "normal";
 		    }
@@ -151,46 +82,76 @@ if (isset($_GET["filter"])) {
 }
 
 if ($filter == "completed") {
-    echo "<small>Completed</small>";
+    echo "Completed";
 } elseif ($filter == "highpriority") {
-    echo "<small>High Priority</small>";
+    echo "High Priority";
 } elseif ($filter == "categories") {
     if ($cat != "none") {
-        echo "<small>$cat</small>";
+        echo "$cat";
     } else {
-        echo "<small>No category</small>";
+        echo "No category";
     }
 } elseif ($filter == "date") {
-    echo "<small>Sorted By Date</small>";
+    echo "Sorted By Date";
 } elseif ($filter == "normal") {
-    echo "<small>Current</small>";
+    echo "Current";
 } elseif ($filter == "duetoday") {
-    echo "<small>Due Today</small>";
+    echo "Due Today";
 }
-echo "</h1></div><div class=\"notifications top-right\"></div>";
 
-echo "<noscript><div class=\"alert alert-info\"><h4 class=\"alert-heading\">Information</h4><p>Please enable JavaScript to use Burden. For instructions on how to do this, see <a href=\"http://www.activatejavascript.org\" class=\"alert-link\" target=\"_blank\">here</a>.</p></div></noscript>";
+?>
+</li></ol>
+<div class="row">
+<div class="col-md-8"><div class="form-group"><input type="text" class="form-control" id="search" placeholder="Search..."></div>
+</div>
+<div class="col-md-4">
+<div class="form-group">
+<select class="form-control" id="filters" name="filters">
+<option value="index.php">None</option>
+<optgroup label="Filters">
+<option value="index.php?filter=highpriority">High Priority Tasks</option>
+<option value="index.php?filter=completed">Completed Tasks</option>
+<option value="index.php?filter=duetoday">Due Today</option>
+</optgroup>
+<optgroup label="Categories">
+<?php
 
-//Update checking
-if (!isset($_COOKIE["burdenupdatecheck"])) {
-    $remoteversion = file_get_contents("https://raw.github.com/joshf/Burden/master/version.txt");
-    if (version_compare($version, $remoteversion) < 0) {
-        echo "<div class=\"alert alert-warning\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button><h4 class=\"alert-heading\">Update</h4><p>Burden <a href=\"https://github.com/joshf/Burden/releases/$remoteversion\" class=\"alert-link\" target=\"_blank\">$remoteversion</a> is available. <a href=\"https://github.com/joshf/Burden#updating\" class=\"alert-link\" target=\"_blank\">Click here for instructions on how to update</a>.</p></div>";
-    }
+//Don't duplicate none entry
+$doesnoneexist = mysqli_query($con, "SELECT `category` FROM `data` WHERE `category` = \"none\"");
+if (mysqli_num_rows($doesnoneexist) == 0) {
+    echo "<option value=\"none\">None</option>";
 }
+
+//Get categories
+$getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `data` WHERE `category` != \"\"");
+
+while($task = mysqli_fetch_assoc($getcategories)) {
+        echo "<option value=\"index.php?filter=categories&amp;cat=" . $task["category"] . "\">" . ucfirst($task["category"]) . "</option>";
+}
+
+?>
+</optgroup>
+<optgroup label="Sort">
+<option value="index.php?filter=date">Due Date</option>
+</optgroup>
+</select>
+</div>
+</div>
+</div>
+<?php
 
 if ($filter == "completed") {
-    $gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"1\"");
+    $gettasks = mysqli_query($con, "SELECT * FROM `data` WHERE `completed` = \"1\"");
 } elseif ($filter == "highpriority") {
-    $gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `highpriority` = \"1\" AND `completed` = \"0\"");
+    $gettasks = mysqli_query($con, "SELECT * FROM `data` WHERE `highpriority` = \"1\" AND `completed` = \"0\"");
 } elseif ($filter == "categories") {
-	$gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\" AND `category` = \"$cat\"");
+	$gettasks = mysqli_query($con, "SELECT * FROM `data` WHERE `completed` = \"0\" AND `category` = \"$cat\"");
 } elseif ($filter == "date") {
-	$gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\" ORDER BY `due` ASC");
+	$gettasks = mysqli_query($con, "SELECT * FROM `data` WHERE `completed` = \"0\" ORDER BY `due` ASC");
 } elseif ($filter == "duetoday") {
-    $gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\" AND `due` = CURDATE()");
+    $gettasks = mysqli_query($con, "SELECT * FROM `data` WHERE `completed` = \"0\" AND `due` = CURDATE()");
 } else {
-    $gettasks = mysqli_query($con, "SELECT * FROM `Data` WHERE `completed` = \"0\"");
+    $gettasks = mysqli_query($con, "SELECT * FROM `data` WHERE `completed` = \"0\"");
 }
 
 //Set counters to zero
@@ -200,12 +161,12 @@ $numberoftasksduetoday = "0";
 
 echo "<ul class=\"list-group\">";
 if (mysqli_num_rows($gettasks) != 0) {
-    while($row = mysqli_fetch_assoc($gettasks)) {
+    while($task = mysqli_fetch_assoc($gettasks)) {
         //Count tasks
         $numberoftasks++;
         //Logic
         $today = strtotime(date("Y-m-d"));
-        $due = strtotime($row["due"]);
+        $due = strtotime($task["due"]);
         //Counters
         if ($today > $due) {
             $numberoftasksoverdue++;
@@ -214,10 +175,10 @@ if (mysqli_num_rows($gettasks) != 0) {
             $numberoftasksduetoday++;
         }
         //Set cases
-        if ($row["highpriority"] == "0" && $row["completed"] != "1" && $today < $due || $today == $due) {
+        if ($task["highpriority"] == "0" && $task["completed"] != "1" && $today < $due || $today == $due) {
             $case = "normal";
         }
-        if ($row["highpriority"] == "1") {
+        if ($task["highpriority"] == "1") {
             if ($today > $due) {
                 $case = "overdue";
             } else {
@@ -225,8 +186,8 @@ if (mysqli_num_rows($gettasks) != 0) {
             }
         }
         if ($today > $due) {
-            if ($row["due"] == "") {
-                if ($row["highpriority"] == "1") {
+            if ($task["due"] == "") {
+                if ($task["highpriority"] == "1") {
                     $case = "highpriority";
                 } else {
                     $case = "normal";
@@ -238,7 +199,7 @@ if (mysqli_num_rows($gettasks) != 0) {
         if ($today == $due) {
             $case = "duetoday";
         }
-        if ($row["completed"] == "1") {
+        if ($task["completed"] == "1") {
             $case = "completed";
         }
         switch ($case) {
@@ -259,34 +220,34 @@ if (mysqli_num_rows($gettasks) != 0) {
                 break;
         }
         if ($filter == "completed") {
-            $segments = explode("-", $row["datecompleted"]);
+            $segments = explode("-", $task["datecompleted"]);
             if (count($segments) == 3) {
                 list($year, $month, $day) = $segments;
             }
             $date = "$day-$month-$year";
         } else {
-            $segments = explode("-", $row["due"]);
+            $segments = explode("-", $task["due"]);
             if (count($segments) == 3) {
                 list($year, $month, $day) = $segments;
             }
             $date = "$day-$month-$year";
         }
-        echo "<li class=\"list-group-item\" id=\"" . $row["id"] . "\"><span class=\"details\" data-id=\"" . $row["id"] . "\">" . $row["task"] . "</span><div class=\"pull-right\">";
-        if ($row["category"] != "none") {
-            echo "<a href=\"?filter=categories&amp;cat=" . $row["category"] . "\"><span class=\"hidden-xs label label-primary\" data-id=\"" . $row["category"] . "\">" . $row["category"] . "</span></a> ";
+        echo "<li class=\"list-group-item\" id=\"" . $task["id"] . "\"><span class=\"details\" data-id=\"" . $task["id"] . "\">" . $task["task"] . "</span><div class=\"pull-right\">";
+        if ($task["category"] != "none") {
+            echo "<a href=\"?filter=categories&amp;cat=" . $task["category"] . "\"><span class=\"hidden-xs label label-primary\" data-id=\"" . $task["category"] . "\">" . $task["category"] . "</span></a> ";
         } 
-        echo "<span class=\"label label-$label\" data-id=\"" . $row["id"] . "\">" . $date . "</span> ";
+        echo "<span class=\"label label-$label\" data-id=\"" . $task["id"] . "\">" . $date . "</span> ";
         
         if ($filter == "completed") {
-            echo "<span class=\"delete glyphicon glyphicon-trash\" data-id=\"" . $row["id"] . "\"></span> ";
+            echo "<span class=\"delete glyphicon glyphicon-trash\" data-id=\"" . $task["id"] . "\"></span> ";
         } else {
-            echo "<span class=\"edit glyphicon glyphicon-edit\" data-id=\"" . $row["id"] . "\"></span> ";
+            echo "<span class=\"edit glyphicon glyphicon-edit\" data-id=\"" . $task["id"] . "\"></span> ";
         }
         
         if ($filter == "completed") {
-            echo "<span class=\"restore glyphicon glyphicon-repeat\" data-id=\"" . $row["id"] . "\"></span>";
+            echo "<span class=\"restore glyphicon glyphicon-repeat\" data-id=\"" . $task["id"] . "\"></span>";
         } else {
-            echo "<span class=\"complete glyphicon glyphicon-ok\" data-id=\"" . $row["id"] . "\"></span>";
+            echo "<span class=\"complete glyphicon glyphicon-ok\" data-id=\"" . $task["id"] . "\"></span>";
         }
         echo "</div></li>";
     }
@@ -297,12 +258,8 @@ echo "</ul>";
 
 ?>
 <button type="button" id="launchaddmodal" class="btn btn-default">Add</button><br><br>
-<?php
-
-echo "<i class=\"glyphicon glyphicon-tasks\"></i> <b>$numberoftasks</b> tasks<br><i class=\"glyphicon glyphicon-warning-sign\"></i> <b>$numberoftasksduetoday</b> due today<br><i class=\"glyphicon glyphicon-exclamation-sign\"></i> <b>$numberoftasksoverdue</b> overdue";
-
-?>
-
+<span class="pull-right text-muted"><small>Version <?php echo $version; ?></small></span>
+</div>
 <!-- Add form -->
 <div class="modal fade" id="addformmodal" tabindex="-1" role="dialog" aria-labelledby="addformmodal" aria-hidden="true">
 <div class="modal-dialog">
@@ -312,7 +269,7 @@ echo "<i class=\"glyphicon glyphicon-tasks\"></i> <b>$numberoftasks</b> tasks<br
 <h4 class="modal-title" id="addformmodaltitle">Add Task</h4>
 </div>
 <div class="modal-body">
-<form id="addform" role="form" autocomplete="off">
+<form id="addform" autocomplete="off">
 <div class="form-group">
 <input type="text" class="form-control" id="task" name="task" placeholder="Type a task..." required autofocus>
 </div>
@@ -327,16 +284,16 @@ echo "<i class=\"glyphicon glyphicon-tasks\"></i> <b>$numberoftasks</b> tasks<br
 <?php
 
 //Don't duplicate none entry
-$doesnoneexist = mysqli_query($con, "SELECT `category` FROM `Data` WHERE `category` = \"none\"");
+$doesnoneexist = mysqli_query($con, "SELECT `category` FROM `data` WHERE `category` = \"none\"");
 if (mysqli_num_rows($doesnoneexist) == 0) {
     echo "<option value=\"none\">None</option>";
 }
 
 //Get categories
-$getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\"");
+$getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `data` WHERE `category` != \"\"");
 
-while($row = mysqli_fetch_assoc($getcategories)) {
-        echo "<option value=\"" . $row["category"] . "\">" . ucfirst($row["category"]) . "</option>";
+while($task = mysqli_fetch_assoc($getcategories)) {
+        echo "<option value=\"" . $task["category"] . "\">" . ucfirst($task["category"]) . "</option>";
 }
 
 ?>
@@ -375,7 +332,7 @@ while($row = mysqli_fetch_assoc($getcategories)) {
 <h4 class="modal-title" id="editformmodaltitle">Edit Task</h4>
 </div>
 <div class="modal-body">
-<form id="editform" role="form" autocomplete="off">
+<form id="editform" autocomplete="off">
 <div class="form-group">
 <input type="text" class="form-control" id="edittask" name="task" placeholder="Type a task..." required>
 </div>
@@ -390,16 +347,16 @@ while($row = mysqli_fetch_assoc($getcategories)) {
 <?php
 
 //Don't duplicate none entry
-$doesnoneexist = mysqli_query($con, "SELECT `category` FROM `Data` WHERE `category` = \"none\"");
+$doesnoneexist = mysqli_query($con, "SELECT `category` FROM `data` WHERE `category` = \"none\"");
 if (mysqli_num_rows($doesnoneexist) == 0) {
     echo "<option value=\"none\">None</option>";
 }
 
 //Get categories
-$getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `Data` WHERE `category` != \"\"");
+$getcategories = mysqli_query($con, "SELECT DISTINCT(category) FROM `data` WHERE `category` != \"\"");
 
-while($row = mysqli_fetch_assoc($getcategories)) {
-        echo "<option value=\"" . $row["category"] . "\">" . ucfirst($row["category"]) . "</option>";
+while($task = mysqli_fetch_assoc($getcategories)) {
+        echo "<option value=\"" . $task["category"] . "\">" . ucfirst($task["category"]) . "</option>";
 }
 
 mysqli_close($con);
@@ -431,20 +388,47 @@ mysqli_close($con);
 </div>
 </div>
 <!-- Edit form end -->
-<hr>
-<div class="footer">
-Burden <?php echo $version; ?> &copy; <a href="http://joshf.co.uk" target="_blank">Josh Fradley</a> <?php echo date("Y"); ?>. Themed by <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>.
-</div>
-</div>
-<script src="assets/jquery.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/bootstrap-notify/js/bootstrap-notify.min.js"></script>
-<script src="assets/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-<script src="assets/nod.min.js"></script>
-<script src="assets/modernizr.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    /* Search */
+<script src="assets/bower_components/jquery/dist/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="assets/bower_components/bootstrap/dist/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="assets/bower_components/js-cookie/src/js.cookie.js" type="text/javascript" charset="utf-8"></script>
+<script src="assets/bower_components/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="assets/bower_components/modernizr-load/modernizr.js" type="text/javascript" charset="utf-8"></script>
+<script src="assets/bower_components/bootbox.js/bootbox.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">  
+$(document).ready(function () {
+    var burden_version = "<?php echo $version; ?>";
+    if (!Cookies.get("burden_didcheckforupdates")) {
+        $.getJSON("https://api.github.com/repos/joshf/Burden/releases").done(function(resp) {
+            var data = resp[0];
+            var burden_remote_version = data.tag_name;
+            var url = data.zipball_url;
+            if (burden_version < burden_remote_version) {
+                bootbox.dialog({
+                    message: "Burden " + burden_remote_version + " is available. For more information about this update click <a href=\""+ data.html_url + "\" target=\"_blank\">here</a>. Do you wish to download the update? If you click \"Not Now\" you will be not reminded for another 7 days.",
+                    title: "Update Available",
+                    buttons: {
+                        cancel: {
+                            label: "Not Now",
+                            callback: function() {
+                                Cookies.set("burden_didcheckforupdates", "1", { expires: 7 });
+                            }
+                        },
+                        main: {
+                            label: "Download Update",
+                            className: "btn-primary",
+                            callback: function() {
+                                window.location.href = data.zipball_url;
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+    $("#filters").on("change", function() {
+        var url = $(this).val()
+        window.location.href = url;
+    });
     $("#search").keyup(function() {
         $("#search-error").remove();
         var filter = $(this).val();
@@ -460,27 +444,7 @@ $(document).ready(function() {
         if (count === 0) {
             $(".list-group").prepend("<li class=\"list-group-item\" id=\"search-error\">No tasks found</li>");
         }
-        document.title = "Burden (" + count + ")";
     });
-    /* End */
-    /* Set Up Notifications */
-    var show_notification = function(type, icon, text, reload) {
-        $(".top-right").notify({
-            type: type,
-            transition: "fade",
-            icon: icon,
-            message: {
-                text: text
-            },
-            onClosed: function() {
-                if (reload == true) {
-                    window.location.reload();
-                }
-            }
-        }).show();
-    };
-    /* End */
-    /* Form Overrides */
     $("#addformmodal").on("keypress", function(e) {
         if (e.keyCode === 13) {
             e.preventDefault();
@@ -493,8 +457,6 @@ $(document).ready(function() {
             $("#edit").trigger("click");
         }
     });
-    /* End */
-    /* Datepicker */
     if (!Modernizr.inputtypes.date) {
         $(".due").datepicker({
             format: "dd-mm-yyyy",
@@ -502,9 +464,6 @@ $(document).ready(function() {
             todayHighlight: "true"
         });
     }
-    /* End */
-    /* Add Category */
-    /* Add */
     $("#addcategoryforaddform").click(function() {
         $("#categoryselectforaddform").hide();
         $("#showcategoryforaddform").show();
@@ -532,31 +491,8 @@ $(document).ready(function() {
         $("#categoryselectforeditform").show();
         $("#showcategoryforeditform").hide();
     });
-    /* End */
-    /* Add */
     $("#launchaddmodal").click(function() {
         $("#addformmodal").modal();
-        var addval = nod();  
-        addval.configure({
-            submit: "#add",
-            disableSubmit: true,
-            delay: 1000,
-            parentClass: "form-group",
-            successClass: "has-success",
-            errorClass: "has-error",
-            successMessageClass: "text-success",
-            errorMessageClass: "text-danger"
-        });
-        addval.add([{
-            selector: "#task",
-            validate: "presence",
-            errorMessage: "Task cannot be empty!"
-        }, {
-            selector: "#due",
-            validate: "presence",
-            errorMessage: "A due date is required (DD-MM-YYYY)!"
-        
-        }]);
     });
     $("#add").click(function() {
         $.ajax({
@@ -564,10 +500,25 @@ $(document).ready(function() {
             url: "worker.php",
             data: $("#addform").serialize(),
             error: function() {
-                show_notification("danger", "warning-sign", "Ajax query failed!");
+                $.notify({
+                    message: "Ajax query failed!",
+                    icon: "glyphicon glyphicon-warning-sign",
+                },{
+                    type: "danger",
+                    allow_dismiss: true
+                });
             },
             success: function() {
-                show_notification("success", "ok", "Task added!", true);
+                $.notify({
+                    message: "Task added!",
+                    icon: "glyphicon glyphicon-ok",
+                },{
+                    type: "success",
+                    allow_dismiss: true
+                });
+                setTimeout(function() {
+                	window.location.reload();
+                }, 2000);
                 $("#addformmodal").modal("hide");
             }
         });
@@ -580,56 +531,40 @@ $(document).ready(function() {
             type: "POST",
             dataType: "json",
             url: "worker.php",
-            data: "action=details&id="+ id +"",
+            data: "action=info&id="+ id +"",
             error: function() {
-                show_notification("danger", "warning-sign", "Ajax query failed!");
+                $.notify({
+                    message: "Ajax query failed!",
+                    icon: "glyphicon glyphicon-warning-sign",
+                },{
+                    type: "danger",
+                    allow_dismiss: true
+                });
             },
-            success: function(data) {
+            success: function(resp) {
                 /* Stop auto checked */
                 $("#edithighpriority").prop("checked", false);
-                $("#edittask").val(data[0]);
-                $("#editdetails").val(data[1]);
+                $("#edittask").val(resp.data[0].task);
+                $("#editdetails").val(resp.data[0].details);
                 if (!Modernizr.inputtypes.date) {
-                    raw = data[2].split("-");
+                    raw = resp.data[0].due.split("-");
                     date = raw[2]+"-"+raw[1]+"-"+raw[0];
                     $("#editdue").val(date);
                 } else {
-                    $("#editdue").val(data[2]);
+                    $("#editdue").val(resp.data[0].due);
                 }
-                if (data[3] != "") {
-                    $("#editcategory").val(data[3]);
+                if (resp.data[0].category != "") {
+                    $("#editcategory").val(resp.data[0].category);
                 } else {
                     $("#editcategory").val("none"); 
                 }
-                if (data[4] == "1") {
+                if (resp.data[0].highpriority == "1") {
                     $("#edithighpriority").prop("checked", true);
                 }
                 $("#editid").val(id);
             }
         });        
         $("#editformmodal").modal();
-        var editval = nod();
-        editval.configure({
-            submit: "#edit",
-            disableSubmit: true,
-            delay: 10,
-            parentClass: "form-group",
-            successClass: "has-success",
-            errorClass: "has-error",
-            successMessageClass: "text-success",
-            errorMessageClass: "text-danger"
-        });
-        editval.add([{
-            selector: "#edittask",
-            validate: "presence",
-            errorMessage: "Task cannot be empty!",
-            defaultStatus: "valid"
-        }, {
-            selector: "#editdue",
-            validate: "presence",
-            errorMessage: "A due date is required (DD-MM-YYYY)!",
-            defaultStatus: "valid"
-        }]);        
     });
     $("#edit").click(function() {
         $.ajax({
@@ -637,10 +572,25 @@ $(document).ready(function() {
             url: "worker.php",
             data: $("#editform").serialize(),
             error: function() {
-                show_notification("danger", "warning-sign", "Ajax query failed!");
+                $.notify({
+                    message: "Ajax query failed!",
+                    icon: "glyphicon glyphicon-warning-sign",
+                },{
+                    type: "danger",
+                    allow_dismiss: true
+                });
             },
             success: function() {
-                show_notification("success", "ok", "Task edited!", true);
+                $.notify({
+                    message: "Task edited!",
+                    icon: "glyphicon glyphicon-ok",
+                },{
+                    type: "success",
+                    allow_dismiss: true
+                });
+                setTimeout(function() {
+                	window.location.reload();
+                }, 2000);
                 $("#editformmodal").modal("hide");
             }
         });
@@ -654,10 +604,25 @@ $(document).ready(function() {
             url: "worker.php",
             data: "action=complete&id="+ id +"",
             error: function() {
-                show_notification("danger", "warning-sign", "Ajax query failed!");
+                $.notify({
+                    message: "Ajax query failed!",
+                    icon: "glyphicon glyphicon-warning-sign",
+                },{
+                    type: "danger",
+                    allow_dismiss: true
+                });
             },
             success: function() {
-                show_notification("success", "ok", "Task marked as completed!", true);
+                $.notify({
+                    message: "Task completed!",
+                    icon: "glyphicon glyphicon-ok",
+                },{
+                    type: "success",
+                    allow_dismiss: true
+                });
+                setTimeout(function() {
+                	window.location.reload();
+                }, 2000);
             }
         });
     });
@@ -678,7 +643,13 @@ $(document).ready(function() {
             url: "worker.php",
             data: "action=details&id="+ id +"",
             error: function() {
-                show_notification("danger", "warning-sign", "Ajax query failed!");
+                $.notify({
+                    message: "Ajax query failed!",
+                    icon: "glyphicon glyphicon-warning-sign",
+                },{
+                    type: "danger",
+                    allow_dismiss: true
+                });
             },
             success: function(data) {
                 if (data[1] == "") {
@@ -700,15 +671,28 @@ $(document).ready(function() {
             url: "worker.php",
             data: "action=restore&id="+ id +"",
             error: function() {
-                show_notification("danger", "warning-sign", "Ajax query failed!");
+                $.notify({
+                    message: "Ajax query failed!",
+                    icon: "glyphicon glyphicon-warning-sign",
+                },{
+                    type: "danger",
+                    allow_dismiss: true
+                });
             },
             success: function() {
-                show_notification("success", "ok", "Task restored!", true);
+                $.notify({
+                    message: "Task restored!",
+                    icon: "glyphicon glyphicon-ok",
+                },{
+                    type: "success",
+                    allow_dismiss: true
+                });
+                setTimeout(function() {
+                	window.location.reload();
+                }, 2000);
             }
         });
     });
-    /* End */
-    /* Delete */
     $("li").on("click", ".delete", function() {
         var id = $(this).data("id");
         $.ajax({
@@ -716,17 +700,28 @@ $(document).ready(function() {
             url: "worker.php",
             data: "action=delete&id="+ id +"",
             error: function() {
-                show_notification("danger", "warning-sign", "Ajax query failed!");
+                $.notify({
+                    message: "Ajax query failed!",
+                    icon: "glyphicon glyphicon-warning-sign",
+                },{
+                    type: "danger",
+                    allow_dismiss: true
+                });
             },
             success: function() {
-                show_notification("success", "ok", "Task deleted!", true);
+                $.notify({
+                    message: "Task deleted!",
+                    icon: "glyphicon glyphicon-ok",
+                },{
+                    type: "success",
+                    allow_dismiss: true
+                });
+                setTimeout(function() {
+                	window.location.reload();
+                }, 2000);
             }
         });
     });
-    /* End */
-    /* Update Title */
-    document.title = "Burden (<?php echo $numberoftasks; ?>)";
-    /* End */
 });
 </script>
 </body>
