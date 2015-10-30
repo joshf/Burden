@@ -1,4 +1,4 @@
-.edit, .delete, .list {
+.edit, .delete, .restore, .complete, .details, .addcat {
     cursor: pointer;
 }
 body {

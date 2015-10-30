@@ -42,6 +42,7 @@ $resultgetusersettings = mysqli_fetch_assoc($getusersettings);
 <link rel="apple-touch-icon" href="assets/icon.png">
 <link rel="stylesheet" href="assets/bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css" media="screen">
 <link rel="stylesheet" href="assets/css/burden.css" type="text/css" media="screen">
+<link rel="stylesheet" href="assets/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css" type="text/css" media="screen">
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -54,8 +55,6 @@ $resultgetusersettings = mysqli_fetch_assoc($getusersettings);
 <h1>Burden</h1>
 <ol class="breadcrumb">
 <li><a href="index.php">Burden</a></li>
-<li>Tasks</li>
-<li class="active">
 <?php
 
 if (isset($_GET["filter"])) {
@@ -82,32 +81,33 @@ if (isset($_GET["filter"])) {
 }
 
 if ($filter == "completed") {
-    echo "Completed";
+   $filter_name = "Completed";
 } elseif ($filter == "highpriority") {
-    echo "High Priority";
+    $filter_name = "High Priority";
 } elseif ($filter == "categories") {
     if ($cat != "none") {
-        echo "$cat";
+        $filter_name = $cat;
     } else {
-        echo "No category";
+        $filter_name = "No category";
     }
 } elseif ($filter == "date") {
-    echo "Sorted By Date";
+    $filter_name = "Sorted By Date";
 } elseif ($filter == "normal") {
-    echo "Current";
+   $filter_name = "Current Tasks";
 } elseif ($filter == "duetoday") {
-    echo "Due Today";
+    $filter_name = "Due Today";
 }
 
+echo "<li class=\"active\">$filter_name</li></ol>";
+
 ?>
-</li></ol>
 <div class="row">
 <div class="col-md-8"><div class="form-group"><input type="text" class="form-control" id="search" placeholder="Search..."></div>
 </div>
 <div class="col-md-4">
 <div class="form-group">
 <select class="form-control" id="filters" name="filters">
-<option value="index.php">None</option>
+<option value="index.php">No Filters</option>
 <optgroup label="Filters">
 <option value="index.php?filter=highpriority">High Priority Tasks</option>
 <option value="index.php?filter=completed">Completed Tasks</option>
@@ -119,7 +119,7 @@ if ($filter == "completed") {
 //Don't duplicate none entry
 $doesnoneexist = mysqli_query($con, "SELECT `category` FROM `data` WHERE `category` = \"none\"");
 if (mysqli_num_rows($doesnoneexist) == 0) {
-    echo "<option value=\"none\">None</option>";
+    echo "<option value=\"index.php?filter=categories&amp;cat=none\">None</option>";
 }
 
 //Get categories
@@ -260,7 +260,6 @@ echo "</ul>";
 <button type="button" id="launchaddmodal" class="btn btn-default">Add</button><br><br>
 <span class="pull-right text-muted"><small>Version <?php echo $version; ?></small></span>
 </div>
-<!-- Add form -->
 <div class="modal fade" id="addformmodal" tabindex="-1" role="dialog" aria-labelledby="addformmodal" aria-hidden="true">
 <div class="modal-dialog">
 <div class="modal-content">
@@ -279,7 +278,8 @@ echo "</ul>";
 <div class="form-group">
 <input type="date" class="due form-control" id="due" name="due" required>
 </div>
-<div id="categoryselectforaddform" class="form-group">
+<div class="form-group ">
+<div class="input-group">
 <select class="form-control" id="category" name="category">
 <?php
 
@@ -298,12 +298,7 @@ while($task = mysqli_fetch_assoc($getcategories)) {
 
 ?>
 </select>
-<span class="help-block"><button type="button" id="addcategoryforaddform" class="btn btn-default btn-xs">Add Category</button></span>
-</div>
-<div id="showcategoryforaddform" style="display: none;" class="form-group ">
-<div class="input-group">
-<input type="text" class="form-control" id="newcategoryforaddform" name="newcategoryforaddform" placeholder="Type a new category...">
-<span id="doaddcategoryforaddform" class="input-group-addon">
+<span id="addcategoryforaddform" class="addcat input-group-addon">
 <i class="glyphicon glyphicon-plus"></i>
 </span>
 </div>
@@ -322,8 +317,6 @@ while($task = mysqli_fetch_assoc($getcategories)) {
 </div>
 </div>
 </div>
-<!-- Add form end -->
-<!-- Edit form -->
 <div class="modal fade" id="editformmodal" tabindex="-1" role="dialog" aria-labelledby="editformmodal" aria-hidden="true">
 <div class="modal-dialog">
 <div class="modal-content">
@@ -342,7 +335,8 @@ while($task = mysqli_fetch_assoc($getcategories)) {
 <div class="form-group">
 <input type="date" class="due form-control" id="editdue" name="due" required>
 </div>
-<div id="categoryselectforeditform" class="form-group">
+<div class="form-group ">
+<div class="input-group">
 <select class="form-control" id="editcategory" name="category">
 <?php
 
@@ -359,16 +353,9 @@ while($task = mysqli_fetch_assoc($getcategories)) {
         echo "<option value=\"" . $task["category"] . "\">" . ucfirst($task["category"]) . "</option>";
 }
 
-mysqli_close($con);
-
 ?>
 </select>
-<span class="help-block"><button type="button" id="addcategoryforeditform" class="btn btn-default btn-xs">Add Category</button></span>
-</div>
-<div id="showcategoryforeditform" style="display: none;" class="form-group ">
-<div class="input-group">
-<input type="text" class="form-control" id="newcategoryforeditform" name="newcategoryforeditform" placeholder="Type a new category...">
-<span id="doaddcategoryforeditform" class="input-group-addon">
+<span id="addcategoryforeditform" class="addcat input-group-addon">
 <i class="glyphicon glyphicon-plus"></i>
 </span>
 </div>
@@ -387,13 +374,14 @@ mysqli_close($con);
 </div>
 </div>
 </div>
-<!-- Edit form end -->
 <script src="assets/bower_components/jquery/dist/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="assets/bower_components/bootstrap/dist/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="assets/bower_components/js-cookie/src/js.cookie.js" type="text/javascript" charset="utf-8"></script>
 <script src="assets/bower_components/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="assets/bower_components/modernizr-load/modernizr.js" type="text/javascript" charset="utf-8"></script>
 <script src="assets/bower_components/bootbox.js/bootbox.js" type="text/javascript" charset="utf-8"></script>
+<script src="assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="assets/bower_components/nod/nod.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">  
 $(document).ready(function () {
     var burden_version = "<?php echo $version; ?>";
@@ -465,36 +453,58 @@ $(document).ready(function () {
         });
     }
     $("#addcategoryforaddform").click(function() {
-        $("#categoryselectforaddform").hide();
-        $("#showcategoryforaddform").show();
+        bootbox.prompt("Enter a category", function(newcategory) {                
+          if (newcategory !== null && newcategory != "") {                                             
+              $("#addform select").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
+          }
+         });
     });
-    $("#doaddcategoryforaddform").click(function() {
-        newcategory=$("#newcategoryforaddform").val()
-        if (newcategory != null && newcategory != "") {
-            $("#addform select").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
-        }
-        $("#newcategoryforaddform").val("")
-        $("#categoryselectforaddform").show();
-        $("#showcategoryforaddform").hide();
-    });
-    /* Edit */
     $("#addcategoryforeditform").click(function() {
-        $("#categoryselectforeditform").hide();
-        $("#showcategoryforeditform").show();
+        bootbox.prompt("Enter a category", function(newcategory) {                
+          if (newcategory !== null && newcategory != "") {                                             
+              $("#editform select").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
+          }
+         });
     });
-    $("#doaddcategoryforeditform").click(function() {
-        newcategory=$("#newcategoryforeditform").val()
-        if (newcategory != null && newcategory != "") {
-            $("#editform select").append("<option value=\"" + newcategory + "\" selected=\"selected\">" + newcategory + "</option>");
-        }
-        $("#newcategoryforeditform").val("")
-        $("#categoryselectforeditform").show();
-        $("#showcategoryforeditform").hide();
-    });
+
+
     $("#launchaddmodal").click(function() {
         $("#addformmodal").modal();
+        var addval = nod();  
+        addval.configure({
+            submit: "#add",
+            disableSubmit: true,
+            delay: 1000,
+            parentClass: "form-group",
+            successClass: "has-success",
+            errorClass: "has-error",
+            successMessageClass: "text-success",
+            errorMessageClass: "text-danger"
+        });
+        addval.add([{
+            selector: "#task",
+            validate: "presence",
+            errorMessage: "Task cannot be empty!"
+        }, {
+            selector: "#due",
+            validate: "presence",
+            errorMessage: "A due date is required (DD-MM-YYYY)!"
+        
+        }]);
     });
     $("#add").click(function() {
+        task = $("#task").val()
+        if (task == "") {
+            $.notify({
+                message: "Task was empty!",
+                icon: "glyphicon glyphicon-warning-sign",
+            },{
+                element: ".modal",
+                type: "danger",
+                allow_dismiss: true
+            });
+            return false;
+        }
         $.ajax({
             type: "POST",
             url: "worker.php",
@@ -523,8 +533,6 @@ $(document).ready(function () {
             }
         });
     });
-    /* End */
-    /* Edit */
     $("li").on("click", ".edit", function() {
         var id = $(this).data("id");
         $.ajax({
@@ -542,7 +550,6 @@ $(document).ready(function () {
                 });
             },
             success: function(resp) {
-                /* Stop auto checked */
                 $("#edithighpriority").prop("checked", false);
                 $("#edittask").val(resp.data[0].task);
                 $("#editdetails").val(resp.data[0].details);
@@ -565,6 +572,28 @@ $(document).ready(function () {
             }
         });        
         $("#editformmodal").modal();
+        var editval = nod();
+        editval.configure({
+            submit: "#edit",
+            disableSubmit: true,
+            delay: 5,
+            parentClass: "form-group",
+            successClass: "has-success",
+            errorClass: "has-error",
+            successMessageClass: "text-success",
+            errorMessageClass: "text-danger"
+        });
+        editval.add([{
+            selector: "#edittask",
+            validate: "presence",
+            errorMessage: "Task cannot be empty!",
+            defaultStatus: "valid"
+        }, {
+            selector: "#editdue",
+            validate: "presence",
+            errorMessage: "A due date is required (DD-MM-YYYY)!",
+            defaultStatus: "valid"
+        }]);   
     });
     $("#edit").click(function() {
         $.ajax({
@@ -595,8 +624,6 @@ $(document).ready(function () {
             }
         });
     });
-    /* End */
-    /* Complete */
     $("li").on("click", ".complete", function() {
         var id = $(this).data("id");
         $.ajax({
@@ -626,8 +653,6 @@ $(document).ready(function () {
             }
         });
     });
-    /* End */
-    /* Details */
     $("li").on("click", ".details", function() {
         var id = $(this).data("id");
         if ($("#detailsitem"+id).length) {
@@ -655,15 +680,15 @@ $(document).ready(function () {
                 if (resp.data[0].details == "") {
                     resp.data[0].details = "<i>No details available</i>";
                 }
-                raw = resp.data[0].created.split("-");
-                created = raw[2]+"-"+raw[1]+"-"+raw[0];                
-                $("#"+id).append("<div id=\"detailsitem"+ id +"\" style=\"display: none;\"><p><dl><dt>Details</dt><dd>" + resp.data[0].details +  "</dd><dt>Due</dt><dd>" + resp.data[0].due +  "</dd><dt>Created</dt><dd>" + created +  "</dd></dl></p></div>");
+                rawdue = resp.data[0].due.split("-");
+                due = rawdue[2]+"-"+rawdue[1]+"-"+rawdue[0];
+                rawcreated = resp.data[0].created.split("-");
+                created = rawcreated[2]+"-"+rawcreated[1]+"-"+rawcreated[0];                
+                $("#"+id).append("<div id=\"detailsitem"+ id +"\" style=\"display: none;\"><p><dl><dt>Details</dt><dd>" + resp.data[0].details +  "</dd><dt>Due</dt><dd>" + due +  "</dd><dt>Created</dt><dd>" + created +  "</dd></dl></p></div>");
                 $("#detailsitem"+id).show("fast");
             }
         });
     });
-    /* End */
-    /* Restore */
     $("li").on("click", ".restore", function() {
         var id = $(this).data("id");
         $.ajax({
