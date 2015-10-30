@@ -414,9 +414,19 @@ $(document).ready(function () {
         });
     }
     $("#filters").on("change", function() {
+        Cookies.remove("filter");
         var url = $(this).val()
+        Cookies.set("filter", url, { expires: 7 });
         window.location.href = url;
     });
+    var ol = window.location.href;
+    if (ol.indexOf("filter") == -1) {
+        Cookies.remove("filter");
+    }
+    if (Cookies.get("filter")) {
+        var filter = Cookies.get("filter");
+        $("#filters").val(filter);
+    }
     $("#search").keyup(function() {
         $("#search-error").remove();
         var filter = $(this).val();
@@ -466,8 +476,6 @@ $(document).ready(function () {
           }
          });
     });
-
-
     $("#launchaddmodal").click(function() {
         $("#addformmodal").modal();
         var addval = nod();  
