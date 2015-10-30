@@ -162,8 +162,6 @@ $numberoftasksduetoday = "0";
 echo "<ul class=\"list-group\">";
 if (mysqli_num_rows($gettasks) != 0) {
     while($task = mysqli_fetch_assoc($gettasks)) {
-        //Count tasks
-        $numberoftasks++;
         //Logic
         $today = strtotime(date("Y-m-d"));
         $due = strtotime($task["due"]);
@@ -234,7 +232,7 @@ if (mysqli_num_rows($gettasks) != 0) {
         }
         echo "<li class=\"list-group-item\" id=\"" . $task["id"] . "\"><span class=\"details\" data-id=\"" . $task["id"] . "\">" . $task["task"] . "</span><div class=\"pull-right\">";
         if ($task["category"] != "none") {
-            echo "<a href=\"?filter=categories&amp;cat=" . $task["category"] . "\"><span class=\"hidden-xs label label-primary\" data-id=\"" . $task["category"] . "\">" . $task["category"] . "</span></a> ";
+            echo "<span class=\"category hidden-xs label label-primary\" data-category=\"" . $task["category"] . "\">" . $task["category"] . "</span> ";
         } 
         echo "<span class=\"label label-$label\" data-id=\"" . $task["id"] . "\">" . $date . "</span> ";
         
@@ -595,12 +593,12 @@ $(document).ready(function () {
             selector: "#edittask",
             validate: "presence",
             errorMessage: "Task cannot be empty!",
-            defaultStatus: "valid"
+            initialStatus: "valid"
         }, {
             selector: "#editdue",
             validate: "presence",
             errorMessage: "A due date is required (DD-MM-YYYY)!",
-            defaultStatus: "valid"
+            initialStatus: "valid"
         }]);   
     });
     $("#edit").click(function() {
@@ -631,6 +629,10 @@ $(document).ready(function () {
                 $("#editformmodal").modal("hide");
             }
         });
+    });
+    $("li").on("click", ".category", function() {
+        var url = $(this).data("category");
+        window.location.href = "?filter=categories&cat=" + url + "";
     });
     $("li").on("click", ".complete", function() {
         var id = $(this).data("id");
@@ -692,7 +694,7 @@ $(document).ready(function () {
                 due = rawdue[2]+"-"+rawdue[1]+"-"+rawdue[0];
                 rawcreated = resp.data[0].created.split("-");
                 created = rawcreated[2]+"-"+rawcreated[1]+"-"+rawcreated[0];                
-                $("#"+id).append("<div id=\"detailsitem"+ id +"\" style=\"display: none;\"><p><dl><dt>Details</dt><dd>" + resp.data[0].details +  "</dd><dt>Due</dt><dd>" + due +  "</dd><dt>Created</dt><dd>" + created +  "</dd></dl></p></div>");
+                $("#"+id).append("<div id=\"detailsitem"+ id +"\" style=\"display: none;\"><br><dl><dt>Details</dt><dd>" + resp.data[0].details +  "</dd><dt>Due</dt><dd>" + due +  "</dd><dt>Created</dt><dd>" + created +  "</dd></dl></div>");
                 $("#detailsitem"+id).show("fast");
             }
         });

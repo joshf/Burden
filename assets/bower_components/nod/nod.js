@@ -172,7 +172,7 @@ function nod (config) {
             metricSet.checker.addCheck(checkFunction, checkId);
 
             // We want the check handler to listen for results from the checker
-            metricSet.checkHandler.subscribeTo(checkId, metric.errorMessage, metric.defaultStatus);
+            metricSet.checkHandler.subscribeTo(checkId, metric.errorMessage, metric.initialStatus);
 
             if (configuration.noDom) {
                 eventEmitter.subscribe(metricSet.checkHandler.id);
@@ -603,12 +603,12 @@ nod.makeCheckHandler = function (element, mediator, configuration) {
     var results     = {},
         id          = nod.unique();
 
-    function subscribeTo (id, errorMessage, defaultStatus) {
+    function subscribeTo (id, errorMessage, initialStatus) {
         // Create a representation of the type of error in the results
         // object.
         if (!results[id]) {
             results[id] = {
-                status: defaultStatus || nod.constants.UNCHECKED,
+                status: initialStatus || nod.constants.UNCHECKED,
                 errorMessage: errorMessage
             };
         }

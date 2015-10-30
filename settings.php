@@ -92,7 +92,7 @@ mysqli_close($con);
 <label class="control-label" for="password">Password</label>
 <input type="password" class="form-control" id="password" name="password" value="<?php echo $resultgetusersettings["password"]; ?>" placeholder="Enter a password..." required>
 </div>
-<button type="submit" class="btn btn-default">Update</button>
+<button type="submit" id="submit" class="btn btn-default">Update</button>
 </form>
 <hr>
 <h2>API key</h2>
@@ -104,6 +104,7 @@ mysqli_close($con);
 <script src="assets/bower_components/bootstrap-validator/dist/validator.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="assets/bower_components/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="assets/bower_components/js-cookie/src/js.cookie.js" type="text/javascript" charset="utf-8"></script>
+<script src="assets/bower_components/nod/nod.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     if (Cookies.get("burden_settings_updated")) {
@@ -116,9 +117,34 @@ $(document).ready(function() {
         });
         Cookies.remove("burden_settings_updated");
     }
-    $("#settingsform").validator({
-        disable: true
+    var addval = nod();  
+    addval.configure({
+        submit: "#submit",
+        disableSubmit: true,
+        delay: 1000,
+        parentClass: "form-group",
+        successClass: "has-success",
+        errorClass: "has-error",
+        successMessageClass: "text-success",
+        errorMessageClass: "text-danger"
     });
+    addval.add([{
+        selector: "#user",
+        validate: "presence",
+        errorMessage: "User cannot be empty!",
+        initialStatus: "valid"
+    }, {
+        selector: "#email",
+        validate: "presence",
+        errorMessage: "Email cannot be empty!",
+        initialStatus: "valid"
+    
+    }, {
+        selector: "#password",
+        validate: "presence",
+        errorMessage: "Password cannot be empty!",
+        initialStatus: "valid"
+    }]);
     $("form").submit(function() {
         Cookies.set("burden_settings_updated", "1", { expires: 7 });
     });
