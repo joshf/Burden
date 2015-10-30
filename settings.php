@@ -135,8 +135,8 @@ $(document).ready(function() {
         initialStatus: "valid"
     }, {
         selector: "#email",
-        validate: "presence",
-        errorMessage: "Email cannot be empty!",
+        validate: "email",
+        errorMessage: "Email is invalid!",
         initialStatus: "valid"
     
     }, {

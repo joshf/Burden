@@ -162,7 +162,25 @@ if ($action == "add") {
     }
     
     echo json_encode(array("data" => $data));
+
+} elseif ($action == "list") {
     
+    $getdata = mysqli_query($con, "SELECT * FROM `data`");
+    
+       while($item = mysqli_fetch_assoc($getdata)) {
+    
+           $data[] = array(
+               "task" => $item["task"],
+               "details" => $item["details"],
+               "due" => $item["due"],
+               "category" => $item["category"],
+               "highpriority" => $item["highpriority"],
+               "created" => $item["created"]
+           );
+    
+       }
+       echo json_encode(array("data" => $data));
+   
 } elseif ($action == "generateapikey") {
     $api = substr(str_shuffle(MD5(microtime())), 0, 50);
     mysqli_query($con, "UPDATE `Users` SET `api_key` = \"$api\" WHERE `id` = \"" . $_SESSION["burden_user"] . "\"");
