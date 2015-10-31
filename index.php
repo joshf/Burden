@@ -154,24 +154,13 @@ if ($filter == "completed") {
     $gettasks = mysqli_query($con, "SELECT * FROM `data` WHERE `completed` = \"0\"");
 }
 
-//Set counters to zero
-$numberoftasks = "0";
-$numberoftasksoverdue = "0";
-$numberoftasksduetoday = "0";
-
 echo "<ul class=\"list-group\">";
 if (mysqli_num_rows($gettasks) != 0) {
     while($task = mysqli_fetch_assoc($gettasks)) {
         //Logic
         $today = strtotime(date("Y-m-d"));
         $due = strtotime($task["due"]);
-        //Counters
-        if ($today > $due) {
-            $numberoftasksoverdue++;
-        }
-        if ($today == $due) {
-            $numberoftasksduetoday++;
-        }
+
         //Set cases
         if ($task["highpriority"] == "0" && $task["completed"] != "1" && $today < $due || $today == $due) {
             $case = "normal";
@@ -499,18 +488,6 @@ $(document).ready(function () {
         }]);
     });
     $("#add").click(function() {
-        task = $("#task").val()
-        if (task == "") {
-            $.notify({
-                message: "Task was empty!",
-                icon: "glyphicon glyphicon-warning-sign",
-            },{
-                element: ".modal",
-                type: "danger",
-                allow_dismiss: true
-            });
-            return false;
-        }
         $.ajax({
             type: "POST",
             url: "worker.php",

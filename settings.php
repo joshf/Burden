@@ -117,8 +117,8 @@ $(document).ready(function() {
         });
         Cookies.remove("burden_settings_updated");
     }
-    var addval = nod();  
-    addval.configure({
+    var settingsform = nod();  
+    settingsform.configure({
         submit: "#submit",
         disableSubmit: true,
         delay: 1000,
@@ -128,7 +128,7 @@ $(document).ready(function() {
         successMessageClass: "text-success",
         errorMessageClass: "text-danger"
     });
-    addval.add([{
+    settingsform.add([{
         selector: "#user",
         validate: "presence",
         errorMessage: "User cannot be empty!",

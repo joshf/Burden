@@ -1,12 +1,12 @@
 <?php
 
-//Lists, Copyright Josh Fradley (http://github.com/joshf/Lists
+//Burden, Copyright Josh Fradley (http://github.com/joshf/Burden
 
 require_once("../assets/version.php");
 
-//Check if Lists has been installed
+//Check if Burden has been installed
 if (file_exists("../config.php")) {
-    die("Information: Lists has already been installed! You can login <a href=\"../login.php\">here</a> or to reinstall the app please delete your config.php file and run this installer again.");
+    die("Information: Burden has already been installed! You can login <a href=\"../login.php\">here</a> or to reinstall the app please delete your config.php file and run this installer again.");
 }
 
 if (isset($_POST["install"])) {
@@ -15,8 +15,6 @@ if (isset($_POST["install"])) {
     $dbuser = $_POST["dbuser"];
     $dbpassword = $_POST["dbpassword"];
     $dbname = $_POST["dbname"];
-	$website = $_POST["website"];
-	$pathtoscript = $_POST["pathtoscript"];
     
     $user = $_POST["user"];
     $email = $_POST["email"];
@@ -39,28 +37,24 @@ if (isset($_POST["install"])) {
     
     //Create data table
     $createdatatable = "CREATE TABLE `data` (
-	`id` smallint(10) NOT NULL,
-    `list` smallint(10) NOT NULL,
-    `item` varchar(300) NOT NULL,
+	`id` smallint(8) NOT NULL,
+    `category` varchar(20) NOT NULL,
+    `highpriority` tinyint(1) NOT NULL,
+    `task` varchar(300) NOT NULL,
+    `details` varchar(300) NOT NULL,
     `created` date NOT NULL,
-    `complete` int(1) NOT NULL,
-    PRIMARY KEY (`id`)
-    ) ENGINE=MyISAM;";
-	
-    mysqli_query($con, $createdatatable) or die(mysqli_error($con));
-	
-    //Create lists table
-    $createliststable = "CREATE TABLE `lists` (
-    `id` smallint(10) NOT NULL,
-    `name` varchar(100) NOT NULL,
+    `due` date NOT NULL,
+    `completed` tinyint(1) NOT NULL DEFAULT \"0\",
+    `datecompleted` date NOT NULL,
     PRIMARY KEY (`id`)
     ) ENGINE=MyISAM;";
     
-    mysqli_query($con, $createliststable) or die(mysqli_error($con));
+	
+    mysqli_query($con, $createdatatable) or die(mysqli_error($con));
     
     //Create users table
     $createuserstable = "CREATE TABLE `users` (
-    `id` smallint(10) NOT NULL,
+    `id` smallint(8) NOT NULL,
     `user` varchar(20) NOT NULL,
     `password` varchar(200) NOT NULL,
     `salt` varchar(3) NOT NULL,
@@ -74,10 +68,8 @@ if (isset($_POST["install"])) {
 
     //Add keys
     mysqli_query($con, "ALTER TABLE `data` ADD PRIMARY KEY (`id`)");
-    mysqli_query($con, "ALTER TABLE `lists` ADD PRIMARY KEY (`id`)");
     mysqli_query($con, "ALTER TABLE `users` ADD PRIMARY KEY (`id`)");
     mysqli_query($con, "ALTER TABLE `data` CHANGE `id` `id` INT(8) NOT NULL AUTO_INCREMENT");
-    mysqli_query($con, "ALTER TABLE `lists` CHANGE `id` `id` INT(8) NOT NULL AUTO_INCREMENT");
     mysqli_query($con, "ALTER TABLE `users` CHANGE `id` `id` INT(8) NOT NULL AUTO_INCREMENT");
     
     mysqli_query($con, "INSERT INTO `users` (user, password, salt, email, hash, api_key)
@@ -102,10 +94,10 @@ if (isset($_POST["install"])) {
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="../assets/favicon.ico">
-<title>Lists &raquo; Install</title>
+<title>Burden &raquo; Install</title>
 <link rel="apple-touch-icon" href="../assets/icon.png">
 <link rel="stylesheet" href="../assets/bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css" media="screen">
-<link rel="stylesheet" href="../assets/css/lists.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../assets/css/burden.css" type="text/css" media="screen">
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -116,7 +108,7 @@ if (isset($_POST["install"])) {
 <nav class="navbar navbar-inverse navbar-fixed-top">
 <div class="container-fluid">
 <div class="navbar-header">
-<a class="navbar-brand" href="index.php">Lists</a>
+<a class="navbar-brand" href="index.php">Burden</a>
 </div>
 </div>
 </nav>
@@ -126,14 +118,14 @@ if (isset($_POST["install"])) {
 if (isset($_POST["install"])) {    
  
 ?>
-<p>Lists has been successfully installed. Please delete the "install" folder from your server, as it poses a potential security risk!</p>
+<p>Burden has been successfully installed. Please delete the "install" folder from your server, as it poses a potential security risk!</p>
 <a href="../login.php" class="btn btn-default" role="button">Login</a>
 <?php
 
 } else {
 
 ?>
-<div class="alert alert-info">Welcome to Lists <?php echo $version ?>. Before getting started, we need some information on your database and for you to create an admin user.</div>
+<div class="alert alert-info">Welcome to Burden <?php echo $version ?>. Before getting started, we need some information on your database and for you to create an admin user.</div>
 <form id="installform" method="post" autocomplete="off">
 <div class="form-group">
 <label for="dbhost">Database Host</label>
@@ -164,7 +156,7 @@ if (isset($_POST["install"])) {
 <input type="password" class="form-control" id="password" name="password" placeholder="Type a password..." required>
 </div>
 <input type="hidden" name="install">
-<input type="submit" class="btn btn-default" value="Install">
+<input type="submit" id="submit" class="btn btn-default" value="Install">
 </form>
 <br>
 <?php
@@ -173,12 +165,49 @@ if (isset($_POST["install"])) {
 </div>
 <script src="../assets/bower_components/jquery/dist/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="../assets/bower_components/bootstrap/dist/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="../assets/bower_components/bootstrap-validator/dist/validator.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../assets/bower_components/nod/nod.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
 $(document).ready(function () {
-    $("#installform").validator({
-        disable: true
+    var installform = nod();
+    installform.configure({
+        submit: "#submit",
+        disableSubmit: true,
+        delay: 5,
+        parentClass: "form-group",
+        successClass: "has-success",
+        errorClass: "has-error",
+        successMessageClass: "text-success",
+        errorMessageClass: "text-danger"
     });
+    installform.add([{
+        selector: "#dbhost",
+        validate: "presence",
+        errorMessage: "Database host cannot be empty!",
+    }, {
+        selector: "#dbuser",
+        validate: "presence",
+        errorMessage: "Database user cannot be empty!",
+    }, {
+        selector: "#dbpass",
+        validate: "presence",
+        errorMessage: "Database password cannot be empty!",
+    }, {
+        selector: "#dbname",
+        validate: "presence",
+        errorMessage: "Database name cannot be empty!",
+    }, {
+        selector: "#user",
+        validate: "presence",
+        errorMessage: "User cannot be empty!",
+    }, {
+        selector: "#password",
+        validate: "presence",
+        errorMessage: "Password cannot be empty!",
+    }, {
+        selector: "#email",
+        validate: "email",
+        errorMessage: "Email invalid!",
+    }]);   
 });
 </script>
 </body>
