@@ -54,6 +54,17 @@ As with bootstrap's own plugins, datepicker provides a data-api that can be used
 
     <input data-provide="datepicker">
 
+Markup with component
+
+.. code-block:: html
+
+    <div class="input-group date" data-provide="datepicker">
+        <input type="text" class="form-control">
+        <div class="input-group-addon">
+            <span class="glyphicon glyphicon-th"></span>
+        </div>
+    </div>
+
 You can disable datepicker's data-api in the same way as you would disable other bootstrap plugins::
 
     $(document).off('.datepicker.data-api');
@@ -88,6 +99,14 @@ Defaults for all options can be modified directly by changing values in the ``$.
         startDate: '-3d'
     })
 
+
+Stylesheets
+^^^^^^^^^^^
+
+There are a few different stylesheets included in the library. This is an overview of what each file is to be used for:
+
+:code:`bootstrap-datepicker.css` gives legacy support for twitter bootstrap v2, :code:`bootstrap-datepicker3.css` is used for twitter bootstrap v3 support
+and :code:`bootstrap-datepicker.standalone.css` can be used the include the datepicker without depending on the twitter bootstrap library.
 
 No Conflict mode
 ^^^^^^^^^^^^^^^^

@@ -2,7 +2,7 @@
 /**
  *
  *
- * nod v.2.0.10
+ * nod v.2.0.11
  * Gorm Casper
  *
  *
@@ -71,7 +71,6 @@ function nod (config) {
 
         arrayMetrics.forEach(function (metric) {
             var validateArray, errorMessageArray;
-
             // If the 'validate' is not an array, then we're good to go.
             if (!Array.isArray(metric.validate)) {
                 addMetric(metric);
@@ -172,7 +171,7 @@ function nod (config) {
             metricSet.checker.addCheck(checkFunction, checkId);
 
             // We want the check handler to listen for results from the checker
-            metricSet.checkHandler.subscribeTo(checkId, metric.errorMessage, metric.initialStatus);
+            metricSet.checkHandler.subscribeTo(checkId, metric.errorMessage, metric.defaultStatus);
 
             if (configuration.noDom) {
                 eventEmitter.subscribe(metricSet.checkHandler.id);
@@ -276,7 +275,9 @@ function nod (config) {
      */
     function toggleSubmit () {
         if (configuration.submit && configuration.disableSubmit) {
-            nod.getElement(configuration.submit).disabled = !areAll(nod.constants.VALID);
+            nod.getElements(configuration.submit).forEach(function (submitButton) {
+                submitButton.disabled = !areAll(nod.constants.VALID);
+            });
         }
     }
 
@@ -335,6 +336,32 @@ function nod (config) {
         });
     }
 
+    function setInvalid (selector, errorMessage) {
+        var element = nod.getElement(selector),
+            domNode  = domNodes.findOrMake(element);
+
+        domNode.set({
+            result: nod.constants.INVALID,
+            errorMessage: errorMessage || ''
+        });
+    }
+
+    function setValid (selector) {
+        var element = nod.getElement(selector),
+            domNode  = domNodes.findOrMake(element);
+
+        domNode.set({
+            result: nod.constants.VALID,
+            errorMessage: ''
+        });
+    }
+
+    function setAllNodeValid () {
+        for (var i = 0, len = domNodes.length; i < len; i++) {
+            setValid(domNodes[i].element);
+        }
+    }
+
     /**
      * Internal functions that are exposed to the public.
      */
@@ -345,7 +372,10 @@ function nod (config) {
         getStatus:              getStatus,
         configure:              configure,
         setMessageOptions:      setMessageOptions,
-        performCheck:           performCheck
+        performCheck:           performCheck,
+        setInvalid:             setInvalid,
+        setValid:               setValid,
+        setAllNodeValid:        setAllNodeValid
     };
 
     if (config) {
@@ -603,12 +633,12 @@ nod.makeCheckHandler = function (element, mediator, configuration) {
     var results     = {},
         id          = nod.unique();
 
-    function subscribeTo (id, errorMessage, initialStatus) {
+    function subscribeTo (id, errorMessage, defaultStatus) {
         // Create a representation of the type of error in the results
         // object.
         if (!results[id]) {
             results[id] = {
-                status: initialStatus || nod.constants.UNCHECKED,
+                status: defaultStatus || nod.constants.UNCHECKED,
                 errorMessage: errorMessage
             };
         }
@@ -847,7 +877,8 @@ nod.makeDomNode = function (element, mediator, configuration) {
         subscribeTo:        subscribeTo,
         element:            element,
         setMessageOptions:  setMessageOptions,
-        dispose:            dispose
+        dispose:            dispose,
+        set:                set
     };
 };
 

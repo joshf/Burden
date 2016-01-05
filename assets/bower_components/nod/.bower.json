@@ -1,15 +1,14 @@
 {
   "name": "nod",
   "homepage": "https://github.com/casperin/nod",
-  "version": "2.0.10",
-  "_release": "2.0.10",
+  "version": "2.0.11",
+  "_release": "2.0.11",
   "_resolution": {
     "type": "version",
-    "tag": "2.0.10",
-    "commit": "98c5c42d9519705ac5168a538343693451d49784"
+    "tag": "2.0.11",
+    "commit": "ee1fcbd7d2a9ff862d32d82f6b1f64ee30fcef15"
   },
   "_source": "https://github.com/casperin/nod.git",
   "_target": "~2.0.10",
-  "_originalSource": "https://github.com/casperin/nod.git",
-  "_direct": true
+  "_originalSource": "https://github.com/casperin/nod.git"
 }
