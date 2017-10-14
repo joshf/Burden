@@ -27,11 +27,6 @@ Thanks to:
 
 * Rutger Mensen
 
-Screenshots:
-------------
-
-Screenshots of Burden can be found [here](http://imgur.com/a/mmqhA).
-
 Releases:
 ------------
 
